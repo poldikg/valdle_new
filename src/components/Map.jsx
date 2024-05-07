@@ -9,16 +9,24 @@ const Map = () => {
     const [randomIndexMap, setRandomIndexMap] = useState();
     const date = new Date();
     const [dateState, setDateState] = useState(date);
+    const getRandomIndex = localStorage.getItem("mapIndex");
+    const getPreviousTime = localStorage.getItem("mapTaskCreated");
     
-    console.log(randomIndexMap, allMaps, isMounted)
-
-    
-
-    const testVar = testFunction();
-    console.log(testVar)
+    useEffect(() => {
+        const timeNow = new Date();
+        const mapPreviosulyCreated = new Date(getPreviousTime);
+        const milisecondsPerHour = 60 * 60 * 1000;
+        const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
+        console.log(hourDifference)
+        if(hourDifference >= 24){
+            localStorage.removeItem("mapIndex")
+            localStorage.removeItem("mapTaskCreated")
+        }
+    }, [])
 
     useEffect(() => {
-            const getRandomIndex = localStorage.getItem("mapIndex")
+        
+            
 
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
@@ -32,6 +40,7 @@ const Map = () => {
                 const randomIndex = Math.floor(Math.random() * allMaps.length)
                 localStorage.setItem("mapIndex", randomIndex);
                 setRandomIndexMap(randomIndex)
+                localStorage.setItem("mapTaskCreated", new Date())
                 }
             })
     }, [])
