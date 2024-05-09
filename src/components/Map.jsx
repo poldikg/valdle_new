@@ -9,7 +9,6 @@ const Map = () => {
     const [randomIndexMap, setRandomIndexMap] = useState();
     const date = new Date();
     const [dateState, setDateState] = useState(date);
-    const getRandomIndex = localStorage.getItem("mapIndex");
     const getPreviousTime = localStorage.getItem("mapTaskCreated");
     
     useEffect(() => {
@@ -25,9 +24,6 @@ const Map = () => {
     }, [])
 
     useEffect(() => {
-        
-            
-
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
             .then(allDataObj => {
@@ -35,6 +31,7 @@ const Map = () => {
                 setAllMaps(allMaps)
                 if(getRandomIndex) {
                     setRandomIndexMap(parseInt(getRandomIndex))
+                    console.log(allMaps)
                 }
                 else {
                 const randomIndex = Math.floor(Math.random() * allMaps.length)
@@ -44,10 +41,6 @@ const Map = () => {
                 }
             })
     }, [])
-
-
-    
-
    // Ako izpolzvam isMounted v dependacy array shte vidi che ima promqna i shte runne useEffecta, no nqma da causene re-render. 
    // Zaradi tova izpozlvam state var.
 
