@@ -24,13 +24,16 @@ const Map = () => {
     }, [])
 
     useEffect(() => {
+
+        const getMapIndex = localStorage.getItem("mapIndex")
+
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
             .then(allDataObj => {
                 const allMaps = allDataObj.data.map(map => map.displayName)
                 setAllMaps(allMaps)
-                if(getRandomIndex) {
-                    setRandomIndexMap(parseInt(getRandomIndex))
+                if(getMapIndex) {
+                    setRandomIndexMap(parseInt(getMapIndex))
                     console.log(allMaps)
                 }
                 else {
