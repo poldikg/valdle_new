@@ -22,10 +22,10 @@ const Map = () => {
             localStorage.removeItem("mapTaskCreated")
         }
     }, [])
-
+  
     useEffect(() => {
 
-        const getMapIndex = localStorage.getItem("mapIndex")
+        const getMapIndex = localStorage.getItem("mapIndex");
 
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
@@ -50,6 +50,14 @@ const Map = () => {
 
    const handleSubmit = (event) => {
         event.preventDefault();  
+        event.target[0].value = "";
+        const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].toLowerCase();
+        localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
+        const userGuessTrueLocalStorage = localStorage.getItem("userGuessedMapCorrectly");
+        if(userGuessTrue){
+            event.target[0].disabled = true;
+        }
+        console.log(event)
         setAllUserGuesses(prevState => {
             return [...prevState, userGuess]
         })
@@ -58,6 +66,7 @@ const Map = () => {
    const saveUserGuess = (event) => {
         setUserGuess(event.target.value)
    }
+
 
 
    const renderUserGuess = allUserGuesses.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
@@ -71,7 +80,7 @@ const Map = () => {
     
     <div> 
         <form onSubmit={handleSubmit}>
-        <input type="text" name="" id="" onChange={saveUserGuess} />
+        <input type="text" name="userMapInput" id="" onChange={saveUserGuess} />
         {renderUserGuess}
         <button>Submit</button>
         </form>
