@@ -12,20 +12,9 @@ const Map = () => {
     const getPreviousTime = localStorage.getItem("mapTaskCreated");
     
     useEffect(() => {
-        const timeNow = new Date();
-        const mapPreviosulyCreated = new Date(getPreviousTime);
-        const milisecondsPerHour = 60 * 60 * 1000;
-        const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
-        console.log(hourDifference)
-        if(hourDifference >= 24){
-            localStorage.removeItem("mapIndex")
-            localStorage.removeItem("mapTaskCreated")
-        }
-    }, [])
-  
-    useEffect(() => {
 
         const getMapIndex = localStorage.getItem("mapIndex");
+        const getUserInput = localStorage.getItem("userGuessedMapCorrectly")
 
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
@@ -35,6 +24,12 @@ const Map = () => {
                 if(getMapIndex) {
                     setRandomIndexMap(parseInt(getMapIndex))
                     console.log(allMaps)
+                    if(getUserInput){
+                        const userInputBox = document.getElementById("userMapInput")
+                        const submitBtn = document.getElementById("submitBtn")
+                        submitBtn.setAttribute("disabled", true)
+                        userInputBox.setAttribute("disabled", true)
+                    }
                 }
                 else {
                 const randomIndex = Math.floor(Math.random() * allMaps.length)
@@ -44,6 +39,21 @@ const Map = () => {
                 }
             })
     }, [])
+
+    useEffect((e) => {
+        const timeNow = new Date();
+        const mapPreviosulyCreated = new Date(getPreviousTime);
+        const milisecondsPerHour = 60 * 60 * 1000;
+        const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
+        console.log(hourDifference)
+        if(hourDifference >= 24){
+            localStorage.removeItem("mapIndex")
+            localStorage.removeItem("mapTaskCreated")
+            localStorage.removeItem("userGuessedMapCorrectly")
+        }
+    }, [])
+    
+    
    // Ako izpolzvam isMounted v dependacy array shte vidi che ima promqna i shte runne useEffecta, no nqma da causene re-render. 
    // Zaradi tova izpozlvam state var.
 
@@ -52,10 +62,13 @@ const Map = () => {
         event.preventDefault();  
         event.target[0].value = "";
         const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].toLowerCase();
-        localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
-        const userGuessTrueLocalStorage = localStorage.getItem("userGuessedMapCorrectly");
         if(userGuessTrue){
+            localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
+        }
+        const userGuessTrueLocalStorage = localStorage.getItem("userGuessedMapCorrectly");
+        if(userGuessTrueLocalStorage){
             event.target[0].disabled = true;
+            event.target[1].disabled = true;
         }
         console.log(event)
         setAllUserGuesses(prevState => {
@@ -80,9 +93,9 @@ const Map = () => {
     
     <div> 
         <form onSubmit={handleSubmit}>
-        <input type="text" name="userMapInput" id="" onChange={saveUserGuess} />
+        <input type="text" name="userMapInput" id="userMapInput" onChange={saveUserGuess} />
         {renderUserGuess}
-        <button>Submit</button>
+        <button id="submitBtn">Submit</button>
         </form>
     </div>
 )
