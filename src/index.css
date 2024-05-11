@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "NicoMoji", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -11,5 +11,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: url("./assets/background-valdle.jpg");
+  background-size: cover;
 }
+
+@font-face {
+  font-family: "NicoMoji";
+  src: url("./assets/font-nico-moji/NicoMoji-Regular.ttf");
+  }
 

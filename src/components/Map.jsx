@@ -12,9 +12,8 @@ const Map = () => {
     const getPreviousTime = localStorage.getItem("mapTaskCreated");
     
     useEffect(() => {
-
         const getMapIndex = localStorage.getItem("mapIndex");
-        const getUserInput = localStorage.getItem("userGuessedMapCorrectly")
+        const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly")
 
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
@@ -24,7 +23,7 @@ const Map = () => {
                 if(getMapIndex) {
                     setRandomIndexMap(parseInt(getMapIndex))
                     console.log(allMaps)
-                    if(getUserInput){
+                    if(userGuessedCorrectly){
                         const userInputBox = document.getElementById("userMapInput")
                         const submitBtn = document.getElementById("submitBtn")
                         submitBtn.setAttribute("disabled", true)
@@ -40,7 +39,7 @@ const Map = () => {
             })
     }, [])
 
-    useEffect((e) => {
+    useEffect(() => {
         const timeNow = new Date();
         const mapPreviosulyCreated = new Date(getPreviousTime);
         const milisecondsPerHour = 60 * 60 * 1000;

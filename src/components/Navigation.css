@@ -1,0 +1,37 @@
+.nav-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+}
+
+.nav-item{
+    background-color: #2B3B52;
+    display: flex;
+    width: 300px;
+    border-radius: 4px;
+    align-items: center;
+    gap: 1em;
+    padding: 1em 1em 1.2em 1.5em;
+    border: 1px solid #D2404D;
+}
+
+.nav-img{
+    width: auto;
+    height:50px;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.text-container > p{
+    margin-top: -1.2em;
+    color: #D2404D;
+}
+
+.text-container > h2{
+    color: #FEFEFE;
+}

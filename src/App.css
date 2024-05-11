@@ -5,4 +5,11 @@
   text-align: center;
 }
 
+.mainH1{ 
+color: #D2404D;
+font-size: 3.5rem;
+margin-top: -0.3em;
+outline: none;
+text-decoration: none !important;
+}
 
