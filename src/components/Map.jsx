@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import "./Map.css"
 
 const Map = () => {
     const [allMaps, setAllMaps] = useState();
@@ -91,11 +91,13 @@ const Map = () => {
     return (
     
     <div> 
-        <form onSubmit={handleSubmit}>
-        <input type="text" name="userMapInput" id="userMapInput" onChange={saveUserGuess} />
-        {renderUserGuess}
-        <button id="submitBtn">Submit</button>
+        <form className="map-form" onSubmit={handleSubmit}>
+            <div className="input-container">
+                 <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} />
+                 <button id="submitBtn"> {">"}</button>
+            </div>
         </form>
+        {renderUserGuess}
     </div>
 )
 }

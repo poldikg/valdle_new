@@ -1,0 +1,46 @@
+#userMapInput {
+    padding: 1.15em 1em 1.25em 1em;
+    outline: none;
+    border: none;
+    background-color: #2B3B52;
+    border-radius: 2px 0px 0px 2px; 
+    font-family: "NicoMoji";
+    letter-spacing: 0.05cm;
+    font-size: 1rem;
+    font-weight: 700;
+    height: 26px;
+}
+
+
+#userMapInput:disabled{
+    background-color: grey;
+    color: #FEFEFE;
+}
+
+#submitBtn{
+    padding: 1.4em 1.2em 2.6em 1.2em;
+    background-color: #FEFEFE;
+    color: #2B3B52;
+    border: none;
+    font-weight: 600;
+    height: 50px;
+    font-size: 1rem;
+}
+
+#submitBtn:hover{
+    cursor: pointer;
+}
+
+#submitBtn:disabled{
+    background-color: gray;
+}
+
+.input-container{
+    border: 2px solid #FEFEFE;
+    border-radius: 4px;
+}
+
+.map-form{
+    display: flex;
+     justify-content: center;
+}
