@@ -10,19 +10,33 @@ const Map = () => {
     const date = new Date();
     const [dateState, setDateState] = useState(date);
     const getPreviousTime = localStorage.getItem("mapTaskCreated");
+    // const [userMadeGuess, setUserMadeGuess] = useState(false);
+    const [allUserGuessesLocalStorage, setAllUserGuessesLocalStorage] = useState([])
+    const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
     
+    console.log(allMaps)
+    console.log(allUserGuessesLocalStorage)
+
     useEffect(() => {
         const getMapIndex = localStorage.getItem("mapIndex");
         const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly")
+        const userMapGuessesLocalStorage = JSON.parse(localStorage.getItem("allUserMapGuesses") || null)
+        const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses"));
+
+        console.log(userMapGuessesLocalStorage)
+        
 
             fetch("https://valorant-api.com/v1/maps")
             .then(res => res.json())
             .then(allDataObj => {
                 const allMaps = allDataObj.data.map(map => map.displayName)
                 setAllMaps(allMaps)
-                if(getMapIndex) {
+                if(getMapIndex) { 
                     setRandomIndexMap(parseInt(getMapIndex))
-                    console.log(allMaps)
+                    if(userMadeGuessLocalStorage){
+                    setAllUserGuessesLocalStorage(getUserMapGuesses)
+                    setAllUserGuesses(getUserMapGuesses)
+                    }
                     if(userGuessedCorrectly){
                         const userInputBox = document.getElementById("userMapInput")
                         const submitBtn = document.getElementById("submitBtn")
@@ -35,8 +49,10 @@ const Map = () => {
                 localStorage.setItem("mapIndex", randomIndex);
                 setRandomIndexMap(randomIndex)
                 localStorage.setItem("mapTaskCreated", new Date())
+                
                 }
             })
+           
     }, [])
 
     useEffect(() => {
@@ -50,17 +66,26 @@ const Map = () => {
             localStorage.removeItem("mapTaskCreated")
             localStorage.removeItem("userGuessedMapCorrectly")
         }
-    }, [])
+    }, [allMaps])
     
+    useEffect(() => {
+        setAllUserGuessesLocalStorage(allUserGuesses)  
+    }, [allUserGuesses])
     
    // Ako izpolzvam isMounted v dependacy array shte vidi che ima promqna i shte runne useEffecta, no nqma da causene re-render. 
    // Zaradi tova izpozlvam state var.
 
-
+    console.log(userGuess)
    const handleSubmit = (event) => {
+
         event.preventDefault();  
         event.target[0].value = "";
         const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].toLowerCase();
+        
+        if(allUserGuesses){
+        const userMadeGuess = true;
+        localStorage.setItem("userMadeMapGuess", userMadeGuess)
+        }
         if(userGuessTrue){
             localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
         }
@@ -69,10 +94,19 @@ const Map = () => {
             event.target[0].disabled = true;
             event.target[1].disabled = true;
         }
-        console.log(event)
+        console.log(allUserGuesses)
+        
+        
+        
         setAllUserGuesses(prevState => {
+            localStorage.setItem("allUserMapGuesses", JSON.stringify([...allUserGuesses, userGuess]))
             return [...prevState, userGuess]
         })
+    
+        
+
+        //TODO: Fix it pushes an empty array if the page is reMounted.
+        
    }
 
    const saveUserGuess = (event) => {
@@ -81,13 +115,15 @@ const Map = () => {
 
 
 
+   
+
+   const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
+   : <h1 style={{color:"red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>})
+
    const renderUserGuess = allUserGuesses.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
    : <h1 style={{color:"red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>})
    //Map ima return zashtoto kato otvorq {} zapochva callback funkciq vmesto da dobavq neshta v nov array moga da izpozlvam () i sled tova {} = ({}) vmesto return
 
-   
-
-   
     return (
     
     <div> 
@@ -97,7 +133,7 @@ const Map = () => {
                  <button id="submitBtn"> {">"}</button>
             </div>
         </form>
-        {renderUserGuess}
+        {userMadeGuessLocalStorage  ? renderUserGuessLocalStorage : renderUserGuess}
     </div>
 )
 }
