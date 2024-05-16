@@ -21,7 +21,7 @@ const Map = () => {
         const getMapIndex = localStorage.getItem("mapIndex");
         const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly")
         const userMapGuessesLocalStorage = JSON.parse(localStorage.getItem("allUserMapGuesses") || null)
-        const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses"));
+        const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses")) ? JSON.parse(localStorage.getItem("allUserMapGuesses")) : [] ;
 
         console.log(userMapGuessesLocalStorage)
         
@@ -103,7 +103,7 @@ const Map = () => {
             return [...prevState, userGuess]
         })
     
-        
+        setUserGuess("")
 
         //TODO: Fix it pushes an empty array if the page is reMounted.
         
