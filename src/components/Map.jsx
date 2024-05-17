@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./Map.css"
+import { Link } from "react-router-dom";
 
 const Map = () => {
     const [allMaps, setAllMaps] = useState();
@@ -13,9 +14,34 @@ const Map = () => {
     // const [userMadeGuess, setUserMadeGuess] = useState(false);
     const [allUserGuessesLocalStorage, setAllUserGuessesLocalStorage] = useState([])
     const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
+    const userGuessMapCorrectlyLocalStorage = JSON.parse(localStorage.getItem("userGuessedMapCorrectly"))
     const [dayPassed, setDayPassed] = useState(false)
     console.log(allMaps)
     console.log(allUserGuessesLocalStorage)
+
+    const rightGuessStyle = {
+        backgroundColor: "#67E574", 
+        color: "#FEFEFE",
+        width: "300px",
+        height: "60px",
+        borderRadius: "8px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: "1.3rem"
+    }
+
+    const wrongGuessStyle = {
+        backgroundColor: "#D2404D",
+        color: "#FEFEFE",
+        width: "300px",
+        height: "60px",
+        borderRadius: "8px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: "1.3rem"
+    }
 
     useEffect(() => {
         const getMapIndex = localStorage.getItem("MapIndex");
@@ -55,22 +81,22 @@ const Map = () => {
            
     }, [])
 
-    useEffect(() => {
-        // const timeNow = new Date();
-        // console.log(timeNow)
-        // const mapPreviosulyCreated = new Date(getPreviousTime);
-        // const milisecondsPerHour = 60 * 60 * 1000;
-        // const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
-        // console.log(hourDifference)
-        // if(hourDifference >= 0.010){
-        //     localStorage.removeItem("MapIndex")
-        //     localStorage.removeItem("MapTaskCreated")
-        //     localStorage.removeItem("userGuessedMapCorrectly")
-        //     localStorage.removeItem("allUserMapGuesses")
-        //     localStorage.removeItem("userMadeMapGuess")
-        //     setDayPassed(true)
-        // }
-    }, [allMaps])
+    // useEffect(() => {
+    //     // const timeNow = new Date();
+    //     // console.log(timeNow)
+    //     // const mapPreviosulyCreated = new Date(getPreviousTime);
+    //     // const milisecondsPerHour = 60 * 60 * 1000;
+    //     // const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
+    //     // console.log(hourDifference)
+    //     // if(hourDifference >= 0.010){
+    //     //     localStorage.removeItem("MapIndex")
+    //     //     localStorage.removeItem("MapTaskCreated")
+    //     //     localStorage.removeItem("userGuessedMapCorrectly")
+    //     //     localStorage.removeItem("allUserMapGuesses")
+    //     //     localStorage.removeItem("userMadeMapGuess")
+    //     //     setDayPassed(true)
+    //     // }
+    // }, [allMaps])
     
     useEffect(() => {
         setAllUserGuessesLocalStorage(allUserGuesses)  
@@ -121,8 +147,8 @@ const Map = () => {
 
    
 
-   const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
-   : <h1 style={{color:"red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>})
+   const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <div className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </div>
+   : <div className="user-guess"> <h1 style={wrongGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1></div>})
 
    const renderUserGuess = allUserGuesses.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
    : <h1 style={{color:"red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>})
@@ -130,7 +156,7 @@ const Map = () => {
 
     return (
     
-    <div> 
+    <div className="map-section"> 
         <form className="map-form" onSubmit={handleSubmit}>
             <div className="input-container">
                  <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} />
@@ -138,6 +164,12 @@ const Map = () => {
             </div>
         </form>
         {userMadeGuessLocalStorage  ? renderUserGuessLocalStorage : renderUserGuess}
+        {userGuessMapCorrectlyLocalStorage && <div className="user-rightguess-popup"> 
+        <h2 style={{color: "#D2404D"}}>You Guessed Right! </h2> 
+        <h2 style={{color: "#67E574", marginTop: "-0.8em"}}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2> 
+        <h2 style={{color: "#D2404D", marginTop: "-0.8em"}}>Tries: {allUserGuessesLocalStorage.length}</h2> 
+        <Link style={{textDecoration: "none"}}to="/Agent" ><div style={{width: "250px", height: "50px", backgroundColor: "#D2404D", textAlign:"center", display:"flex", alignItems:"center", justifyContent:"center", color: "white", border: "1px solid #FEFEFE"}}> Guess the agent </div> </Link>
+        </div>}
     </div>
 )
 }
