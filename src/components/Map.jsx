@@ -9,16 +9,16 @@ const Map = () => {
     const [randomIndexMap, setRandomIndexMap] = useState();
     const date = new Date();
     const [dateState, setDateState] = useState(date);
-    const getPreviousTime = localStorage.getItem("mapTaskCreated");
+    const getPreviousTime = localStorage.getItem("MapTaskCreated");
     // const [userMadeGuess, setUserMadeGuess] = useState(false);
     const [allUserGuessesLocalStorage, setAllUserGuessesLocalStorage] = useState([])
     const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
-    
+    const [dayPassed, setDayPassed] = useState(false)
     console.log(allMaps)
     console.log(allUserGuessesLocalStorage)
 
     useEffect(() => {
-        const getMapIndex = localStorage.getItem("mapIndex");
+        const getMapIndex = localStorage.getItem("MapIndex");
         const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly")
         const userMapGuessesLocalStorage = JSON.parse(localStorage.getItem("allUserMapGuesses") || null)
         const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses")) ? JSON.parse(localStorage.getItem("allUserMapGuesses")) : [] ;
@@ -46,9 +46,9 @@ const Map = () => {
                 }
                 else {
                 const randomIndex = Math.floor(Math.random() * allMaps.length)
-                localStorage.setItem("mapIndex", randomIndex);
+                localStorage.setItem("MapIndex", randomIndex);
                 setRandomIndexMap(randomIndex)
-                localStorage.setItem("mapTaskCreated", new Date())
+                localStorage.setItem("MapTaskCreated", new Date())
                 
                 }
             })
@@ -56,16 +56,20 @@ const Map = () => {
     }, [])
 
     useEffect(() => {
-        const timeNow = new Date();
-        const mapPreviosulyCreated = new Date(getPreviousTime);
-        const milisecondsPerHour = 60 * 60 * 1000;
-        const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
-        console.log(hourDifference)
-        if(hourDifference >= 24){
-            localStorage.removeItem("mapIndex")
-            localStorage.removeItem("mapTaskCreated")
-            localStorage.removeItem("userGuessedMapCorrectly")
-        }
+        // const timeNow = new Date();
+        // console.log(timeNow)
+        // const mapPreviosulyCreated = new Date(getPreviousTime);
+        // const milisecondsPerHour = 60 * 60 * 1000;
+        // const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
+        // console.log(hourDifference)
+        // if(hourDifference >= 0.010){
+        //     localStorage.removeItem("MapIndex")
+        //     localStorage.removeItem("MapTaskCreated")
+        //     localStorage.removeItem("userGuessedMapCorrectly")
+        //     localStorage.removeItem("allUserMapGuesses")
+        //     localStorage.removeItem("userMadeMapGuess")
+        //     setDayPassed(true)
+        // }
     }, [allMaps])
     
     useEffect(() => {
