@@ -15,9 +15,11 @@ const Map = () => {
     const [allUserGuessesLocalStorage, setAllUserGuessesLocalStorage] = useState([])
     const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
     const userGuessMapCorrectlyLocalStorage = JSON.parse(localStorage.getItem("userGuessedMapCorrectly"))
+    const [userGuessedMapCorrectly, setUserGussedMapCorrectly] = useState(false);
     const [dayPassed, setDayPassed] = useState(false)
     console.log(allMaps)
     console.log(allUserGuessesLocalStorage)
+    console.log(userGuessedMapCorrectly)
 
     const rightGuessStyle = {
         backgroundColor: "#67E574", 
@@ -118,6 +120,7 @@ const Map = () => {
         }
         if(userGuessTrue){
             localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
+            setUserGussedMapCorrectly(userGuessTrue)
         }
         const userGuessTrueLocalStorage = localStorage.getItem("userGuessedMapCorrectly");
         if(userGuessTrueLocalStorage){
@@ -134,14 +137,15 @@ const Map = () => {
         })
     
         setUserGuess("")
-
-        //TODO: Fix it pushes an empty array if the page is reMounted.
-        
    }
 
    const saveUserGuess = (event) => {
         setUserGuess(event.target.value)
    }
+
+   useEffect(() => {
+        const boxRightGuess = document.querySelector(".user-rightguess-popup") ? document.querySelector(".user-rightguess-popup").scrollIntoView(true)  : undefined
+   }, [userGuessedMapCorrectly])
 
 
 
@@ -153,7 +157,7 @@ const Map = () => {
    const renderUserGuess = allUserGuesses.map(guess => {return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{color:"green"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> 
    : <h1 style={{color:"red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>})
    //Map ima return zashtoto kato otvorq {} zapochva callback funkciq vmesto da dobavq neshta v nov array moga da izpozlvam () i sled tova {} = ({}) vmesto return
-
+   
     return (
     
     <div className="map-section"> 
@@ -162,14 +166,19 @@ const Map = () => {
                  <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} />
                  <button id="submitBtn"> {">"}</button>
             </div>
-        </form>
-        {userMadeGuessLocalStorage  ? renderUserGuessLocalStorage : renderUserGuess}
+
+            <div className="map-form-lower">
+            {userMadeGuessLocalStorage  ? renderUserGuessLocalStorage : renderUserGuess}
         {userGuessMapCorrectlyLocalStorage && <div className="user-rightguess-popup"> 
         <h2 style={{color: "#D2404D"}}>You Guessed Right! </h2> 
         <h2 style={{color: "#67E574", marginTop: "-0.8em"}}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2> 
         <h2 style={{color: "#D2404D", marginTop: "-0.8em"}}>Tries: {allUserGuessesLocalStorage.length}</h2> 
         <Link style={{textDecoration: "none"}}to="/Agent" ><div style={{width: "250px", height: "50px", backgroundColor: "#D2404D", textAlign:"center", display:"flex", alignItems:"center", justifyContent:"center", color: "white", border: "1px solid #FEFEFE"}}> Guess the agent </div> </Link>
         </div>}
+        </div>
+
+        </form>
+       
     </div>
 )
 }

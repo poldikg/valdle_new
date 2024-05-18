@@ -38,15 +38,18 @@
 .input-container{
     border: 2px solid #FEFEFE;
     border-radius: 4px;
+    margin-bottom: 2em;
 }
 
 .map-form{
     display: flex;
+    flex-direction: column;
      justify-content: center;
+     align-items: center;
      margin-bottom: 2em;
 }
 
-.map-section{
+.map-form-lower{
     display: flex;
     flex-direction: column;
     justify-content: center;
