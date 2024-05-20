@@ -15,7 +15,7 @@
     padding: 1em 1em 1.2em 1.5em;
     border: 1px solid #D2404D;
     transition: .3s linear;
-    background: linear-gradient(to left, #D2404D 50% , #2B3B52 50%) right;
+    background: linear-gradient(to right, #D2404D 50% , #2B3B52 50%) right;
     background-size: 200%;
 }
 
