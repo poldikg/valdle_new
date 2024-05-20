@@ -16,7 +16,7 @@ const Map = () => {
     const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
     const userGuessMapCorrectlyLocalStorage = JSON.parse(localStorage.getItem("userGuessedMapCorrectly"))
     const [userGuessedMapCorrectly, setUserGussedMapCorrectly] = useState(false);
-    const [dayPassed, setDayPassed] = useState(false)
+    const [dayPassed, setDayPassed] = useState(false);
     console.log(allMaps)
     console.log(allUserGuessesLocalStorage)
     console.log(userGuessedMapCorrectly)
