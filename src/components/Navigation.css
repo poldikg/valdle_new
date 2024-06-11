@@ -31,6 +31,12 @@
     height:50px;
 }
 
+ .image-Skin{
+    width: auto;
+    height: 90px;
+    margin-right: 2em;
+}
+
 .text-container {
     display: flex;
     flex-direction: column;
