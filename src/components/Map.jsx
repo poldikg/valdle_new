@@ -21,19 +21,19 @@ const Map = () => {
     console.log(allMaps);
     console.log(allUserGuessesLocalStorage);
     console.log(userGuessedMapCorrectly);
+    console.log(userGuess)
 
-
-
+  
     useEffect(() => {
         setMapSuggestions([]);
-        
+        if(userGuess !== undefined){
         for(let i = 0; i< allMaps.length; i++){  
             if(userGuess.charAt(0).toUpperCase() === allMaps[i][0]){
                     const finalSuggestions = allMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase())
                     setMapSuggestions(finalSuggestions)
             } 
         }
-
+    }
     }, [userGuess])
 
 
@@ -128,6 +128,12 @@ const Map = () => {
         setAllUserGuessesLocalStorage(allUserGuesses)
     }, [allUserGuesses])
 
+    const detectSpace = (event) => {
+        if(event.keyCode === 32) {
+            event.preventDefault();
+        }
+    }
+
     // Ako izpolzvam isMounted v dependacy array shte vidi che ima promqna i shte runne useEffecta, no nqma da causene re-render. 
     // Zaradi tova izpozlvam state var.
 
@@ -156,15 +162,12 @@ const Map = () => {
             event.target[1].disabled = true;
         }
 
-
-
-
         setAllUserGuesses(prevState => {
             localStorage.setItem("allUserMapGuesses", JSON.stringify([...allUserGuesses, userGuess]))
             return [...prevState, userGuess]
         })
 
-        setUserGuess("")
+        setUserGuess(undefined)
     }
 
     const saveUserGuess = (event) => {
@@ -196,7 +199,7 @@ const Map = () => {
         <div className="map-section">
             <form className="map-form" onSubmit={handleSubmit}>
                 <div className="input-container">
-                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} aria-autocomplete="list"
+                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} onKeyDown={detectSpace} aria-autocomplete="list"
                     />         
                      
                     <button id="submitBtn"> {">"}</button>
