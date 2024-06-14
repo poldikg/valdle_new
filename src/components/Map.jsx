@@ -18,29 +18,9 @@ const Map = () => {
     const [userGuessedMapCorrectly, setUserGussedMapCorrectly] = useState(false);
     const [dayPassed, setDayPassed] = useState(false);
     const [mapsSuggestions, setMapSuggestions] = useState([]);
-    console.log(allMaps);
-    console.log(allUserGuessesLocalStorage);
-    console.log(userGuessedMapCorrectly);
+    const [mapSuggestionHappened, setMapSuggestionHappend] = useState(false);
     console.log(userGuess)
-
-  
-    useEffect(() => {
-        setMapSuggestions([]);
-        if(userGuess !== undefined){
-        for(let i = 0; i< allMaps.length; i++){  
-            if(userGuess.charAt(0).toUpperCase() === allMaps[i][0]){
-                    const finalSuggestions = allMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase())
-                    setMapSuggestions(finalSuggestions)
-            } 
-        }
-    }
-    }, [userGuess])
-
-
-    console.log(mapsSuggestions);
-    console.log(userGuess)
-
-
+    console.log(mapSuggestionHappened)
 
     const rightGuessStyle = {
         backgroundColor: "#67E574",
@@ -66,6 +46,32 @@ const Map = () => {
         fontSize: "1.3rem",
         
     };
+
+    const sendMapNameToUserInput = (mapName) => {
+        setUserGuess(mapName);
+    }
+    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" onClick={() => sendMapNameToUserInput(map)}> {map} </button>)
+    
+    useEffect(() => {
+        setMapSuggestions([]);
+        
+        if (userGuess !== undefined) {
+            for (let i = 0; i < allMaps.length; i++) {
+                if (userGuess.charAt(0).toUpperCase() === allMaps[i][0]) {
+                    const finalSuggestions = allMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase());
+                    setMapSuggestions(finalSuggestions);
+                    setMapSuggestionHappend(true);
+                }
+            }
+            if (userGuess === ""){
+                setMapSuggestionHappend(false);
+            }
+        }
+        else if (userGuess === undefined) {
+            setMapSuggestionHappend(false);
+        }
+        
+    }, [userGuess])
 
     useEffect(() => {
         const getMapIndex = localStorage.getItem("MapIndex");
@@ -104,7 +110,7 @@ const Map = () => {
 
                 }
             })
-
+            console.log("mounted")
     }, [])
 
     // useEffect(() => {
@@ -172,7 +178,6 @@ const Map = () => {
 
     const saveUserGuess = (event) => {
         setUserGuess(event.target.value)
-
     }
 
     useEffect(() => {
@@ -205,7 +210,11 @@ const Map = () => {
                     <button id="submitBtn"> {">"}</button>
                     
                 </div>
-                {userGuess ? mapsSuggestions : ""} 
+                
+                {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
+                {renderMapSuggestions}
+                </div> }
+                
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
                     {userGuessMapCorrectlyLocalStorage && <div className="user-rightguess-popup">

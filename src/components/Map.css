@@ -77,3 +77,29 @@
     align-items: center;
     border: 1px solid #FEFEFE;
 }
+
+.map-suggestions-container{
+    width: 250px;
+    height: auto;
+    background-color: #2B3B52;
+    border: 1px solid #FEFEFE;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1em;
+}
+
+.button-map-name{
+    padding: 1em;
+    background-color: #2B3B52;
+    border: none;
+    font-family: "NicoMoji";
+    width: 100%;
+    text-align: start;
+    border-radius: 8px;
+}
+
+.button-map-name:hover{
+    background-color: #4E5F78;
+}

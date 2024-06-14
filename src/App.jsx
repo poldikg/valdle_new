@@ -41,6 +41,7 @@ function App() {
       const imgAgent = allAgentsAbilities[0].displayName;
     console.log(imgAgent)
     }
+    console.log("mounted")
   }
 ,[])
 
