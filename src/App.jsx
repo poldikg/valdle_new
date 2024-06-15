@@ -37,11 +37,7 @@ function App() {
       // setNavigationData(prevState => {return [...prevState, ] })
       // data.data.map(agent => setAllAgentsAbilities(prevState => {return [...prevState, agent.abilties]}));
     })
-    if(allAgentsAbilities !== null){
-      const imgAgent = allAgentsAbilities[0].displayName;
-    console.log(imgAgent)
-    }
-    console.log("mounted")
+    
   }
 ,[])
 

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import "./Map.css"
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 
 const Map = () => {
     const [allMaps, setAllMaps] = useState([]);
+    const [copyAllMaps, setCopyAllMaps] = useState([]);
     const [isMounted, setIsMounted] = useState(false);
     const [userGuess, setUserGuess] = useState(undefined);
     const [allUserGuesses, setAllUserGuesses] = useState([]);
@@ -17,10 +18,10 @@ const Map = () => {
     const userGuessMapCorrectlyLocalStorage = JSON.parse(localStorage.getItem("userGuessedMapCorrectly"));
     const [userGuessedMapCorrectly, setUserGussedMapCorrectly] = useState(false);
     const [dayPassed, setDayPassed] = useState(false);
-    const [mapsSuggestions, setMapSuggestions] = useState([]);
+    const [mapsSuggestions, setMapsSuggestions] = useState([]);
     const [mapSuggestionHappened, setMapSuggestionHappend] = useState(false);
-    console.log(userGuess)
-    console.log(mapSuggestionHappened)
+    console.log(copyAllMaps)
+    console.log(allMaps)
 
     const rightGuessStyle = {
         backgroundColor: "#67E574",
@@ -50,16 +51,17 @@ const Map = () => {
     const sendMapNameToUserInput = (mapName) => {
         setUserGuess(mapName);
     }
-    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" onClick={() => sendMapNameToUserInput(map)}> {map} </button>)
+    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" onClick={() => { 
+        sendMapNameToUserInput(map)}}> {map} </button>)
     
     useEffect(() => {
-        setMapSuggestions([]);
+        setMapsSuggestions([]);
         
         if (userGuess !== undefined) {
-            for (let i = 0; i < allMaps.length; i++) {
-                if (userGuess.charAt(0).toUpperCase() === allMaps[i][0]) {
-                    const finalSuggestions = allMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase());
-                    setMapSuggestions(finalSuggestions);
+            for (let i = 0; i < copyAllMaps.length; i++) {  
+                if (userGuess.charAt(0).toUpperCase() === copyAllMaps[i][0]) {
+                    const finalSuggestions = copyAllMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase());
+                    setMapsSuggestions(finalSuggestions);
                     setMapSuggestionHappend(true);
                 }
             }
@@ -70,6 +72,8 @@ const Map = () => {
         else if (userGuess === undefined) {
             setMapSuggestionHappend(false);
         }
+
+      
         
     }, [userGuess])
 
@@ -78,7 +82,7 @@ const Map = () => {
         const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly");
         const userMapGuessesLocalStorage = JSON.parse(localStorage.getItem("allUserMapGuesses") || null);
         const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses")) ? JSON.parse(localStorage.getItem("allUserMapGuesses")) : [];
-
+        const mapSuggestionsLocalStorage = JSON.parse(localStorage.getItem("mapSuggestions"));
         console.log(userMapGuessesLocalStorage)
 
 
@@ -87,10 +91,12 @@ const Map = () => {
             .then(allDataObj => {
                 const allMaps = allDataObj.data.map(map => map.displayName);
                 setAllMaps(allMaps);
+                setCopyAllMaps([...allMaps]);
                 
                 if (getMapIndex) {
                     setRandomIndexMap(parseInt(getMapIndex))
                     if (userMadeGuessLocalStorage) {
+                        setCopyAllMaps(mapSuggestionsLocalStorage)
                         setAllUserGuessesLocalStorage(getUserMapGuesses)
                         setAllUserGuesses(getUserMapGuesses)
 
@@ -146,9 +152,15 @@ const Map = () => {
     const handleSubmit = (event) => {
 
         console.log(event)
-
         event.preventDefault();
         event.target[0].value = "";
+        for(let guess in allUserGuesses){
+            if(allUserGuesses[guess].toLowerCase().includes(userGuess.toLowerCase())){
+                alert("Try something else. You already guessed this map.");
+                setUserGuess(undefined);
+                return false;
+            }
+        }
         if(userGuess === ""){
             event.target[0].required = true;
         }
@@ -173,10 +185,20 @@ const Map = () => {
             return [...prevState, userGuess]
         })
 
+        for(let i = 0; i <= copyAllMaps.length; i++){
+            if(userGuess.toLowerCase() === copyAllMaps[i].toLowerCase() && !userGuessTrue){
+                const indexMap = copyAllMaps.indexOf(copyAllMaps[i]);
+                let filteredMaps = copyAllMaps.splice(indexMap, 1);
+                localStorage.setItem("mapSuggestions", JSON.stringify([...copyAllMaps]));
+                setUserGuess(undefined);
+            }
+        }
+
         setUserGuess(undefined)
     }
 
     const saveUserGuess = (event) => {
+        console.log(event)
         setUserGuess(event.target.value)
     }
 
@@ -204,7 +226,7 @@ const Map = () => {
         <div className="map-section">
             <form className="map-form" onSubmit={handleSubmit}>
                 <div className="input-container">
-                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" onChange={saveUserGuess} onKeyDown={detectSpace} aria-autocomplete="list"
+                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} aria-autocomplete="list"
                     />         
                      
                     <button id="submitBtn"> {">"}</button>
