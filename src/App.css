@@ -11,5 +11,9 @@ font-size: 3.5rem;
 margin-top: -0.3em;
 outline: none;
 text-decoration: none !important;
+transition: transform 0.2s ease-in-out;
 }
 
+.mainH1:hover{
+  transform: scale(1.05);
+}

@@ -20,8 +20,10 @@ const Map = () => {
     const [dayPassed, setDayPassed] = useState(false);
     const [mapsSuggestions, setMapsSuggestions] = useState([]);
     const [mapSuggestionHappened, setMapSuggestionHappend] = useState(false);
+    const suggestionRef = useRef();
     console.log(copyAllMaps)
     console.log(allMaps)
+    
 
     const rightGuessStyle = {
         backgroundColor: "#67E574",
@@ -51,7 +53,7 @@ const Map = () => {
     const sendMapNameToUserInput = (mapName) => {
         setUserGuess(mapName);
     }
-    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" onClick={() => { 
+    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" useRef={suggestionRef} onClick={() => { 
         sendMapNameToUserInput(map)}}> {map} </button>)
     
     useEffect(() => {
@@ -140,6 +142,7 @@ const Map = () => {
         setAllUserGuessesLocalStorage(allUserGuesses)
     }, [allUserGuesses])
 
+    //Disabling space
     const detectSpace = (event) => {
         if(event.keyCode === 32) {
             event.preventDefault();
@@ -151,9 +154,16 @@ const Map = () => {
 
     const handleSubmit = (event) => {
 
+       
         console.log(event)
         event.preventDefault();
         event.target[0].value = "";
+
+       
+        if(!allMaps.includes(userGuess.charAt(0).toUpperCase() + userGuess.slice(1))){
+            setUserGuess(undefined);
+            return false;
+        }
         for(let guess in allUserGuesses){
             if(allUserGuesses[guess].toLowerCase().includes(userGuess.toLowerCase())){
                 alert("Try something else. You already guessed this map.");
@@ -172,7 +182,8 @@ const Map = () => {
         }
         if (userGuessTrue) {
             localStorage.setItem("userGuessedMapCorrectly", userGuessTrue)
-            setUserGussedMapCorrectly(userGuessTrue)
+            setUserGussedMapCorrectly(userGuessTrue);
+            setUserGuess(undefined);
         }
         const userGuessTrueLocalStorage = localStorage.getItem("userGuessedMapCorrectly");
         if (userGuessTrueLocalStorage) {
@@ -207,9 +218,6 @@ const Map = () => {
     }, [userGuessedMapCorrectly])
 
 
-
-
-
     const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {
         return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <div className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </div>
             : <div className="user-guess"> <h1 style={wrongGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1></div>
@@ -225,18 +233,18 @@ const Map = () => {
 
         <div className="map-section">
             <form className="map-form" onSubmit={handleSubmit}>
+                <section className="guess-section">
                 <div className="input-container">
-                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} aria-autocomplete="list"
-                    />         
-                     
+                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} onFocus={() => { }} aria-autocomplete="list"
+                    />
                     <button id="submitBtn"> {">"}</button>
-                    
                 </div>
-                
+
                 {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
-                {renderMapSuggestions}
-                </div> }
-                
+                    {renderMapSuggestions}
+                </div>}
+                </section>
+
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
                     {userGuessMapCorrectlyLocalStorage && <div className="user-rightguess-popup">
