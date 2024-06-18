@@ -244,7 +244,7 @@ const Map = () => {
             <form className="map-form" onSubmit={handleSubmit}>
                 <section className="guess-section">
                 <div className="input-container">
-                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} onFocus={() => { }} aria-autocomplete="list"
+                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} onFocus={() => { }}
                     />
                     <button id="submitBtn"> {">"}</button>
                 </div>

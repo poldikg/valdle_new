@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Map from './components/Map'
+import Agent from './components/Agent'
 import Navigation from './components/Navigation'
 import { Routes, Route, useLocation, Link } from 'react-router-dom'
 
@@ -68,6 +69,7 @@ console.log(allAgentsAbilities)
        <Routes>
         
         <Route path="/Map" element={<Map/>}/>
+        <Route path='/Agent' element={<Agent/>}></Route>
        </Routes>
 
        {showNavigation && <Navigation navigationData={navigationData}/>}
