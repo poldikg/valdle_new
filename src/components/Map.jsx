@@ -24,6 +24,15 @@ const Map = () => {
     console.log(copyAllMaps)
     console.log(allMaps)
     
+    const hideRightGuessPopupStyle = {
+        opacity: "0",
+        zIndex: "-10"
+    }
+
+    const showRightGuessPopupStyle = {
+        opacity: "1",
+        zIndex: "1"
+    }
 
     const rightGuessStyle = {
         backgroundColor: "#67E574",
@@ -247,7 +256,7 @@ const Map = () => {
 
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
-                    {userGuessMapCorrectlyLocalStorage && <div className="user-rightguess-popup">
+                    {<div style={userGuessMapCorrectlyLocalStorage ? showRightGuessPopupStyle : hideRightGuessPopupStyle} className="user-rightguess-popup">
                         <h2 style={{ color: "#D2404D" }}>You Guessed Right! </h2>
                         <h2 style={{ color: "#67E574", marginTop: "-0.8em" }}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2>
                         <h2 style={{ color: "#D2404D", marginTop: "-0.8em" }}>Tries: {allUserGuessesLocalStorage.length}</h2>

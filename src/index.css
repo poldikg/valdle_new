@@ -13,6 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   background: url("./assets/background-valdle.jpg");
   background-size: cover;
+  scroll-behavior: smooth;
 }
 
 @font-face {
