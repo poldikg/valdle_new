@@ -23,10 +23,6 @@ function App() {
   const [navigationData, setNavigationData] = useState([{img: "location-pin-removebg.png", name: "Map" ,description: "Guess the map"},{img: "displayicon.png", name: "Agent" ,description: "Guess the agent"},{img: "killstreamicon.png", name: "Skin" ,description: "Guess the skin"},
     {img: "brim-ult.png", name: "Ability" ,description: "Guess the ability"},{img: "double-quote.png", name: "Quote" ,description: "Guess the quote"}])
   const [allAgentsData, setAllAgentsData] = useState([]);
-  
-
-  
-  console.log(agentIcons)
 
   useEffect(() => {
     fetch("https://valorant-api.com/v1/agents")
@@ -42,7 +38,6 @@ function App() {
   }
 ,[])
 
-console.log(allAgentsAbilities)
 // TMR TO DO: New useEffect to be ran after agentsData changes
   
 

@@ -127,7 +127,7 @@ const Map = () => {
 
                 }
             })
-            console.log("mounted")
+            console.log("mounted map")
     }, [])
 
     // useEffect(() => {

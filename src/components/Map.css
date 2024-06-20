@@ -1,3 +1,7 @@
+.map-section {
+    font-family: var(--font-jost);
+}
+
 #userMapInput {
     padding: 1.15em 1em 1.25em 1em;
     outline: none;
