@@ -95,3 +95,18 @@ cursor: pointer;
     justify-content: space-between;
     width: 100%;
 }
+
+.agent-individual-section{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.agent-individual{
+    display: flex;
+}
+
+.agent-individual > img {
+    width: 80px;
+    height: auto;
+}

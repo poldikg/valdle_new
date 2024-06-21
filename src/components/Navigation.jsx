@@ -8,7 +8,7 @@ const Navigation = (props) => {
     const [dayPassed, setDayPassed] = useState(false);
     const removeTextDecoration = {textDecoration: "none"};
     const removeFromLocalStorage = (name) => {
-        const getPreviousTime = localStorage.getItem("MapTaskCreated");
+        const getPreviousTime = localStorage.getItem(`${name}TaskCreated`);
         const timeNow = new Date();
         console.log(timeNow)
         const mapPreviosulyCreated = new Date(getPreviousTime);
