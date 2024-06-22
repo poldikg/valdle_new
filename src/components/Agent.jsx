@@ -14,19 +14,53 @@ const Agent = () => {
     const [eachAgentInfo, setEachAgentInfo] = useState([]);
     console.log(agentData)
 
+    const styleWrongGuess = {
+        backgroundColor: "#D2404D", 
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        border: "1px solid #FEFEFE", 
+        borderRadius: "4px",
+        width: "90px",
+        height: "auto",
+    };
+
+    const styleRightGuess = {
+        backgroundColor: "#16AC25", 
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        border: "1px solid #FEFEFE", 
+        borderRadius: "4px",
+        width: "90px",
+        height: "auto",
+    };
 
 
     useEffect(() => {
       setAgentData(AgentData)
         const getAgentIndex = localStorage.getItem("AgentIndex") ? localStorage.getItem("AgentIndex") : null
         const getUserGuesses = localStorage.getItem("allUserAgentGuesses") ? JSON.parse(localStorage.getItem("allUserAgentGuesses")) : []
-        const randomAgentIndex = Math.floor(Math.random() * (AgentData.length + 1))
+        const randomAgentIndex = Math.floor(Math.random() * (AgentData.length));
+        const getUserCorrectGuessAgent = JSON.parse(localStorage.getItem("userGuessedAgentCorrectly"));
+
+       
         
     
         
         if(getAgentIndex){
+
+            if(getUserCorrectGuessAgent){
+                const inputAgent = document.querySelector(".agent-input");
+                const inputButtonAgent = document.querySelector(".agent-submit-button");
+                inputAgent.setAttribute("disabled", true);
+                inputButtonAgent.setAttribute("disabled", true);
+                inputAgent.setAttribute("placeholder", "TRY AGAIN TOMORROW!")
+                setUserGuessedAgent(true)
+            }
+
             setAllUserGuessesAgent(getUserGuesses)
-            setAgentIndex(JSON.parse(getAgentIndex))
+            setAgentIndex(parseInt(getAgentIndex))
             setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
         } 
         else{
@@ -59,17 +93,12 @@ const Agent = () => {
             return false;
         }
 
-        // for(let guess in allUserGuessesAgent){
-        // if (allUserGuessesAgent[guess].toLowerCase().includes(userGuessAgent.toLowerCase())) {
-        //     setUserGuessAgent("")
-        //     return false;
-        // }
-        // }
-
         if(userGuessAgentTrue){
             setUserGuessedAgent(true);
-            alert("Congratulations you guessed it!");
             localStorage.setItem("userGuessedAgentCorrectly", userGuessAgentTrue)
+            event.target[0].disabled = true;
+            event.target[0].textContent = "TRY AGAIN TOMORROW";
+            event.target[1].disabled = true;
         }
 
         if(userGuessAgent === undefined){
@@ -84,6 +113,7 @@ const Agent = () => {
                     setAllUserGuessesAgent(prevState => {
                         return [...prevState,
                         {
+                            agentName: agentData[i].agentName,
                             agentIcon: agentData[i].agentIcon,
                             agentRole: agentData[i].agentRole,
                             agentSpecies: agentData[i].agentSpecies,
@@ -93,6 +123,7 @@ const Agent = () => {
                     })
                     localStorage.setItem("allUserAgentGuesses", JSON.stringify([...allUserGuessesAgent,
                     {
+                        agentName: agentData[i].agentName,
                         agentIcon: agentData[i].agentIcon,
                         agentRole: agentData[i].agentRole,
                         agentSpecies: agentData[i].agentSpecies,
@@ -113,13 +144,27 @@ const Agent = () => {
 
     }
 
-    const renderAgentGuess = allUserGuessesAgent.map(agent => <section className="agent-individual">
-        <img src={agent.agentIcon} alt="" srcset="" />
-        <div> {agent.agentRole} </div>
-        <div> {agent.agentSpecies} </div>
-        <div> {agent.agentCountry} </div>
-        <div> {agent.agentReleaseDate} </div>
-    </section>)
+    const renderAgentGuess = allUserGuessesAgent.map(agent => {  
+       return agent.agentName === agentData[agentIndex].agentName? 
+        <section className="agent-individual">
+        <div style={styleRightGuess}>
+            <img src={agent.agentIcon} alt="" srcset="" />
+        </div>
+        <div style={styleRightGuess}> {agent.agentRole} </div>
+        <div style={styleRightGuess}> {agent.agentSpecies} </div>
+        <div style={styleRightGuess}> {agent.agentCountry} </div>
+        <div style={styleRightGuess}> {agent.agentReleaseDate} </div>
+        </section>
+            : 
+            <section className="agent-individual">
+        <div style={styleWrongGuess}>
+            <img src={agent.agentIcon} alt="" srcset="" />
+        </div>
+        <div style={styleWrongGuess}> {agent.agentRole} </div>
+        <div style={styleWrongGuess}> {agent.agentSpecies} </div>
+        <div style={styleWrongGuess}> {agent.agentCountry} </div>
+        <div style={styleWrongGuess}> {agent.agentReleaseDate} </div>
+    </section>})
 
     return (
     <div className="agent-page">
@@ -137,12 +182,19 @@ const Agent = () => {
             </section>
             <form action="" onSubmit={handleFormSubmitAgent}>
                 <div className="form-section-input">
-                    <input className="agent-input" type="text" placeholder="Type your guess" onChange={changeUserGuessAgent} />
+                    <input className="agent-input" type="text" placeholder={userGuessedAgent ?  "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
                     <button className="agent-submit-button"> {">"}</button>
                 </div>
             </form>
         </div>
         <section className="agent-individual-section">
+            <div className="agent-columns-headers">
+                <p>Agent</p>
+                <p>Role</p>
+                <p>Species</p>
+                <p>From</p>
+                <p>Released</p>
+            </div>
             {allUserGuessesAgent.length > 0 && renderAgentGuess}
         </section>
     </div>)

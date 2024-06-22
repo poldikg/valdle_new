@@ -104,9 +104,37 @@ cursor: pointer;
 
 .agent-individual{
     display: flex;
+    gap: 1em;
+    justify-content: center;
 }
 
-.agent-individual > img {
+.agent-individual > div > img {
     width: 80px;
     height: auto;
+}
+
+.agent-input:disabled{
+background-color: #525252;
+color: white;
+border: 1px solid #525252;
+}
+
+.agent-input:disabled::placeholder{
+    color: white;
+}
+
+.agent-columns-headers{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2em 1.5em;
+    border-radius: 4px;
+    margin-top: 1.5em;
+    background-color: #2B3B52;
+    width: 500px;
+}
+
+.agent-columns-headers > p{
+    border-bottom: 2px solid white;
+    width: 80px;
+
 }
