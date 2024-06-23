@@ -160,10 +160,10 @@ const Agent = () => {
         <div style={styleWrongGuess}>
             <img src={agent.agentIcon} alt="" srcset="" />
         </div>
-        <div style={styleWrongGuess}> {agent.agentRole} </div>
-        <div style={styleWrongGuess}> {agent.agentSpecies} </div>
-        <div style={styleWrongGuess}> {agent.agentCountry} </div>
-        <div style={styleWrongGuess}> {agent.agentReleaseDate} </div>
+        <div style={agent.agentRole === agentData[agentIndex].agentRole ? styleRightGuess : styleWrongGuess}> {agent.agentRole} </div>
+        <div style={agent.agentSpecies === agentData[agentIndex].agentSpecies ? styleRightGuess : styleWrongGuess}> {agent.agentSpecies} </div>
+        <div style={agent.agentCountry === agentData[agentIndex].agentCountry ? styleRightGuess : styleWrongGuess}> {agent.agentCountry} </div>
+        <div style={agent.agentReleaseDate === agentData[agentIndex].agentReleaseDate ? styleRightGuess : styleWrongGuess}> {agent.agentReleaseDate} </div>
     </section>})
 
     return (
