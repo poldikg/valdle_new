@@ -12,7 +12,8 @@ const Agent = () => {
     const [nrUserGuesses, setNrUserGuesses] = useState(0);
     const [userGuessedAgent, setUserGuessedAgent] = useState(false);
     const [eachAgentInfo, setEachAgentInfo] = useState([]);
-    console.log(agentData)
+    const [suggestedAgents, setSuggestedAgents] = useState([]);
+    console.log(suggestedAgents)
 
     const styleWrongGuess = {
         backgroundColor: "#D2404D", 
@@ -36,6 +37,27 @@ const Agent = () => {
         height: "auto",
     };
 
+    const submitAgentSuggestion = (agentName) => {
+        setUserGuessAgent(agentName)
+    }
+
+    const FilterAgents = (agent) => {
+        if(userGuessAgent !== "" && agent.agentName.slice(0, userGuessAgent.length) === userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1)){
+            return agent;
+        }
+    }
+
+    useEffect(() => {
+
+        const SuggestAgentsArr = agentData.filter(agent => FilterAgents(agent)).map(agent => {
+            return {
+                agentIcon: agent.agentIcon,
+                agentName: agent.agentName
+            }
+        })
+        setSuggestedAgents(SuggestAgentsArr);
+
+    }, [userGuessAgent])
 
     useEffect(() => {
       setAgentData(AgentData)
@@ -49,6 +71,9 @@ const Agent = () => {
     
         
         if(getAgentIndex){
+            setAllUserGuessesAgent(getUserGuesses)
+            setAgentIndex(parseInt(getAgentIndex))
+            setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
 
             if(getUserCorrectGuessAgent){
                 const inputAgent = document.querySelector(".agent-input");
@@ -58,10 +83,6 @@ const Agent = () => {
                 inputAgent.setAttribute("placeholder", "TRY AGAIN TOMORROW!")
                 setUserGuessedAgent(true)
             }
-
-            setAllUserGuessesAgent(getUserGuesses)
-            setAgentIndex(parseInt(getAgentIndex))
-            setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
         } 
         else{
             localStorage.setItem("AgentIndex", randomAgentIndex)
@@ -87,11 +108,19 @@ const Agent = () => {
         const userGuessAgentTrue = userGuessAgent.toLowerCase() === agentData[agentIndex]["agentName"].toLowerCase()
         const agentNames = agentData.map(agent => agent.agentName)
 
-    
+        
         if (!agentNames.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))) {
             setUserGuessAgent("")
             return false;
         }
+
+        for(let i = 0; i < allUserGuessesAgent.length; i++){
+            if(allUserGuessesAgent[i].agentName.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))){
+            setUserGuessAgent("");
+            return false;
+        }
+        }
+        
 
         if(userGuessAgentTrue){
             setUserGuessedAgent(true);
@@ -105,7 +134,7 @@ const Agent = () => {
             return false;
         }
 
-        if (userGuessAgent) {
+        if (userGuessAgent) {// The condition could be removed, test tomorrow.
             console.log("I am here")
             for (let i = 0; i < agentData.length; i++) {
                 if (agentData[i].agentName.toLowerCase() === userGuessAgent.toLowerCase()) {
@@ -144,27 +173,35 @@ const Agent = () => {
 
     }
 
-    const renderAgentGuess = allUserGuessesAgent.map(agent => {  
-       return agent.agentName === agentData[agentIndex].agentName? 
-        <section className="agent-individual">
-        <div style={styleRightGuess}>
-            <img src={agent.agentIcon} alt="" srcset="" />
-        </div>
-        <div style={styleRightGuess}> {agent.agentRole} </div>
-        <div style={styleRightGuess}> {agent.agentSpecies} </div>
-        <div style={styleRightGuess}> {agent.agentCountry} </div>
-        <div style={styleRightGuess}> {agent.agentReleaseDate} </div>
-        </section>
-            : 
+    const renderAgentGuess = allUserGuessesAgent.map(agent => {
+        return agent.agentName === agentData[agentIndex].agentName ?
             <section className="agent-individual">
-        <div style={styleWrongGuess}>
-            <img src={agent.agentIcon} alt="" srcset="" />
-        </div>
-        <div style={agent.agentRole === agentData[agentIndex].agentRole ? styleRightGuess : styleWrongGuess}> {agent.agentRole} </div>
-        <div style={agent.agentSpecies === agentData[agentIndex].agentSpecies ? styleRightGuess : styleWrongGuess}> {agent.agentSpecies} </div>
-        <div style={agent.agentCountry === agentData[agentIndex].agentCountry ? styleRightGuess : styleWrongGuess}> {agent.agentCountry} </div>
-        <div style={agent.agentReleaseDate === agentData[agentIndex].agentReleaseDate ? styleRightGuess : styleWrongGuess}> {agent.agentReleaseDate} </div>
-    </section>})
+                <div style={styleRightGuess}>
+                    <img src={agent.agentIcon} alt="" srcset="" />
+                </div>
+                <div style={styleRightGuess}> {agent.agentRole} </div>
+                <div style={styleRightGuess}> {agent.agentSpecies} </div>
+                <div style={styleRightGuess}> {agent.agentCountry} </div>
+                <div style={styleRightGuess}> {agent.agentReleaseDate} </div>
+            </section>
+            :
+            <section className="agent-individual">
+                <div style={styleWrongGuess}>
+                    <img src={agent.agentIcon} alt="" srcset="" />
+                </div>
+                <div style={agent.agentRole === agentData[agentIndex].agentRole ? styleRightGuess : styleWrongGuess}> {agent.agentRole} </div>
+                <div style={agent.agentSpecies === agentData[agentIndex].agentSpecies ? styleRightGuess : styleWrongGuess}> {agent.agentSpecies} </div>
+                <div style={agent.agentCountry === agentData[agentIndex].agentCountry ? styleRightGuess : styleWrongGuess}> {agent.agentCountry} </div>
+                <div style={agent.agentReleaseDate === agentData[agentIndex].agentReleaseDate ? styleRightGuess : styleWrongGuess}> {agent.agentReleaseDate} </div>
+            </section>
+    })
+
+    const renderAgentSuggestions = suggestedAgents.map(agent => {
+        return <button className="suggest-agent-button" onClick={() => submitAgentSuggestion(agent.agentName)}>
+           <img src={agent.agentIcon} alt="" srcset="" />
+            <div>{agent.agentName}</div>
+        </button>
+    })
 
     return (
     <div className="agent-page">
@@ -185,6 +222,9 @@ const Agent = () => {
                     <input className="agent-input" type="text" placeholder={userGuessedAgent ?  "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
                     <button className="agent-submit-button"> {">"}</button>
                 </div>
+                    { userGuessAgent.length > 0 && <section className="suggest-agent-container">
+                        {renderAgentSuggestions}
+                    </section>}
             </form>
         </div>
         <section className="agent-individual-section">
