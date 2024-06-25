@@ -13,7 +13,10 @@ const Agent = () => {
     const [userGuessedAgent, setUserGuessedAgent] = useState(false);
     const [eachAgentInfo, setEachAgentInfo] = useState([]);
     const [suggestedAgents, setSuggestedAgents] = useState([]);
-    console.log(suggestedAgents)
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [showHint, setShowHint] = useState({hintQuote: false, hintAbility: false});
+    console.log(nrUserGuesses)
+ 
 
     const styleWrongGuess = {
         backgroundColor: "#D2404D", 
@@ -37,6 +40,25 @@ const Agent = () => {
         height: "auto",
     };
 
+    const showHints = (hintName) => {
+        if (hintName === "Quote" && (nrUserGuesses - 3 >= 0)) {
+            setShowHint(prevState => {
+                return {
+                    hintAbility: false,
+                    hintQuote: !prevState.hintQuote
+                }
+            })
+        }
+        else if(hintName === "Ability" && (nrUserGuesses - 6 >= 0)) {
+            setShowHint(prevState => {
+                return {
+                    hintAbility: !prevState.hintAbility,
+                    hintQuote: false
+                }
+            })
+        }
+    }
+
     const submitAgentSuggestion = (agentName) => {
         setUserGuessAgent(agentName)
     }
@@ -45,9 +67,18 @@ const Agent = () => {
         if(userGuessAgent !== "" && agent.agentName.slice(0, userGuessAgent.length) === userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1)){
             return agent;
         }
+       
     }
 
     useEffect(() => {
+        const agentNamesLetter = agentData.map(agent => agent.agentName[0])
+
+        if(agentNamesLetter.includes(userGuessAgent.charAt(0).toUpperCase())){
+            setShowSuggestions(true);
+        }
+        else{
+            setShowSuggestions(false);
+        }
 
         const SuggestAgentsArr = agentData.filter(agent => FilterAgents(agent)).map(agent => {
             return {
@@ -56,17 +87,22 @@ const Agent = () => {
             }
         })
         setSuggestedAgents(SuggestAgentsArr);
+        
 
+        if(agentData.includes(userGuessAgent.charAt(0).toUpperCase())){
+            console.log("Yo")
+        }
     }, [userGuessAgent])
+
 
     useEffect(() => {
       setAgentData(AgentData)
-        const getAgentIndex = localStorage.getItem("AgentIndex") ? localStorage.getItem("AgentIndex") : null
-        const getUserGuesses = localStorage.getItem("allUserAgentGuesses") ? JSON.parse(localStorage.getItem("allUserAgentGuesses")) : []
+        const getAgentIndex = localStorage.getItem("AgentIndex") ? localStorage.getItem("AgentIndex") : null;
+        const getUserGuesses = localStorage.getItem("allUserAgentGuesses") ? JSON.parse(localStorage.getItem("allUserAgentGuesses")) : [];
         const randomAgentIndex = Math.floor(Math.random() * (AgentData.length));
         const getUserCorrectGuessAgent = JSON.parse(localStorage.getItem("userGuessedAgentCorrectly"));
-
-       
+        
+        
         
     
         
@@ -74,6 +110,7 @@ const Agent = () => {
             setAllUserGuessesAgent(getUserGuesses)
             setAgentIndex(parseInt(getAgentIndex))
             setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
+            
 
             if(getUserCorrectGuessAgent){
                 const inputAgent = document.querySelector(".agent-input");
@@ -106,13 +143,14 @@ const Agent = () => {
         event.target[0].value = "";
        
         const userGuessAgentTrue = userGuessAgent.toLowerCase() === agentData[agentIndex]["agentName"].toLowerCase()
-        const agentNames = agentData.map(agent => agent.agentName)
+        const agentNames = agentData.map(agent => agent.agentName);
 
         
         if (!agentNames.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))) {
             setUserGuessAgent("")
             return false;
         }
+      
 
         for(let i = 0; i < allUserGuessesAgent.length; i++){
             if(allUserGuessesAgent[i].agentName.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))){
@@ -202,27 +240,31 @@ const Agent = () => {
             <div>{agent.agentName}</div>
         </button>
     })
-
+    
     return (
     <div className="agent-page">
         <div className="agent-upper-section">
             <h2 className="header2-agent-page"> GUESS THE AGENT</h2>
-            <section className="hint-section">
-                <div className="hint">
-                    <div className="hint-button">Quote</div>
-                    {(3 - nrUserGuesses) > 0 ? <p>Get a clue in {3 - nrUserGuesses} tries.</p> : <p>Click to get a quote clue.</p>}
-                </div>
-                <div className="hint">
-                    <div className="hint-button">Ability </div>
-                    {(6 - nrUserGuesses) > 0 ? <p>Get a clue in {6 - nrUserGuesses} tries.</p> : <p>Click to get an ability clue.</p>}
-                </div>
-            </section>
+                <section>
+                    <div className="hint-section">
+                        <div className="hint">
+                            <div className="hint-button" onClick={() => showHints("Quote")}>Quote</div>
+                            {(3 - nrUserGuesses) > 0 ? <p>Get a clue in {3 - nrUserGuesses} tries.</p> : <p>Click to get a quote clue.</p>}
+                        </div>
+                        <div className="hint" >
+                            <div className="hint-button" onClick={() => showHints("Ability")}> Ability </div>
+                            {(6 - nrUserGuesses) > 0 ? <p>Get a clue in {6 - nrUserGuesses} tries.</p> : <p>Click to get an ability clue.</p>}
+                        </div>
+                    </div>
+                    {showHint.hintAbility ? <section> Ability </section> : showHint.hintQuote ? <section> Quote </section> : ""}
+                </section>
+            
             <form action="" onSubmit={handleFormSubmitAgent}>
                 <div className="form-section-input">
                     <input className="agent-input" type="text" placeholder={userGuessedAgent ?  "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
                     <button className="agent-submit-button"> {">"}</button>
                 </div>
-                    { userGuessAgent.length > 0 && <section className="suggest-agent-container">
+                    {showSuggestions && <section className="suggest-agent-container">
                         {renderAgentSuggestions}
                     </section>}
             </form>
