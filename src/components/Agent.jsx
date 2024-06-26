@@ -2,6 +2,7 @@ import React from "react";
 import "./Agent.css"
 import AgentData from "./AgentData";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Agent = () => {
 
@@ -15,7 +16,7 @@ const Agent = () => {
     const [suggestedAgents, setSuggestedAgents] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showHint, setShowHint] = useState({hintQuote: false, hintAbility: false});
-    console.log(nrUserGuesses)
+    console.log(showHint)
  
 
     const styleWrongGuess = {
@@ -40,8 +41,17 @@ const Agent = () => {
         height: "auto",
     };
 
+    const styleHintDisabled = {
+        backgroundColor: "#453F40"
+    };
+
+    const styleHintEnabled = {
+        backgroundColor: "#D2404D"
+    }
+
     const showHints = (hintName) => {
-        if (hintName === "Quote" && (nrUserGuesses - 3 >= 0)) {
+    
+         if (hintName === "Quote" && (nrUserGuesses - 3 >= 0) || hintName === "Quote" && userGuessedAgent) {
             setShowHint(prevState => {
                 return {
                     hintAbility: false,
@@ -49,7 +59,7 @@ const Agent = () => {
                 }
             })
         }
-        else if(hintName === "Ability" && (nrUserGuesses - 6 >= 0)) {
+        else if(hintName === "Ability" && (nrUserGuesses - 6 >= 0) || hintName === "Ability" && userGuessedAgent) {
             setShowHint(prevState => {
                 return {
                     hintAbility: !prevState.hintAbility,
@@ -102,16 +112,12 @@ const Agent = () => {
         const randomAgentIndex = Math.floor(Math.random() * (AgentData.length));
         const getUserCorrectGuessAgent = JSON.parse(localStorage.getItem("userGuessedAgentCorrectly"));
         
-        
-        
-    
-        
+
         if(getAgentIndex){
             setAllUserGuessesAgent(getUserGuesses)
             setAgentIndex(parseInt(getAgentIndex))
             setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
             
-
             if(getUserCorrectGuessAgent){
                 const inputAgent = document.querySelector(".agent-input");
                 const inputButtonAgent = document.querySelector(".agent-submit-button");
@@ -162,7 +168,7 @@ const Agent = () => {
 
         if(userGuessAgentTrue){
             setUserGuessedAgent(true);
-            localStorage.setItem("userGuessedAgentCorrectly", userGuessAgentTrue)
+            localStorage.setItem("userGuessedAgentCorrectly", userGuessAgentTrue);
             event.target[0].disabled = true;
             event.target[0].textContent = "TRY AGAIN TOMORROW";
             event.target[1].disabled = true;
@@ -186,7 +192,7 @@ const Agent = () => {
                             agentSpecies: agentData[i].agentSpecies,
                             agentCountry: agentData[i].agentCountry,
                             agentReleaseDate: agentData[i].agentReleaseDate
-                        }]
+                        }].reverse();
                     })
                     localStorage.setItem("allUserAgentGuesses", JSON.stringify([...allUserGuessesAgent,
                     {
@@ -197,7 +203,7 @@ const Agent = () => {
                         agentCountry: agentData[i].agentCountry,
                         agentReleaseDate: agentData[i].agentReleaseDate
                         
-                    }]));
+                    }].reverse()));
 
                 }
             }
@@ -208,6 +214,7 @@ const Agent = () => {
 
         setNrUserGuesses(prevState => prevState + 1);
         setUserGuessAgent("")
+        allUserGuessesAgent;
 
     }
 
@@ -232,7 +239,7 @@ const Agent = () => {
                 <div style={agent.agentCountry === agentData[agentIndex].agentCountry ? styleRightGuess : styleWrongGuess}> {agent.agentCountry} </div>
                 <div style={agent.agentReleaseDate === agentData[agentIndex].agentReleaseDate ? styleRightGuess : styleWrongGuess}> {agent.agentReleaseDate} </div>
             </section>
-    })
+    });
 
     const renderAgentSuggestions = suggestedAgents.map(agent => {
         return <button className="suggest-agent-button" onClick={() => submitAgentSuggestion(agent.agentName)}>
@@ -248,12 +255,12 @@ const Agent = () => {
                 <section>
                     <div className="hint-section">
                         <div className="hint">
-                            <div className="hint-button" onClick={() => showHints("Quote")}>Quote</div>
-                            {(3 - nrUserGuesses) > 0 ? <p>Get a clue in {3 - nrUserGuesses} tries.</p> : <p>Click to get a quote clue.</p>}
+                            <div className="hint-button" style={(3 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Quote")}>Quote</div>
+                            {(3 - nrUserGuesses) <= 0 || userGuessedAgent ?  <p>Click to get a quote clue.</p> : <p>Get a clue in {3 - nrUserGuesses} tries.</p>}
                         </div>
                         <div className="hint" >
-                            <div className="hint-button" onClick={() => showHints("Ability")}> Ability </div>
-                            {(6 - nrUserGuesses) > 0 ? <p>Get a clue in {6 - nrUserGuesses} tries.</p> : <p>Click to get an ability clue.</p>}
+                            <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}> Ability </div>
+                            {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Click to get an ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
                         </div>
                     </div>
                     {showHint.hintAbility ? <section> Ability </section> : showHint.hintQuote ? <section> Quote </section> : ""}
@@ -264,7 +271,7 @@ const Agent = () => {
                     <input className="agent-input" type="text" placeholder={userGuessedAgent ?  "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
                     <button className="agent-submit-button"> {">"}</button>
                 </div>
-                    {showSuggestions && <section className="suggest-agent-container">
+                    {suggestedAgents.length >= 1 && <section className="suggest-agent-container">
                         {renderAgentSuggestions}
                     </section>}
             </form>
@@ -279,6 +286,14 @@ const Agent = () => {
             </div>
             {allUserGuessesAgent.length > 0 && renderAgentGuess}
         </section>
+        {userGuessedAgent && <section className="popup-rightguess-agent">
+
+            <h1 className="agent-header-popup-rightghuess">YOU GUESSED RIGHT!</h1>
+           <img src={agentData[agentIndex].agentIcon} alt="" srcset="" />
+           <h2 className="agent-header2-popup-rightghuess">{agentData[agentIndex].agentName.toUpperCase()}</h2>
+           <p className="agent-paragraph-popup-rightghuess">TRIES: {allUserGuessesAgent.length}</p>
+           <Link to="/Skin"> <button className="agent-button-popup-rightghuess">Guess the skin</button></Link>
+        </section>}
     </div>)
 }
 

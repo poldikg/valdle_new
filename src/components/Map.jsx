@@ -35,7 +35,7 @@ const Map = () => {
     }
 
     const rightGuessStyle = {
-        backgroundColor: "#67E574",
+        backgroundColor: "#16AC25",
         color: "#FEFEFE",
         width: "300px",
         height: "60px",
@@ -201,8 +201,8 @@ const Map = () => {
         }
 
         setAllUserGuesses(prevState => {
-            localStorage.setItem("allUserMapGuesses", JSON.stringify([...allUserGuesses, userGuess]))
-            return [...prevState, userGuess]
+            localStorage.setItem("allUserMapGuesses", JSON.stringify([...allUserGuesses, userGuess].reverse()))
+            return [...prevState, userGuess].reverse();
         })
 
         for(let i = 0; i <= copyAllMaps.length; i++){
@@ -257,9 +257,9 @@ const Map = () => {
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
                     {<div style={userGuessMapCorrectlyLocalStorage ? showRightGuessPopupStyle : hideRightGuessPopupStyle} className="user-rightguess-popup">
-                        <h2 style={{ color: "#D2404D" }}>You Guessed Right! </h2>
-                        <h2 style={{ color: "#67E574", marginTop: "-0.8em" }}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2>
-                        <h2 style={{ color: "#D2404D", marginTop: "-0.8em" }}>Tries: {allUserGuessesLocalStorage.length}</h2>
+                        <h2 style={{ color: "#16AC25" }}>YOU GUESSED RIGHT! </h2>
+                        <h2 style={{ color: "#FEFEFE", marginTop: "-0.8em" }}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2>
+                        <h2 style={{ color: "#16AC25", marginTop: "-0.8em" }}>Tries: {allUserGuessesLocalStorage.length}</h2>
                         <Link style={{ textDecoration: "none" }} to="/Agent" ><div style={{ width: "250px", height: "50px", backgroundColor: "#D2404D", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: "white", border: "1px solid #FEFEFE" }}> Guess the agent </div> </Link>
                     </div>}
                 </div>
