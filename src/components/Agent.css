@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: center;;
-    border: 5px solid #535963;
+    border: 5px solid #919191;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -179,7 +179,7 @@ border: 1px solid #525252;
     margin-top: 3em;
     width: 450px;
     height: auto;
-    background-color: #2B3B52;
+    background:linear-gradient( var(--green-gradiant) 50%, #16AC25 100%) ;
     border-radius: 4px;
     border: 1px solid #16AC25;
     display: flex;
@@ -194,7 +194,7 @@ border: 1px solid #525252;
 }
 
 .popup-rightguess-agent > h1{
-    color: #16AC25;
+    color: #FEFEFE;
 }
 
 .agent-header-popup-rightghuess{
@@ -210,7 +210,7 @@ border: 1px solid #525252;
   margin: 0;
   margin-top: -0.5em;
   margin-bottom: 1em;
-  color: #16AC25;
+  color: #FEFEFE;
   font-size: 1.5rem;
 }
 
@@ -220,7 +220,18 @@ border: 1px solid #525252;
     cursor: pointer;
     border: 1px solid #363636;
     border-radius: 4px;
-    background-color: #D2404D;
+    background-color: #363636;
     font-family: var(--font-jost);
     font-weight: 500;
+  }
+
+  .hint-button > img{
+    width: 40px;
+    height: auto;
+  }
+
+ 
+  #agent-ability-hint-image{
+    width: 55px;
+    height: auto;
   }

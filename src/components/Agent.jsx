@@ -4,6 +4,7 @@ import AgentData from "./AgentData";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+
 const Agent = () => {
 
     const [agentData, setAgentData] = useState([]);
@@ -16,7 +17,7 @@ const Agent = () => {
     const [suggestedAgents, setSuggestedAgents] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showHint, setShowHint] = useState({hintQuote: false, hintAbility: false});
-    console.log(showHint)
+    console.log(agentData)
  
 
     const styleWrongGuess = {
@@ -255,11 +256,15 @@ const Agent = () => {
                 <section>
                     <div className="hint-section">
                         <div className="hint">
-                            <div className="hint-button" style={(3 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Quote")}>Quote</div>
+                            <div className="hint-button" style={(3 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Quote")}>
+                                <img src="../agent-abilities/double-quote-noborder-disabled.png" alt="" srcset="" />
+                            </div>
                             {(3 - nrUserGuesses) <= 0 || userGuessedAgent ?  <p>Click to get a quote clue.</p> : <p>Get a clue in {3 - nrUserGuesses} tries.</p>}
                         </div>
                         <div className="hint" >
-                            <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}> Ability </div>
+                            <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}> 
+                            <img id="agent-ability-hint-image" src="../agent-abilities/brim-ult-disabled.png" alt="" srcset="" /> 
+                            </div>
                             {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Click to get an ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
                         </div>
                     </div>

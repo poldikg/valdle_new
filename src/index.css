@@ -16,6 +16,7 @@
   scroll-behavior: smooth;
 
   --font-jost: "Jost";
+  --green-gradiant: rgba(26, 147, 89, 0.5)
 }
 
 @font-face {
