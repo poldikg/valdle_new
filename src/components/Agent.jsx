@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 const Agent = () => {
 
     const [agentData, setAgentData] = useState([]);
+    const [agentAbilities , setAgentAbilities] = useState([]);
     const [agentIndex, setAgentIndex] = useState();
+    const [agentQuoteIndex, setAgentQuoteIndex] = useState();
     const [userGuessAgent, setUserGuessAgent] = useState("");
     const [allUserGuessesAgent, setAllUserGuessesAgent] = useState([]);
     const [nrUserGuesses, setNrUserGuesses] = useState(0);
@@ -17,8 +19,10 @@ const Agent = () => {
     const [suggestedAgents, setSuggestedAgents] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showHint, setShowHint] = useState({hintQuote: false, hintAbility: false});
-    console.log(agentData)
- 
+    console.log(agentQuoteIndex)
+    
+    
+    
 
     const styleWrongGuess = {
         backgroundColor: "#D2404D", 
@@ -82,6 +86,28 @@ const Agent = () => {
     }
 
     useEffect(() => {
+
+        fetch("https://valorant-api.com/v1/agents")
+        .then(res => res.json())
+        .then (data => {
+            const agentAbilities = data.data.filter(agent => agent.isPlayableCharacter === true).map(agent => {
+                return {
+                    agentName: agent.displayName,
+                    agentAbilities: agent.abilities
+                }
+            });
+            setAgentAbilities(agentAbilities)
+        })
+
+    }, [])
+
+    useEffect(() => {
+        const getRightGuessPopup = document.querySelector(".popup-rightguess-agent");
+        userGuessedAgent ? getRightGuessPopup.scrollIntoView() : "";
+
+    }, [userGuessedAgent])
+
+    useEffect(() => {
         const agentNamesLetter = agentData.map(agent => agent.agentName[0])
 
         if(agentNamesLetter.includes(userGuessAgent.charAt(0).toUpperCase())){
@@ -112,7 +138,8 @@ const Agent = () => {
         const getUserGuesses = localStorage.getItem("allUserAgentGuesses") ? JSON.parse(localStorage.getItem("allUserAgentGuesses")) : [];
         const randomAgentIndex = Math.floor(Math.random() * (AgentData.length));
         const getUserCorrectGuessAgent = JSON.parse(localStorage.getItem("userGuessedAgentCorrectly"));
-        
+        const getQuoteIndex = localStorage.getItem("AgentQuoteIndex") ? localStorage.getItem("AgentQuoteIndex") : undefined;
+        setAgentQuoteIndex(parseInt(getQuoteIndex))
 
         if(getAgentIndex){
             setAllUserGuessesAgent(getUserGuesses)
@@ -152,6 +179,11 @@ const Agent = () => {
         const userGuessAgentTrue = userGuessAgent.toLowerCase() === agentData[agentIndex]["agentName"].toLowerCase()
         const agentNames = agentData.map(agent => agent.agentName);
 
+        if(nrUserGuesses === 0){
+            const randomIndexAgentQuote = Math.floor(Math.random() * AgentData[agentIndex].agentVoicelines.length);
+            localStorage.setItem("AgentQuoteIndex", randomIndexAgentQuote)
+            setAgentQuoteIndex(randomIndexAgentQuote);
+        }
         
         if (!agentNames.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))) {
             setUserGuessAgent("")
@@ -185,18 +217,17 @@ const Agent = () => {
                 if (agentData[i].agentName.toLowerCase() === userGuessAgent.toLowerCase()) {
 
                     setAllUserGuessesAgent(prevState => {
-                        return [...prevState,
-                        {
+                        return [{
                             agentName: agentData[i].agentName,
                             agentIcon: agentData[i].agentIcon,
                             agentRole: agentData[i].agentRole,
                             agentSpecies: agentData[i].agentSpecies,
                             agentCountry: agentData[i].agentCountry,
                             agentReleaseDate: agentData[i].agentReleaseDate
-                        }].reverse();
+                        },...prevState
+                        ];
                     })
-                    localStorage.setItem("allUserAgentGuesses", JSON.stringify([...allUserGuessesAgent,
-                    {
+                    localStorage.setItem("allUserAgentGuesses", JSON.stringify([ {
                         agentName: agentData[i].agentName,
                         agentIcon: agentData[i].agentIcon,
                         agentRole: agentData[i].agentRole,
@@ -204,7 +235,8 @@ const Agent = () => {
                         agentCountry: agentData[i].agentCountry,
                         agentReleaseDate: agentData[i].agentReleaseDate
                         
-                    }].reverse()));
+                    } ,...allUserGuessesAgent
+                   ]));
 
                 }
             }
@@ -213,9 +245,12 @@ const Agent = () => {
 
         }
 
+
+        // const randomIndexAgentAbility =  Math.floor(Math.random() * agentData[agentIndex].agentVoicelines.length);
+        // local
         setNrUserGuesses(prevState => prevState + 1);
         setUserGuessAgent("")
-        allUserGuessesAgent;
+        
 
     }
 
@@ -268,7 +303,7 @@ const Agent = () => {
                             {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Click to get an ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
                         </div>
                     </div>
-                    {showHint.hintAbility ? <section> Ability </section> : showHint.hintQuote ? <section> Quote </section> : ""}
+                    {showHint.hintAbility ? <section> Ability </section> : showHint.hintQuote ? <section> {agentData[agentIndex].agentVoicelines[agentQuoteIndex]} </section> : ""}
                 </section>
             
             <form action="" onSubmit={handleFormSubmitAgent}>
