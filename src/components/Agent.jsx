@@ -8,9 +8,10 @@ import { Link } from "react-router-dom";
 const Agent = () => {
 
     const [agentData, setAgentData] = useState([]);
-    const [agentAbilities , setAgentAbilities] = useState([]);
+    const [agentAbilities, setAgentAbilities] = useState([]);
     const [agentIndex, setAgentIndex] = useState();
     const [agentQuoteIndex, setAgentQuoteIndex] = useState();
+    const [agentAbilityIndex, setAgentAbilityIndex] = useState();
     const [userGuessAgent, setUserGuessAgent] = useState("");
     const [allUserGuessesAgent, setAllUserGuessesAgent] = useState([]);
     const [nrUserGuesses, setNrUserGuesses] = useState(0);
@@ -18,29 +19,29 @@ const Agent = () => {
     const [eachAgentInfo, setEachAgentInfo] = useState([]);
     const [suggestedAgents, setSuggestedAgents] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [showHint, setShowHint] = useState({hintQuote: false, hintAbility: false});
-    console.log(agentQuoteIndex)
-    
-    
-    
+    const [showHint, setShowHint] = useState({ hintQuote: false, hintAbility: false });
+    console.log(agentAbilities)
+
+
+
 
     const styleWrongGuess = {
-        backgroundColor: "#D2404D", 
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
-        border: "1px solid #FEFEFE", 
+        backgroundColor: "#D2404D",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        border: "1px solid #FEFEFE",
         borderRadius: "4px",
         width: "90px",
         height: "auto",
     };
 
     const styleRightGuess = {
-        backgroundColor: "#16AC25", 
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
-        border: "1px solid #FEFEFE", 
+        backgroundColor: "#16AC25",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        border: "1px solid #FEFEFE",
         borderRadius: "4px",
         width: "90px",
         height: "auto",
@@ -55,8 +56,8 @@ const Agent = () => {
     }
 
     const showHints = (hintName) => {
-    
-         if (hintName === "Quote" && (nrUserGuesses - 3 >= 0) || hintName === "Quote" && userGuessedAgent) {
+
+        if (hintName === "Quote" && (nrUserGuesses - 3 >= 0) || hintName === "Quote" && userGuessedAgent) {
             setShowHint(prevState => {
                 return {
                     hintAbility: false,
@@ -64,7 +65,7 @@ const Agent = () => {
                 }
             })
         }
-        else if(hintName === "Ability" && (nrUserGuesses - 6 >= 0) || hintName === "Ability" && userGuessedAgent) {
+        else if (hintName === "Ability" && (nrUserGuesses - 6 >= 0) || hintName === "Ability" && userGuessedAgent) {
             setShowHint(prevState => {
                 return {
                     hintAbility: !prevState.hintAbility,
@@ -79,26 +80,25 @@ const Agent = () => {
     }
 
     const FilterAgents = (agent) => {
-        if(userGuessAgent !== "" && agent.agentName.slice(0, userGuessAgent.length) === userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1)){
+        if (userGuessAgent !== "" && agent.agentName.slice(0, userGuessAgent.length) === userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1)) {
             return agent;
         }
-       
+
     }
 
     useEffect(() => {
 
         fetch("https://valorant-api.com/v1/agents")
-        .then(res => res.json())
-        .then (data => {
-            const agentAbilities = data.data.filter(agent => agent.isPlayableCharacter === true).map(agent => {
-                return {
-                    agentName: agent.displayName,
-                    agentAbilities: agent.abilities
-                }
-            });
-            setAgentAbilities(agentAbilities)
-        })
-
+            .then(res => res.json())
+            .then(data => {
+                const agentAbilities = data.data.filter(agent => agent.isPlayableCharacter === true).map(agent => {
+                    return {
+                        agentName: agent.displayName,
+                        agentAbilities: agent.abilities
+                    }
+                });
+                setAgentAbilities(agentAbilities)
+            })
     }, [])
 
     useEffect(() => {
@@ -110,10 +110,10 @@ const Agent = () => {
     useEffect(() => {
         const agentNamesLetter = agentData.map(agent => agent.agentName[0])
 
-        if(agentNamesLetter.includes(userGuessAgent.charAt(0).toUpperCase())){
+        if (agentNamesLetter.includes(userGuessAgent.charAt(0).toUpperCase())) {
             setShowSuggestions(true);
         }
-        else{
+        else {
             setShowSuggestions(false);
         }
 
@@ -124,29 +124,28 @@ const Agent = () => {
             }
         })
         setSuggestedAgents(SuggestAgentsArr);
-        
 
-        if(agentData.includes(userGuessAgent.charAt(0).toUpperCase())){
-            console.log("Yo")
-        }
     }, [userGuessAgent])
 
 
     useEffect(() => {
-      setAgentData(AgentData)
+        setAgentData(AgentData)
         const getAgentIndex = localStorage.getItem("AgentIndex") ? localStorage.getItem("AgentIndex") : null;
         const getUserGuesses = localStorage.getItem("allUserAgentGuesses") ? JSON.parse(localStorage.getItem("allUserAgentGuesses")) : [];
         const randomAgentIndex = Math.floor(Math.random() * (AgentData.length));
         const getUserCorrectGuessAgent = JSON.parse(localStorage.getItem("userGuessedAgentCorrectly"));
         const getQuoteIndex = localStorage.getItem("AgentQuoteIndex") ? localStorage.getItem("AgentQuoteIndex") : undefined;
-        setAgentQuoteIndex(parseInt(getQuoteIndex))
+        const getAbilityIndex = localStorage.getItem("AgentAbilityIndex") ? localStorage.getItem("AgentAbilityIndex") : undefined;
+        setAgentQuoteIndex(parseInt(getQuoteIndex));
+        setAgentAbilityIndex(parseInt(getAbilityIndex));
 
-        if(getAgentIndex){
+
+        if (getAgentIndex) {
             setAllUserGuessesAgent(getUserGuesses)
             setAgentIndex(parseInt(getAgentIndex))
             setNrUserGuesses(getUserGuesses === null ? nrUserGuesses : getUserGuesses.length)
-            
-            if(getUserCorrectGuessAgent){
+
+            if (getUserCorrectGuessAgent) {
                 const inputAgent = document.querySelector(".agent-input");
                 const inputButtonAgent = document.querySelector(".agent-submit-button");
                 inputAgent.setAttribute("disabled", true);
@@ -154,8 +153,8 @@ const Agent = () => {
                 inputAgent.setAttribute("placeholder", "TRY AGAIN TOMORROW!")
                 setUserGuessedAgent(true)
             }
-        } 
-        else{
+        }
+        else {
             localStorage.setItem("AgentIndex", randomAgentIndex)
             setAgentIndex(randomAgentIndex);
             const agentTaskCreated = new Date();
@@ -165,7 +164,7 @@ const Agent = () => {
 
 
         console.log("Mounted agent")
-    },[])
+    }, [])
 
     const changeUserGuessAgent = (event) => {
         setUserGuessAgent(event.target.value)
@@ -175,31 +174,37 @@ const Agent = () => {
         console.log(event);
         event.preventDefault();
         event.target[0].value = "";
-       
+
         const userGuessAgentTrue = userGuessAgent.toLowerCase() === agentData[agentIndex]["agentName"].toLowerCase()
         const agentNames = agentData.map(agent => agent.agentName);
 
-        if(nrUserGuesses === 0){
+        if (nrUserGuesses === 0) {
             const randomIndexAgentQuote = Math.floor(Math.random() * AgentData[agentIndex].agentVoicelines.length);
-            localStorage.setItem("AgentQuoteIndex", randomIndexAgentQuote)
+            localStorage.setItem("AgentQuoteIndex", randomIndexAgentQuote);
             setAgentQuoteIndex(randomIndexAgentQuote);
         }
-        
+
+        if (nrUserGuesses === 1) {
+            const randomIndexAgentAbility = Math.floor(Math.random() * agentAbilities[agentIndex].agentAbilities.length);
+            localStorage.setItem("AgentAbilityIndex", randomIndexAgentAbility);
+            setAgentAbilityIndex(randomIndexAgentAbility);
+        }
+
         if (!agentNames.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))) {
             setUserGuessAgent("")
             return false;
         }
-      
 
-        for(let i = 0; i < allUserGuessesAgent.length; i++){
-            if(allUserGuessesAgent[i].agentName.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))){
-            setUserGuessAgent("");
-            return false;
-        }
-        }
-        
 
-        if(userGuessAgentTrue){
+        for (let i = 0; i < allUserGuessesAgent.length; i++) {
+            if (allUserGuessesAgent[i].agentName.includes(userGuessAgent.charAt(0).toUpperCase() + userGuessAgent.slice(1))) {
+                setUserGuessAgent("");
+                return false;
+            }
+        }
+
+
+        if (userGuessAgentTrue) {
             setUserGuessedAgent(true);
             localStorage.setItem("userGuessedAgentCorrectly", userGuessAgentTrue);
             event.target[0].disabled = true;
@@ -207,7 +212,7 @@ const Agent = () => {
             event.target[1].disabled = true;
         }
 
-        if(userGuessAgent === undefined){
+        if (userGuessAgent === undefined) {
             return false;
         }
 
@@ -224,19 +229,19 @@ const Agent = () => {
                             agentSpecies: agentData[i].agentSpecies,
                             agentCountry: agentData[i].agentCountry,
                             agentReleaseDate: agentData[i].agentReleaseDate
-                        },...prevState
+                        }, ...prevState
                         ];
                     })
-                    localStorage.setItem("allUserAgentGuesses", JSON.stringify([ {
+                    localStorage.setItem("allUserAgentGuesses", JSON.stringify([{
                         agentName: agentData[i].agentName,
                         agentIcon: agentData[i].agentIcon,
                         agentRole: agentData[i].agentRole,
                         agentSpecies: agentData[i].agentSpecies,
                         agentCountry: agentData[i].agentCountry,
                         agentReleaseDate: agentData[i].agentReleaseDate
-                        
-                    } ,...allUserGuessesAgent
-                   ]));
+
+                    }, ...allUserGuessesAgent
+                    ]));
 
                 }
             }
@@ -250,7 +255,7 @@ const Agent = () => {
         // local
         setNrUserGuesses(prevState => prevState + 1);
         setUserGuessAgent("")
-        
+
 
     }
 
@@ -279,62 +284,63 @@ const Agent = () => {
 
     const renderAgentSuggestions = suggestedAgents.map(agent => {
         return <button className="suggest-agent-button" onClick={() => submitAgentSuggestion(agent.agentName)}>
-           <img src={agent.agentIcon} alt="" srcset="" />
+            <img src={agent.agentIcon} alt="" srcset="" />
             <div>{agent.agentName}</div>
         </button>
     })
-    
+
     return (
-    <div className="agent-page">
-        <div className="agent-upper-section">
-            <h2 className="header2-agent-page"> GUESS THE AGENT</h2>
+        <div className="agent-page">
+            <div className="agent-upper-section">
+                <h2 className="header2-agent-page"> GUESS THE AGENT</h2>
                 <section>
                     <div className="hint-section">
                         <div className="hint">
                             <div className="hint-button" style={(3 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Quote")}>
                                 <img src="../agent-abilities/double-quote-noborder-disabled.png" alt="" srcset="" />
                             </div>
-                            {(3 - nrUserGuesses) <= 0 || userGuessedAgent ?  <p>Click to get a quote clue.</p> : <p>Get a clue in {3 - nrUserGuesses} tries.</p>}
+                            {(3 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show a quote clue.</p> : <p>Get a clue in {3 - nrUserGuesses} tries.</p>}
                         </div>
                         <div className="hint" >
-                            <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}> 
-                            <img id="agent-ability-hint-image" src="../agent-abilities/brim-ult-disabled.png" alt="" srcset="" /> 
+                            <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}>
+                                <img id="agent-ability-hint-image" src="../agent-abilities/brim-ult-disabled.png" alt="" srcset="" />
                             </div>
-                            {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Click to get an ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
+                            {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
                         </div>
                     </div>
-                    {showHint.hintAbility ? <section> Ability </section> : showHint.hintQuote ? <section> {agentData[agentIndex].agentVoicelines[agentQuoteIndex]} </section> : ""}
+                    {showHint.hintAbility ? <section className="agent-hint-show"> <img src={agentAbilities[agentIndex].agentAbilities[agentAbilityIndex].displayIcon} alt="" srcset="" /> <p>{agentAbilities[agentIndex].agentAbilities[agentAbilityIndex].displayName}</p> </section>
+                        : showHint.hintQuote ? <section className="agent-hint-show"> {agentData[agentIndex].agentVoicelines[agentQuoteIndex]} </section> : ""}
                 </section>
-            
-            <form action="" onSubmit={handleFormSubmitAgent}>
-                <div className="form-section-input">
-                    <input className="agent-input" type="text" placeholder={userGuessedAgent ?  "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
-                    <button className="agent-submit-button"> {">"}</button>
-                </div>
+
+                <form action="" onSubmit={handleFormSubmitAgent}>
+                    <div className="form-section-input">
+                        <input className="agent-input" type="text" placeholder={userGuessedAgent ? "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
+                        <button className="agent-submit-button"> {">"}</button>
+                    </div>
                     {suggestedAgents.length >= 1 && <section className="suggest-agent-container">
                         {renderAgentSuggestions}
                     </section>}
-            </form>
-        </div>
-        <section className="agent-individual-section">
-            <div className="agent-columns-headers">
-                <p>Agent</p>
-                <p>Role</p>
-                <p>Species</p>
-                <p>From</p>
-                <p>Released</p>
+                </form>
             </div>
-            {allUserGuessesAgent.length > 0 && renderAgentGuess}
-        </section>
-        {userGuessedAgent && <section className="popup-rightguess-agent">
+            <section className="agent-individual-section">
+                <div className="agent-columns-headers">
+                    <p>Agent</p>
+                    <p>Role</p>
+                    <p>Species</p>
+                    <p>From</p>
+                    <p>Released</p>
+                </div>
+                {allUserGuessesAgent.length > 0 && renderAgentGuess}
+            </section>
+            {userGuessedAgent && <section className="popup-rightguess-agent">
 
-            <h1 className="agent-header-popup-rightghuess">YOU GUESSED RIGHT!</h1>
-           <img src={agentData[agentIndex].agentIcon} alt="" srcset="" />
-           <h2 className="agent-header2-popup-rightghuess">{agentData[agentIndex].agentName.toUpperCase()}</h2>
-           <p className="agent-paragraph-popup-rightghuess">TRIES: {allUserGuessesAgent.length}</p>
-           <Link to="/Skin"> <button className="agent-button-popup-rightghuess">Guess the skin</button></Link>
-        </section>}
-    </div>)
+                <h1 className="agent-header-popup-rightghuess">YOU GUESSED RIGHT!</h1>
+                <img src={agentData[agentIndex].agentIcon} alt="" srcset="" />
+                <h2 className="agent-header2-popup-rightghuess">{agentData[agentIndex].agentName.toUpperCase()}</h2>
+                <p className="agent-paragraph-popup-rightghuess">TRIES: {allUserGuessesAgent.length}</p>
+                <Link to="/Skin"> <button className="agent-button-popup-rightghuess">Guess the skin</button></Link>
+            </section>}
+        </div>)
 }
 
 export default Agent;
