@@ -3,17 +3,20 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mainH1{ 
-color: #D2404D;
-font-size: 3.5rem;
-margin-top: -0.3em;
-outline: none;
-text-decoration: none !important;
-transition: transform 0.2s ease-in-out;
+.mainH1 {
+  color: #D2404D;
+  font-size: 3.5rem;
+  margin-top: -0.3em;
+  outline: none;
+  text-decoration: none !important;
+  transition: transform 0.2s ease-in-out;
 }
 
-.mainH1:hover{
+.mainH1:hover {
   transform: scale(1.1);
 }
