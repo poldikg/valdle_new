@@ -60,3 +60,16 @@
     width: 450px;
     height: auto;
 }
+
+.skin-user-guesses {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.skin-user-guess>img {
+    width: 250px;
+    height: auto;
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import "./Skin.css"
+import { json } from 'react-router-dom';
 
 const Skin = () => {
 
@@ -10,7 +11,28 @@ const Skin = () => {
     const [weaponIndex, setWeaponIndex] = useState();
     const [skinIndex, setSkinIndex] = useState();
     const [skinSuggestions, setSkinSuggestions] = useState([]);
-    console.log(userGuessSkin)
+    // console.log(allSkins[weaponIndex].weaponSkins[skinIndex].skinName)
+    // console.log(userGuessSkin === allSkins[weaponIndex].weaponSkins[skinIndex].skinName)
+
+    const styleWrongGuess = {
+        backgroundColor: "#D2404D",
+        padding: "3em",
+        borderRadius: "4px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    }
+
+    const styleRightGuess = {
+        backgroundColor: "#16AC25",
+        padding: "3em",
+        borderRadius: "4px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    }
 
 
     useEffect(() => {
@@ -44,6 +66,9 @@ const Skin = () => {
     useEffect(() => {
         const getWeaponIndex = localStorage.getItem("SkinWeaponIndex") ? localStorage.getItem("SkinWeaponIndex") : undefined;
         const getSkinIndex = localStorage.getItem("SkinSkinIndex") ? localStorage.getItem("SkinSkinIndex") : undefined;
+        const getAllUserGuessesSkin = localStorage.getItem("allUserSkinGuesses") ? JSON.parse(localStorage.getItem("allUserSkinGuesses")) : [];
+        const userGuessedCorrectly = localStorage.getItem("userGuessedSkinCorrectly") ? JSON.parse(localStorage.getItem("userGuessedSkinCorrectly")) : false;
+        console.log(userGuessedCorrectly)
 
         fetch("https://valorant-api.com/v1/weapons")
             .then(res => res.json())
@@ -69,10 +94,23 @@ const Skin = () => {
                     const randomSkinIndex = Math.floor(Math.random() * sortedSkins[randomWeaponIndex].weaponSkins.length)
                     setSkinIndex(randomSkinIndex);
                     localStorage.setItem("SkinSkinIndex", randomSkinIndex);
+
+                    const skinTaskCreated = new Date();
+                    localStorage.setItem("SkinTaskCreated", skinTaskCreated)
                 }
                 else if (getWeaponIndex && getSkinIndex) {
+                    if (userGuessedCorrectly) {
+                        const getTextInput = document.querySelector("#skin-input-text");
+                        const getButtonInput = document.querySelector("#skin-input-button");
+
+                        getTextInput.setAttribute("disabled", true);
+                        getButtonInput.setAttribute("disabled", true);
+                    }
                     setWeaponIndex(parseInt(getWeaponIndex));
                     setSkinIndex(parseInt(getSkinIndex));
+                    setAllUserGuessesSkin(getAllUserGuessesSkin);
+
+
                 }
 
 
@@ -87,6 +125,17 @@ const Skin = () => {
 
     const handleSubmitSkin = (event) => {
         event.preventDefault();
+        event.target[0].value = "";
+
+
+        const allSkinNames = allSkins.map(weapon => weapon.weaponSkins)
+        if (userGuessSkin === allSkins[weaponIndex].weaponSkins[skinIndex].skinName) {
+            event.target[0].disabled = true;
+            event.target[1].disabled = true;
+            localStorage.setItem("userGuessedSkinCorrectly", true);
+        }
+
+        setUserGuessSkin("");
 
         if (userGuessSkin) {
             for (let i = 0; i < skinSuggestions.length; i++) {
@@ -94,16 +143,41 @@ const Skin = () => {
                     console.log("false")
                     return false;
                 }
-                else {
-                    console.log("true")
-                    return true;
-                }
             }
         }
 
+        if (userGuessSkin) {
+            const checkExistingGuesses = allUserGuessesSkin.filter(guess => guess.skinName === userGuessSkin);
+            if (checkExistingGuesses.length >= 1) {
+                return false;
+            }
+        }
 
+        if (userGuessSkin) {
+            for (let i = 0; i < allSkinNames.length; i++) {
+                for (let j = 0; j < allSkinNames[i].length; j++) {
+                    if (allSkinNames[i][j].skinName.includes(userGuessSkin)) {
+                        setAllUserGuessesSkin(prevState => {
+                            return [allSkinNames[i][j], ...prevState]
+                        })
 
+                        localStorage.setItem("allUserSkinGuesses", JSON.stringify([allSkinNames[i][j], ...allUserGuessesSkin]))
+                    }
+                }
+            }
+        }
     }
+
+    const renderUserSkinGuesses = allUserGuessesSkin.map(guess => {
+        return guess.skinName === allSkins[weaponIndex].weaponSkins[skinIndex].skinName ? <div style={styleRightGuess} className='skin-user-guess'>
+            <img src={guess.skinURL} alt="" />
+            <p> {guess.skinName}</p>
+        </div> :
+            <div style={styleWrongGuess} className='skin-user-guess'>
+                <img src={guess.skinURL} alt="" />
+                <p> {guess.skinName}</p>
+            </div>
+    })
 
     return (
         <div className='skin-page'>
@@ -114,12 +188,15 @@ const Skin = () => {
                 </div>
                 <form onSubmit={handleSubmitSkin}>
                     <div className='skin-page-inputs'>
-                        <input type="text" name="" id="" placeholder='Type a skin guess...' onChange={() => saveUserSkinGuess(event)} />
-                        <button> {" > "}</button>
+                        <input id="skin-input-text" type="text" name="" placeholder='Type a skin guess...' onChange={() => saveUserSkinGuess(event)} />
+                        <button id='skin-input-button'> {" > "}</button>
                     </div>
                 </form>
                 {skinSuggestions}
             </div>
+            <section className='skin-user-guesses'>
+                {renderUserSkinGuesses}
+            </section>
         </div>
     )
 }
