@@ -21,12 +21,15 @@
 .skin-page-inputs {
     border: 1px solid #FEFEFE;
     border-radius: 4px;
-    padding: 0em 0em 0em 1em;
+    display: flex;
+    flex-direction: row;
+
 }
 
 .skin-page-inputs>input {
     font-family: var(--font-jost);
     font-size: 0.9rem;
+    padding: 1em;
     font-weight: 500;
     outline: none;
     background-color: #2B3B52;
@@ -72,4 +75,46 @@
 .skin-user-guess>img {
     width: 250px;
     height: auto;
+}
+
+.skin-suggestions {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    background-color: #2B3B52;
+    border-radius: 4px;
+    border: 1px solid #FEFEFE;
+    width: 200px;
+    min-height: 50px;
+    max-height: 200px;
+    gap: 1em;
+    overflow: auto;
+}
+
+.button-send-skin-suggestion {
+    background-color: #2B3B52;
+    border: none;
+    display: flex;
+    padding: 1em;
+    flex-direction: row;
+    justify-content: start;
+    width: 100%;
+    border-radius: 4px;
+    font-family: var(--font-jost);
+    font-size: 0.9rem;
+    text-align: start;
+}
+
+.button-send-skin-suggestion:hover {
+    background-color: #4E5F78;
+}
+
+#skin-input-text:disabled {
+    background-color: gray;
+}
+
+#skin-input-text:disabled::placeholder {
+    color: #FEFEFE;
 }

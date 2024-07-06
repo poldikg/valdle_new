@@ -2,26 +2,30 @@
     font-family: var(--font-jost);
 }
 
-#userMapInput {
+.userMapInput {
+    font-family: var(--font-jost);
     padding: 1.15em 1em 1.25em 1em;
     outline: none;
     border: none;
     background-color: #2B3B52;
-    border-radius: 2px 0px 0px 2px; 
-    font-family: "NicoMoji";
-    letter-spacing: 0.05cm;
+    border-radius: 2px 0px 0px 2px;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 500;
     height: 26px;
+    width: 275px;
+}
+
+.userMapInput::placeholder {
+    font-weight: 700;
 }
 
 
-#userMapInput:disabled{
+#userMapInput:disabled {
     background-color: grey;
     color: #FEFEFE;
 }
 
-#submitBtn{
+#submitBtn {
     padding: 1.4em 1.2em 2.6em 1.2em;
     background-color: #FEFEFE;
     color: #2B3B52;
@@ -31,29 +35,29 @@
     font-size: 1rem;
 }
 
-#submitBtn:hover{
+#submitBtn:hover {
     cursor: pointer;
 }
 
-#submitBtn:disabled{
+#submitBtn:disabled {
     background-color: gray;
 }
 
-.input-container{
+.input-container {
     border: 2px solid #FEFEFE;
     border-radius: 4px;
     margin-bottom: 2em;
 }
 
-.map-form{
+.map-form {
     display: flex;
     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     margin-bottom: 2em;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2em;
 }
 
-.map-form-lower{
+.map-form-lower {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,7 +65,7 @@
     gap: 1em;
 }
 
-.user-guess{
+.user-guess {
     width: 300px;
     height: 60px;
     border-radius: 8px;
@@ -71,7 +75,7 @@
     font-size: 0.9rem;
 }
 
-.user-rightguess-popup{
+.user-rightguess-popup {
     width: 500px;
     height: 250px;
     background-color: #2B3B52;
@@ -82,7 +86,7 @@
     border: 1px solid #16AC25;
 }
 
-.map-suggestions-container{
+.map-suggestions-container {
     width: 275px;
     height: auto;
     background-color: #2B3B52;
@@ -95,21 +99,22 @@
     margin-top: -2em;
 }
 
-.button-map-name{
+.button-map-name {
+    font-family: var(--font-jost);
     padding: 1em;
     background-color: #2B3B52;
     border: none;
-    font-family: "NicoMoji";
     width: 100%;
     text-align: start;
     border-radius: 8px;
+    font-size: 0.95rem;
 }
 
-.button-map-name:hover{
+.button-map-name:hover {
     background-color: #4E5F78;
 }
 
-.guess-section{
+.guess-section {
     display: flex;
     flex-direction: column;
     margin-bottom: 1em;

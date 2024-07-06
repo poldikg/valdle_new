@@ -23,7 +23,7 @@ const Map = () => {
     const suggestionRef = useRef();
     console.log(copyAllMaps)
     console.log(allMaps)
-    
+
     const hideRightGuessPopupStyle = {
         opacity: "0",
         zIndex: "-10"
@@ -56,27 +56,28 @@ const Map = () => {
         justifyContent: "center",
         alignItems: "center",
         fontSize: "1.3rem",
-        
+
     };
 
     const sendMapNameToUserInput = (mapName) => {
         setUserGuess(mapName);
     }
-    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" useRef={suggestionRef} onClick={() => { 
-        sendMapNameToUserInput(map)}}> {map} </button>)
-    
+    const renderMapSuggestions = mapsSuggestions.map(map => <button className="button-map-name" useRef={suggestionRef} onClick={() => {
+        sendMapNameToUserInput(map)
+    }}> {map} </button>)
+
     useEffect(() => {
         setMapsSuggestions([]);
-        
+
         if (userGuess !== undefined) {
-            for (let i = 0; i < copyAllMaps.length; i++) {  
+            for (let i = 0; i < copyAllMaps.length; i++) {
                 if (userGuess.charAt(0).toUpperCase() === copyAllMaps[i][0]) {
                     const finalSuggestions = copyAllMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase());
                     setMapsSuggestions(finalSuggestions);
                     setMapSuggestionHappend(true);
                 }
             }
-            if (userGuess === ""){
+            if (userGuess === "") {
                 setMapSuggestionHappend(false);
             }
         }
@@ -84,8 +85,8 @@ const Map = () => {
             setMapSuggestionHappend(false);
         }
 
-      
-        
+
+
     }, [userGuess])
 
     useEffect(() => {
@@ -103,7 +104,7 @@ const Map = () => {
                 const allMaps = allDataObj.data.map(map => map.displayName);
                 setAllMaps(allMaps);
                 setCopyAllMaps([...allMaps]);
-                
+
                 if (getMapIndex) {
                     setRandomIndexMap(parseInt(getMapIndex))
                     if (userMadeGuessLocalStorage) {
@@ -127,7 +128,7 @@ const Map = () => {
 
                 }
             })
-            console.log("mounted map")
+        console.log("mounted map")
     }, [])
 
     // useEffect(() => {
@@ -153,7 +154,7 @@ const Map = () => {
 
     //Disabling space
     const detectSpace = (event) => {
-        if(event.keyCode === 32) {
+        if (event.keyCode === 32) {
             event.preventDefault();
         }
     }
@@ -163,24 +164,24 @@ const Map = () => {
 
     const handleSubmit = (event) => {
 
-       
+
         console.log(event)
         event.preventDefault();
         event.target[0].value = "";
 
-       
-        if(!allMaps.includes(userGuess.charAt(0).toUpperCase() + userGuess.slice(1))){
+
+        if (!allMaps.includes(userGuess.charAt(0).toUpperCase() + userGuess.slice(1))) {
             setUserGuess(undefined);
             return false;
         }
-        for(let guess in allUserGuesses){
-            if(allUserGuesses[guess].toLowerCase().includes(userGuess.toLowerCase())){
+        for (let guess in allUserGuesses) {
+            if (allUserGuesses[guess].toLowerCase().includes(userGuess.toLowerCase())) {
                 alert("Try something else. You already guessed this map.");
                 setUserGuess(undefined);
                 return false;
             }
         }
-        if(userGuess === ""){
+        if (userGuess === "") {
             event.target[0].required = true;
         }
         const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].toLowerCase();
@@ -201,12 +202,12 @@ const Map = () => {
         }
 
         setAllUserGuesses(prevState => {
-            localStorage.setItem("allUserMapGuesses", JSON.stringify([...allUserGuesses, userGuess].reverse()))
-            return [...prevState, userGuess].reverse();
+            localStorage.setItem("allUserMapGuesses", JSON.stringify([userGuess, ...allUserGuesses]))
+            return [userGuess, ...prevState];
         })
 
-        for(let i = 0; i <= copyAllMaps.length; i++){
-            if(userGuess.toLowerCase() === copyAllMaps[i].toLowerCase() && !userGuessTrue){
+        for (let i = 0; i <= copyAllMaps.length; i++) {
+            if (userGuess.toLowerCase() === copyAllMaps[i].toLowerCase() && !userGuessTrue) {
                 const indexMap = copyAllMaps.indexOf(copyAllMaps[i]);
                 let filteredMaps = copyAllMaps.splice(indexMap, 1);
                 localStorage.setItem("mapSuggestions", JSON.stringify([...copyAllMaps]));
@@ -234,7 +235,7 @@ const Map = () => {
 
     const renderUserGuess = allUserGuesses.map(guess => {
         return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{ color: "green" }}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
-             : <h1 style={{ color: "red"}}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
+            : <h1 style={{ color: "red" }}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
     })
     //Map ima return zashtoto kato otvorq {} zapochva callback funkciq vmesto da dobavq neshta v nov array moga da izpozlvam () i sled tova {} = ({}) vmesto return
 
@@ -243,15 +244,15 @@ const Map = () => {
         <div className="map-section">
             <form className="map-form" onSubmit={handleSubmit}>
                 <section className="guess-section">
-                <div className="input-container">
-                    <input type="text" name="userMapInput" id="userMapInput" placeholder="GUESS THE MAP" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace} onFocus={() => { }}
-                    />
-                    <button id="submitBtn"> {">"}</button>
-                </div>
+                    <div className="input-container">
+                        <input type="text" name="userMapInput" className="userMapInput" placeholder="Type your guess" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace}
+                        />
+                        <button id="submitBtn"> {">"}</button>
+                    </div>
 
-                {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
-                    {renderMapSuggestions}
-                </div>}
+                    {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
+                        {renderMapSuggestions}
+                    </div>}
                 </section>
 
                 <div className="map-form-lower">

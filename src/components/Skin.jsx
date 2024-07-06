@@ -103,6 +103,7 @@ const Skin = () => {
                         const getTextInput = document.querySelector("#skin-input-text");
                         const getButtonInput = document.querySelector("#skin-input-button");
 
+                        getTextInput.setAttribute("placeholder", "TRY AGAIN TOMORROW");
                         getTextInput.setAttribute("disabled", true);
                         getButtonInput.setAttribute("disabled", true);
                     }
@@ -124,6 +125,7 @@ const Skin = () => {
     }
 
     const handleSubmitSkin = (event) => {
+        console.log(event)
         event.preventDefault();
         event.target[0].value = "";
 
@@ -132,6 +134,7 @@ const Skin = () => {
         if (userGuessSkin === allSkins[weaponIndex].weaponSkins[skinIndex].skinName) {
             event.target[0].disabled = true;
             event.target[1].disabled = true;
+            event.target[0].placeholder = "TRY AGAIN TOMORROW";
             localStorage.setItem("userGuessedSkinCorrectly", true);
         }
 
@@ -168,6 +171,10 @@ const Skin = () => {
         }
     }
 
+    const sendSkinSuggestion = (skinName) => {
+        setUserGuessSkin(skinName)
+    }
+
     const renderUserSkinGuesses = allUserGuessesSkin.map(guess => {
         return guess.skinName === allSkins[weaponIndex].weaponSkins[skinIndex].skinName ? <div style={styleRightGuess} className='skin-user-guess'>
             <img src={guess.skinURL} alt="" />
@@ -179,6 +186,8 @@ const Skin = () => {
             </div>
     })
 
+    const renderSkinSuggestions = skinSuggestions.map(suggestion => <button className='button-send-skin-suggestion' onClick={() => sendSkinSuggestion(suggestion)}> {suggestion} </button>)
+
     return (
         <div className='skin-page'>
             <div className='skin-section'>
@@ -188,12 +197,15 @@ const Skin = () => {
                 </div>
                 <form onSubmit={handleSubmitSkin}>
                     <div className='skin-page-inputs'>
-                        <input id="skin-input-text" type="text" name="" placeholder='Type a skin guess...' onChange={() => saveUserSkinGuess(event)} />
+                        <input id="skin-input-text" type="text" name="" placeholder='Type your guess' onChange={() => saveUserSkinGuess(event)} autoComplete='off' />
                         <button id='skin-input-button'> {" > "}</button>
                     </div>
+                    {skinSuggestions.length >= 1 && <section className='skin-suggestions'>
+                        {renderSkinSuggestions}
+                    </section>}
                 </form>
-                {skinSuggestions}
             </div>
+
             <section className='skin-user-guesses'>
                 {renderUserSkinGuesses}
             </section>
