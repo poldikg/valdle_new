@@ -1,0 +1,51 @@
+.popup-rightguess {
+    font-family: var(--font-jost);
+    padding: 1.5em 0;
+    margin-top: 3em;
+    width: 450px;
+    height: auto;
+    background: linear-gradient(var(--green-gradiant) 50%, #16AC25 100%);
+    border-radius: 4px;
+    border: 1px solid #16AC25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.popup-rightguess>img {
+    width: 200px;
+    height: auto;
+}
+
+.popup-rightguess>h1 {
+    color: #FEFEFE;
+}
+
+.header-popup-rightghuess {
+    margin: 0;
+}
+
+.header2-popup-rightghuess {
+    margin: 0;
+    font-weight: 500;
+}
+
+.paragraph-popup-rightghuess {
+    margin: 0;
+    margin-top: -0.5em;
+    margin-bottom: 1em;
+    color: #FEFEFE;
+    font-size: 1.5rem;
+}
+
+.button-popup-rightghuess {
+    padding: 0.7em 3em 0.7em 3em;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: 1px solid #363636;
+    border-radius: 4px;
+    background-color: #363636;
+    font-family: var(--font-jost);
+    font-weight: 500;
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./Map.css"
+import PopupRightGuess from "./PopupRightGuess";
 import { Link, json } from "react-router-dom";
 
 const Map = () => {
@@ -114,7 +115,9 @@ const Map = () => {
 
                     }
                     if (userGuessedCorrectly) {
-                        const userInputBox = document.getElementById("userMapInput")
+                        setUserGussedMapCorrectly(JSON.parse(userGuessedCorrectly))
+                        console.log("yo")
+                        const userInputBox = document.querySelector(".userMapInput")
                         const submitBtn = document.getElementById("submitBtn")
                         submitBtn.setAttribute("disabled", true)
                         userInputBox.setAttribute("disabled", true)
@@ -224,7 +227,7 @@ const Map = () => {
     }
 
     useEffect(() => {
-        const boxRightGuess = document.querySelector(".user-rightguess-popup") ? document.querySelector(".user-rightguess-popup").scrollIntoView(true) : undefined
+        const boxRightGuess = document.querySelector(".popup-rightguess") ? document.querySelector(".popup-rightguess").scrollIntoView(true) : undefined
     }, [userGuessedMapCorrectly])
 
 
@@ -257,12 +260,13 @@ const Map = () => {
 
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
-                    {<div style={userGuessMapCorrectlyLocalStorage ? showRightGuessPopupStyle : hideRightGuessPopupStyle} className="user-rightguess-popup">
-                        <h2 style={{ color: "#16AC25" }}>YOU GUESSED RIGHT! </h2>
-                        <h2 style={{ color: "#FEFEFE", marginTop: "-0.8em" }}>{allUserGuessesLocalStorage[allUserGuessesLocalStorage.length - 1]}</h2>
-                        <h2 style={{ color: "#16AC25", marginTop: "-0.8em" }}>Tries: {allUserGuessesLocalStorage.length}</h2>
-                        <Link style={{ textDecoration: "none" }} to="/Agent" ><div style={{ width: "250px", height: "50px", backgroundColor: "#D2404D", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: "white", border: "1px solid #FEFEFE" }}> Guess the agent </div> </Link>
-                    </div>}
+                    {userGuessedMapCorrectly && <PopupRightGuess
+                        image={""}
+                        name={allMaps[randomIndexMap]}
+                        nrTries={allUserGuesses.length}
+                        currentPage={"Map"}
+                        nextPage={"Agent"}
+                    />}
                 </div>
 
             </form>

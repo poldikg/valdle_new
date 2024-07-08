@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import PopupRightGuess from './PopupRightGuess'
 import "./Skin.css"
-import { json } from 'react-router-dom';
+
 
 const Skin = () => {
 
@@ -11,6 +12,7 @@ const Skin = () => {
     const [weaponIndex, setWeaponIndex] = useState();
     const [skinIndex, setSkinIndex] = useState();
     const [skinSuggestions, setSkinSuggestions] = useState([]);
+    const [userMadeRightGuess, setUserMadeRightGuess] = useState(false);
     // console.log(allSkins[weaponIndex].weaponSkins[skinIndex].skinName)
     // console.log(userGuessSkin === allSkins[weaponIndex].weaponSkins[skinIndex].skinName)
 
@@ -106,6 +108,7 @@ const Skin = () => {
                         getTextInput.setAttribute("placeholder", "TRY AGAIN TOMORROW");
                         getTextInput.setAttribute("disabled", true);
                         getButtonInput.setAttribute("disabled", true);
+                        setUserMadeRightGuess(userGuessedCorrectly);
                     }
                     setWeaponIndex(parseInt(getWeaponIndex));
                     setSkinIndex(parseInt(getSkinIndex));
@@ -136,6 +139,7 @@ const Skin = () => {
             event.target[1].disabled = true;
             event.target[0].placeholder = "TRY AGAIN TOMORROW";
             localStorage.setItem("userGuessedSkinCorrectly", true);
+            setUserMadeRightGuess(true);
         }
 
         setUserGuessSkin("");
@@ -175,6 +179,12 @@ const Skin = () => {
         setUserGuessSkin(skinName)
     }
 
+    useEffect(() => {
+        const getRightGuessPopup = document.querySelector(".popup-rightguess");
+        getRightGuessPopup ? getRightGuessPopup.scrollIntoView() : "";
+
+    }, [userMadeRightGuess])
+
     const renderUserSkinGuesses = allUserGuessesSkin.map(guess => {
         return guess.skinName === allSkins[weaponIndex].weaponSkins[skinIndex].skinName ? <div style={styleRightGuess} className='skin-user-guess'>
             <img src={guess.skinURL} alt="" />
@@ -209,6 +219,14 @@ const Skin = () => {
             <section className='skin-user-guesses'>
                 {renderUserSkinGuesses}
             </section>
+
+            {userMadeRightGuess && <PopupRightGuess
+                image={allSkins[weaponIndex].weaponSkins[skinIndex].skinURL}
+                name={allSkins[weaponIndex].weaponSkins[skinIndex].skinName}
+                nrTries={allUserGuessesSkin.length}
+                currentPage={"Skin"}
+                nextPage={"Ability"}
+            />}
         </div>
     )
 }

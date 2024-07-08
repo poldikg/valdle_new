@@ -1,6 +1,7 @@
 import React from "react";
 import "./Agent.css"
 import AgentData from "./AgentData";
+import PopupRightGuess from "./PopupRightGuess";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -102,7 +103,7 @@ const Agent = () => {
     }, [])
 
     useEffect(() => {
-        const getRightGuessPopup = document.querySelector(".popup-rightguess-agent");
+        const getRightGuessPopup = document.querySelector(".popup-rightguess");
         userGuessedAgent ? getRightGuessPopup.scrollIntoView() : "";
 
     }, [userGuessedAgent])
@@ -332,14 +333,13 @@ const Agent = () => {
                 </div>
                 {allUserGuessesAgent.length > 0 && renderAgentGuess}
             </section>
-            {userGuessedAgent && <section className="popup-rightguess-agent">
-
-                <h1 className="agent-header-popup-rightghuess">YOU GUESSED RIGHT!</h1>
-                <img src={agentData[agentIndex].agentIcon} alt="" srcset="" />
-                <h2 className="agent-header2-popup-rightghuess">{agentData[agentIndex].agentName.toUpperCase()}</h2>
-                <p className="agent-paragraph-popup-rightghuess">TRIES: {allUserGuessesAgent.length}</p>
-                <Link to="/Skin"> <button className="agent-button-popup-rightghuess">Guess the skin</button></Link>
-            </section>}
+            {userGuessedAgent && <PopupRightGuess
+                image={agentData[agentIndex].agentIcon}
+                name={agentData[agentIndex].agentName.toUpperCase()}
+                nrTries={allUserGuessesAgent.length}
+                currentPage={"Agent"}
+                nextPage={"Skin"}
+            />}
         </div>)
 }
 
