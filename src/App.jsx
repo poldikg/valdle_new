@@ -4,6 +4,7 @@ import Map from './components/Map'
 import Agent from './components/Agent'
 import Navigation from './components/Navigation'
 import Skin from './components/Skin'
+import Ability from './components/Ability'
 import { Routes, Route, useLocation, Link } from 'react-router-dom'
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
         <Route path="/Map" element={<Map />} />
         <Route path='/Agent' element={<Agent />} />
         <Route path="/Skin" element={<Skin />} />
+        <Route path='/Ability' element={<Ability />} />
       </Routes>
 
       {showNavigation && <Navigation navigationData={navigationData} />}
