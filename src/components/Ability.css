@@ -1,5 +1,8 @@
 .ability-page {
     font-family: var(--font-jost);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .ability-upper-section {
@@ -68,5 +71,33 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
+}
 
+.ability-user-guess {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    background-color: #2B3B52;
+    gap: 1em;
+    padding: 1em;
+    border-radius: 4px;
+    width: 300px;
+}
+
+.ability-user-guess>img {
+    width: 100px;
+    height: auto;
+}
+
+.ability-user-guess>p {
+    font-size: 1.2rem;
+}
+
+.ability-all-user-guesses {
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }

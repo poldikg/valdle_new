@@ -8,10 +8,13 @@ const Ability = () => {
     const [agentIndex, setAgentIndex] = useState();
     const [abilityIndex, setAbilityIndex] = useState();
     const [abilityUserGuess, setAbilityUserGuess] = useState("");
+    const [allAbilityUserGuesses, setAllAbilityUserGuesses] = useState([]);
     const [imageBlur, setImageBlur] = useState(5);
     const [randomAngle, setRandomAngle] = useState()
+    console.log(imageBlur)
 
-    console.log(abilityUserGuess)
+    const rightAbilityGuess = { backgroundColor: "#16AC25" };
+    const wrongAbilityGuess = { backgroundColor: "#D2404D" };
 
     const imageDifficulty = { filter: `blur(${imageBlur}px)`, transform: `rotate(${randomAngle}deg)` };
 
@@ -20,6 +23,9 @@ const Ability = () => {
         const getAgentIndex = localStorage.getItem("AbilityIndex") ? localStorage.getItem("AbilityIndex") : undefined;
         const getAgentAbilityIndex = localStorage.getItem("AbilityAbilityIndex") ? localStorage.getItem("AbilityAbilityIndex") : undefined;
         const getRandomAngle = localStorage.getItem("AbilityRandomAngle") ? localStorage.getItem("AbilityRandomAngle") : undefined;
+        const getUserGuessesAbility = localStorage.getItem("allUserAbilityGuesses") ? JSON.parse(localStorage.getItem("allUserAbilityGuesses")) : [];
+        const getImageBlur = localStorage.getItem("AbilityImageBlur") ? localStorage.getItem("AbilityImageBlur") : undefined;
+        const getRightUserGuess = localStorage.getItem("userGuessedAbilityCorrectly") ? JSON.stringify(localStorage.getItem("userGuessedAbilityCorrectly")) : false;
 
 
         fetch("https://valorant-api.com/v1/agents")
@@ -50,16 +56,80 @@ const Ability = () => {
                     localStorage.setItem("AbilityRandomAngle", randomAngle);
                 }
                 else {
+                    if (getUserGuessesAbility) {
+                        const getInputTextAbility = document.querySelector(".ability-input-text");
+                        const getInputButtonAbility = document.querySelector(".ability-input-button");
+                        getInputTextAbility.setAttribute("disabled", true);
+                        getInputButtonAbility.setAttribute("disabled", true);
+                        getInputTextAbility.setAttribute("placeholder", "TRY AGAIN TOMORROW")
+                    }
+
+                    setAllAbilityUserGuesses(getUserGuessesAbility);
                     setAgentIndex(JSON.parse(getAgentIndex));
                     setAbilityIndex(JSON.parse(getAgentAbilityIndex));
                     setRandomAngle(JSON.parse(getRandomAngle));
+                    setImageBlur(JSON.parse(getImageBlur));
                 }
             })
     }, [])
 
     const saveUserGuess = (event) => {
-        setAbilityUserGuess(event.target.value)
+        const upperCasedUserGuess = event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1)
+        setAbilityUserGuess(upperCasedUserGuess)
     }
+
+    const handleSubmitAbility = (event) => {
+        event.preventDefault();
+        event.target[0].value = "";
+        console.log(event)
+
+        const agentNames = allAgents.map(agent => agent.agentName);
+
+        if (!agentNames.includes(abilityUserGuess)) {
+            setAbilityUserGuess("");
+            return false;
+        }
+
+        if (abilityUserGuess !== "") {
+            for (let i = 0; i < allAbilityUserGuesses.length; i++) {
+                if (allAbilityUserGuesses[i].agentName.includes(abilityUserGuess)) {
+                    setAbilityUserGuess("");
+                    return false;
+                }
+            }
+        }
+
+        if (abilityUserGuess !== "") {
+            for (let agentIndex in allAgents) {
+                console.log(allAgents[agentIndex].agentName.includes(abilityUserGuess))
+                if (allAgents[agentIndex].agentName.includes(abilityUserGuess)) {
+                    setImageBlur(prevState => prevState - 1)
+                    localStorage.setItem("AbilityImageBlur", imageBlur - 1)
+                    setAbilityUserGuess("");
+                    setAllAbilityUserGuesses(prevState => { return [allAgents[agentIndex], ...prevState] });
+                    localStorage.setItem("allUserAbilityGuesses", JSON.stringify([allAgents[agentIndex], ...allAbilityUserGuesses]));
+                }
+            }
+        }
+
+        if (abilityUserGuess === allAgents[agentIndex].agentName) {
+            event.target[0].disabled = true;
+            event.target[1].disabled = true;
+            event.target[0].placeholder = "TRY AGAIN TOMORROW";
+            localStorage.setItem("userGuessedAbilityCorrectly", true);
+        }
+
+    }
+
+    const renderUserAbilityGuesses = allAbilityUserGuesses.map(guess => {
+        return guess.agentName === allAgents[agentIndex].agentName ? <div style={rightAbilityGuess} className='ability-user-guess'>
+            <img src={guess.agentIcon} alt="Agent image" draggable="false" />
+            <p>{guess.agentName}</p>
+        </div> : <div style={wrongAbilityGuess} className='ability-user-guess'>
+            <img src={guess.agentIcon} alt="Agent image" draggable="false" />
+            <p>{guess.agentName}</p>
+        </div>
+    })
 
     return (
         <div className='ability-page'>
@@ -68,12 +138,15 @@ const Ability = () => {
                 <div className='ability-image-container'>
                     {allAgents.length >= 1 && <img style={imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
                 </div>
-                <form action="">
+                <form onSubmit={(event) => handleSubmitAbility(event)}>
                     <div className='ability-input-container'>
-                        <input type="text" onChange={(event) => { saveUserGuess(event) }} />
-                        <button>{">"}</button>
+                        <input className='ability-input-text' type="text" onChange={(event) => { saveUserGuess(event) }} />
+                        <button className='ability-input-button'>{">"}</button>
                     </div>
                 </form>
+            </section>
+            <section className='ability-all-user-guesses'>
+                {renderUserAbilityGuesses}
             </section>
         </div>
     )
