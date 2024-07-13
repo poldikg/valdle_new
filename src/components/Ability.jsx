@@ -10,8 +10,12 @@ const Ability = () => {
     const [abilityUserGuess, setAbilityUserGuess] = useState("");
     const [allAbilityUserGuesses, setAllAbilityUserGuesses] = useState([]);
     const [imageBlur, setImageBlur] = useState(5);
-    const [randomAngle, setRandomAngle] = useState()
-    console.log(imageBlur)
+    const [randomAngle, setRandomAngle] = useState();
+    const [abilityAgentSuggestions, setAbilityAgentSuggestions] = useState([]);
+    const [userGuessedFirstPartCorrectly, setUserGuessedFirstPartCorrectly] = useState(false);
+    const [hideFirstPart, setHideFirstPart] = useState(false);
+    console.log(abilityAgentSuggestions, abilityUserGuess, hideFirstPart)
+
 
     const rightAbilityGuess = { backgroundColor: "#16AC25" };
     const wrongAbilityGuess = { backgroundColor: "#D2404D" };
@@ -20,12 +24,32 @@ const Ability = () => {
 
     useEffect(() => {
 
+        if (abilityUserGuess.length >= 1) {
+            const filteredSuggestions = allAgents.filter(agent => agent.agentName.slice(0, abilityUserGuess.length) === abilityUserGuess).map(agent => {
+                return {
+                    agentName: agent.agentName,
+                    agentIcon: agent.agentIcon
+                }
+            });
+            setAbilityAgentSuggestions(filteredSuggestions);
+        }
+        else if (abilityUserGuess === "") {
+            setAbilityAgentSuggestions([]);
+        }
+
+
+    }, [abilityUserGuess])
+
+    useEffect(() => {
+
         const getAgentIndex = localStorage.getItem("AbilityIndex") ? localStorage.getItem("AbilityIndex") : undefined;
         const getAgentAbilityIndex = localStorage.getItem("AbilityAbilityIndex") ? localStorage.getItem("AbilityAbilityIndex") : undefined;
         const getRandomAngle = localStorage.getItem("AbilityRandomAngle") ? localStorage.getItem("AbilityRandomAngle") : undefined;
         const getUserGuessesAbility = localStorage.getItem("allUserAbilityGuesses") ? JSON.parse(localStorage.getItem("allUserAbilityGuesses")) : [];
         const getImageBlur = localStorage.getItem("AbilityImageBlur") ? localStorage.getItem("AbilityImageBlur") : undefined;
-        const getRightUserGuess = localStorage.getItem("userGuessedAbilityCorrectly") ? JSON.stringify(localStorage.getItem("userGuessedAbilityCorrectly")) : false;
+        const getRightUserGuess = JSON.parse(localStorage.getItem("userGuessedFirstPartAbilityCorrectly")) ? JSON.parse(localStorage.getItem("userGuessedFirstPartAbilityCorrectly")) : false;
+        const getHideFirstPart = localStorage.getItem("AbilityHideFirstPart") ? JSON.parse(localStorage.getItem("AbilityHideFirstPart")) : false;
+        console.log(getRightUserGuess)
 
 
         fetch("https://valorant-api.com/v1/agents")
@@ -56,7 +80,7 @@ const Ability = () => {
                     localStorage.setItem("AbilityRandomAngle", randomAngle);
                 }
                 else {
-                    if (getUserGuessesAbility) {
+                    if (getRightUserGuess) {
                         const getInputTextAbility = document.querySelector(".ability-input-text");
                         const getInputButtonAbility = document.querySelector(".ability-input-button");
                         getInputTextAbility.setAttribute("disabled", true);
@@ -69,6 +93,8 @@ const Ability = () => {
                     setAbilityIndex(JSON.parse(getAgentAbilityIndex));
                     setRandomAngle(JSON.parse(getRandomAngle));
                     setImageBlur(JSON.parse(getImageBlur));
+                    setHideFirstPart(getRightUserGuess);
+                    setUserGuessedFirstPartCorrectly(getRightUserGuess);
                 }
             })
     }, [])
@@ -105,9 +131,9 @@ const Ability = () => {
                 if (allAgents[agentIndex].agentName.includes(abilityUserGuess)) {
                     setImageBlur(prevState => prevState - 1)
                     localStorage.setItem("AbilityImageBlur", imageBlur - 1)
-                    setAbilityUserGuess("");
                     setAllAbilityUserGuesses(prevState => { return [allAgents[agentIndex], ...prevState] });
                     localStorage.setItem("allUserAbilityGuesses", JSON.stringify([allAgents[agentIndex], ...allAbilityUserGuesses]));
+                    setAbilityUserGuess("");
                 }
             }
         }
@@ -116,7 +142,8 @@ const Ability = () => {
             event.target[0].disabled = true;
             event.target[1].disabled = true;
             event.target[0].placeholder = "TRY AGAIN TOMORROW";
-            localStorage.setItem("userGuessedAbilityCorrectly", true);
+            localStorage.setItem("userGuessedFirstPartAbilityCorrectly", true);
+            setUserGuessedFirstPartCorrectly(true);
         }
 
     }
@@ -129,23 +156,50 @@ const Ability = () => {
             <img src={guess.agentIcon} alt="Agent image" draggable="false" />
             <p>{guess.agentName}</p>
         </div>
-    })
+    });
+
+    const sendSuggestionToInput = (agentName) => {
+        setAbilityUserGuess(agentName);
+    }
+
+    const disableFirstPart = () => {
+        setHideFirstPart(true);
+        localStorage.setItem("AbilityHideFirstPart", true)
+    }
+
+    const showFirstPart = () => {
+        setHideFirstPart(false);
+        localStorage.setItem("AbilityHideFirstPart", false);
+    }
+
+    const renderAbilityAgentSuggestions = abilityAgentSuggestions.map(suggestion => {
+        return <button className='ability-agent-suggestion' onClick={() => sendSuggestionToInput(suggestion.agentName)} >
+            <img src={suggestion.agentIcon} alt="" srcset="" />
+            <p>{suggestion.agentName}</p>
+        </button>
+    });
 
     return (
         <div className='ability-page'>
             <section className='ability-upper-section'>
                 <h2 className='header2-ability-page'>GUESS WHICH AGENT HAS THE ABILITY</h2>
                 <div className='ability-image-container'>
-                    {allAgents.length >= 1 && <img style={imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
+                    {allAgents.length >= 1 && <img style={imageBlur <= 0 || userGuessedFirstPartCorrectly ? { transform: "rotate(0deg)" } : imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
+
                 </div>
+                <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedFirstPartCorrectly ? "Ability revealed." : `Ability reveal after ${imageBlur} tries.`}</p>
                 <form onSubmit={(event) => handleSubmitAbility(event)}>
                     <div className='ability-input-container'>
                         <input className='ability-input-text' type="text" onChange={(event) => { saveUserGuess(event) }} />
                         <button className='ability-input-button'>{">"}</button>
                     </div>
+                    {abilityAgentSuggestions.length >= 1 && <div className='ability-agent-suggestions-container'>
+                        {renderAbilityAgentSuggestions}
+                    </div>}
                 </form>
             </section>
-            <section className='ability-all-user-guesses'>
+            {userGuessedFirstPartCorrectly && <button className="ability-change-parts" onClick={hideFirstPart ? showFirstPart : disableFirstPart}> {hideFirstPart === true ? "BACK TO THE FIRST PART" : "GO TO THE FINAL PART"}</button>}
+            <section style={{ display: hideFirstPart ? "none" : "flex" }} className='ability-all-user-guesses'>
                 {renderUserAbilityGuesses}
             </section>
         </div>
