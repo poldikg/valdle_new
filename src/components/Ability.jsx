@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import "./Ability.css"
+import PopupRightGuess from "./PopupRightGuess.jsx"
 
 const Ability = () => {
 
@@ -12,9 +13,9 @@ const Ability = () => {
     const [imageBlur, setImageBlur] = useState(5);
     const [randomAngle, setRandomAngle] = useState();
     const [abilityAgentSuggestions, setAbilityAgentSuggestions] = useState([]);
-    const [userGuessedFirstPartCorrectly, setUserGuessedFirstPartCorrectly] = useState(false);
+    const [userGuessedAbilityCorrectly, setUserGuessedAbilityCorrectly] = useState(false);
     const [hideFirstPart, setHideFirstPart] = useState(false);
-    console.log(abilityAgentSuggestions, abilityUserGuess, hideFirstPart)
+    console.log(allAgents)
 
 
     const rightAbilityGuess = { backgroundColor: "#16AC25" };
@@ -47,7 +48,7 @@ const Ability = () => {
         const getRandomAngle = localStorage.getItem("AbilityRandomAngle") ? localStorage.getItem("AbilityRandomAngle") : undefined;
         const getUserGuessesAbility = localStorage.getItem("allUserAbilityGuesses") ? JSON.parse(localStorage.getItem("allUserAbilityGuesses")) : [];
         const getImageBlur = localStorage.getItem("AbilityImageBlur") ? localStorage.getItem("AbilityImageBlur") : undefined;
-        const getRightUserGuess = JSON.parse(localStorage.getItem("userGuessedFirstPartAbilityCorrectly")) ? JSON.parse(localStorage.getItem("userGuessedFirstPartAbilityCorrectly")) : false;
+        const getRightUserGuess = JSON.parse(localStorage.getItem("userGuessedAbilityCorrectly")) ? JSON.parse(localStorage.getItem("userGuessedAbilityCorrectly")) : false;
         const getHideFirstPart = localStorage.getItem("AbilityHideFirstPart") ? JSON.parse(localStorage.getItem("AbilityHideFirstPart")) : false;
         console.log(getRightUserGuess)
 
@@ -85,7 +86,7 @@ const Ability = () => {
                         const getInputButtonAbility = document.querySelector(".ability-input-button");
                         getInputTextAbility.setAttribute("disabled", true);
                         getInputButtonAbility.setAttribute("disabled", true);
-                        getInputTextAbility.setAttribute("placeholder", "TRY AGAIN TOMORROW")
+                        getInputTextAbility.setAttribute("placeholder", "TRY AGAIN TOMORROW");
                     }
 
                     setAllAbilityUserGuesses(getUserGuessesAbility);
@@ -94,14 +95,23 @@ const Ability = () => {
                     setRandomAngle(JSON.parse(getRandomAngle));
                     setImageBlur(JSON.parse(getImageBlur));
                     setHideFirstPart(getRightUserGuess);
-                    setUserGuessedFirstPartCorrectly(getRightUserGuess);
+                    setUserGuessedAbilityCorrectly(getRightUserGuess);
                 }
             })
     }, [])
 
+    useEffect(() => {
+
+        if (userGuessedAbilityCorrectly) {
+            const getRightPopupGuess = document.querySelector(".popup-rightguess");
+            getRightPopupGuess.scrollIntoView();
+        }
+
+    }, [userGuessedAbilityCorrectly])
+
     const saveUserGuess = (event) => {
-        const upperCasedUserGuess = event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1)
-        setAbilityUserGuess(upperCasedUserGuess)
+        const upperCasedUserGuess = event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1);
+        setAbilityUserGuess(upperCasedUserGuess);
     }
 
     const handleSubmitAbility = (event) => {
@@ -142,8 +152,8 @@ const Ability = () => {
             event.target[0].disabled = true;
             event.target[1].disabled = true;
             event.target[0].placeholder = "TRY AGAIN TOMORROW";
-            localStorage.setItem("userGuessedFirstPartAbilityCorrectly", true);
-            setUserGuessedFirstPartCorrectly(true);
+            localStorage.setItem("userGuessedAbilityCorrectly", true);
+            setUserGuessedAbilityCorrectly(true);
         }
 
     }
@@ -184,10 +194,9 @@ const Ability = () => {
             <section className='ability-upper-section'>
                 <h2 className='header2-ability-page'>GUESS WHICH AGENT HAS THE ABILITY</h2>
                 <div className='ability-image-container'>
-                    {allAgents.length >= 1 && <img style={imageBlur <= 0 || userGuessedFirstPartCorrectly ? { transform: "rotate(0deg)" } : imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
-
+                    {allAgents.length >= 1 && <img style={imageBlur <= 0 || userGuessedAbilityCorrectly ? { transform: "rotate(0deg)" } : imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
                 </div>
-                <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedFirstPartCorrectly ? "Ability revealed." : `Ability reveal after ${imageBlur} tries.`}</p>
+                <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedAbilityCorrectly ? "Ability revealed." : `Ability reveal after ${imageBlur} tries.`}</p>
                 <form onSubmit={(event) => handleSubmitAbility(event)}>
                     <div className='ability-input-container'>
                         <input className='ability-input-text' type="text" onChange={(event) => { saveUserGuess(event) }} />
@@ -198,10 +207,19 @@ const Ability = () => {
                     </div>}
                 </form>
             </section>
-            {userGuessedFirstPartCorrectly && <button className="ability-change-parts" onClick={hideFirstPart ? showFirstPart : disableFirstPart}> {hideFirstPart === true ? "BACK TO THE FIRST PART" : "GO TO THE FINAL PART"}</button>}
-            <section style={{ display: hideFirstPart ? "none" : "flex" }} className='ability-all-user-guesses'>
+            <section className='ability-all-user-guesses'>
                 {renderUserAbilityGuesses}
             </section>
+
+            {userGuessedAbilityCorrectly && <PopupRightGuess
+                image={allAgents[agentIndex].agentIcon}
+                name={allAgents[agentIndex].agentName}
+                nrTries={allAbilityUserGuesses.length}
+                rightAbility={allAgents[agentIndex].agentAbilities[abilityIndex].displayName}
+                allAbilities={allAgents[agentIndex].agentAbilities}
+                currentPage={"Ability"}
+                nextPage={"Quote"}
+            />}
         </div>
     )
 }
