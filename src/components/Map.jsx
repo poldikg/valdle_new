@@ -264,6 +264,8 @@ const Map = () => {
                         image={""}
                         name={allMaps[randomIndexMap]}
                         nrTries={allUserGuesses.length}
+                        rightAbility=""
+                        allAbilities={[]}
                         currentPage={"Map"}
                         nextPage={"Agent"}
                     />}

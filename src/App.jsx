@@ -5,6 +5,7 @@ import Agent from './components/Agent'
 import Navigation from './components/Navigation'
 import Skin from './components/Skin'
 import Ability from './components/Ability'
+import Quote from './components/Quote'
 import { Routes, Route, useLocation, Link } from 'react-router-dom'
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
         <Route path='/Agent' element={<Agent />} />
         <Route path="/Skin" element={<Skin />} />
         <Route path='/Ability' element={<Ability />} />
+        <Route path="/Quote" element={<Quote />} />
       </Routes>
 
       {showNavigation && <Navigation navigationData={navigationData} />}

@@ -224,6 +224,8 @@ const Skin = () => {
                 image={allSkins[weaponIndex].weaponSkins[skinIndex].skinURL}
                 name={allSkins[weaponIndex].weaponSkins[skinIndex].skinName}
                 nrTries={allUserGuessesSkin.length}
+                rightAbility=""
+                allAbilities={[]}
                 currentPage={"Skin"}
                 nextPage={"Ability"}
             />}

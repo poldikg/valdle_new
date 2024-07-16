@@ -12,6 +12,7 @@ const PopupRightGuess = (props) => {
 
 
 
+
     const renderAllAbilities = props.allAbilities.map(ability => {
         return userGuessedAbilityName ? <button className="ability-bonus-game-guess"
             style={ability.displayName === props.rightAbility ? { backgroundColor: "#0A6113" } : { backgroundColor: "#D2404D " }}
@@ -36,10 +37,12 @@ const PopupRightGuess = (props) => {
         setUserGuessedAbilityName(getUserDidAGuess);
         setUserBeatBonusGame(getUserBeatGame);
 
-        if (getUserDidAGuess) {
+        if (getUserDidAGuess && props.allAbilities.length >= 1) {
             const getAbilityNameButton = document.querySelector(".ability-bonus-game-guess");
             getAbilityNameButton.setAttribute("disabled", true);
         }
+
+
 
 
     }, [userGuessedAbilityName])
@@ -54,7 +57,7 @@ const PopupRightGuess = (props) => {
             {props.currentPage === "Ability" && <div className='ability-bonus-game'>
                 <h2>BONUS</h2>
                 <h2>GUESS THE NAME!</h2>
-                {userGuessedAbilityName && < div className='ability-bonus-game-right-wrong-guess' > {userBeatBonusGame ? <p> YOU GUESSED RIGHT!</p> : <p> Nice try, try again tomorrow! </p>} </div>}
+                {userGuessedAbilityName && < div className='ability-bonus-game-right-wrong-guess' > {userBeatBonusGame ? <p> GG, YOU WON!</p> : <p> Nice try, try again tomorrow! </p>} </div>}
                 <div className='all-abilities'>
                     {renderAllAbilities}
                 </div>

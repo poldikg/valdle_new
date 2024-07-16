@@ -337,6 +337,8 @@ const Agent = () => {
                 image={agentData[agentIndex].agentIcon}
                 name={agentData[agentIndex].agentName.toUpperCase()}
                 nrTries={allUserGuessesAgent.length}
+                rightAbility=""
+                allAbilities={[]}
                 currentPage={"Agent"}
                 nextPage={"Skin"}
             />}
