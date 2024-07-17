@@ -1,0 +1,69 @@
+.quote-upper-section {
+    width: 500px;
+    background-color: #2B3B52;
+    height: auto;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 4px;
+    gap: 2em;
+}
+
+.quote-quote-holder {
+    width: 300px;
+    height: auto;
+    background-color: #4E5F78;
+    border-radius: 4px;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.quote-header1 {
+    font-family: var(--font-jost);
+    margin: 0;
+    color: #D2404D;
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+.quote-quote-text {
+    font-family: var(--font-jost);
+    font-size: 1.5rem;
+}
+
+.quote-input-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.quote-input-container>input {
+    padding: 1em;
+    outline: none;
+    border: 1px solid #FEFEFE;
+    background-color: #2B3B52;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-family: var(--font-jost);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.quote-input-container>button {
+    font-family: var(--font-jost);
+    background-color: #FEFEFE;
+    color: #2B3B52;
+    border: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 0.65em 0.75em 0.75em 0.75em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
