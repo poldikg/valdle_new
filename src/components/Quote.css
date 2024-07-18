@@ -1,3 +1,9 @@
+.quote-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .quote-upper-section {
     width: 500px;
     background-color: #2B3B52;
@@ -66,4 +72,34 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+}
+
+.quote-lower-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.quote-guess-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 1em;
+    width: 300px;
+    height: auto;
+    padding: 1em;
+    border-radius: 4px;
+    font-family: var(--font-jost);
+}
+
+.quote-guess-container>img {
+    width: 100px;
+    height: auto;
+}
+
+.quote-guess-container>p {
+    font-size: 1.2rem;
 }

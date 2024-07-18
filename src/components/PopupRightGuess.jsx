@@ -63,7 +63,7 @@ const PopupRightGuess = (props) => {
                 </div>
             </div >}
 
-            <Link to={`/${props.nextPage}`}> <button className="button-popup-rightghuess">Guess the {props.nextPage}</button></Link>
+            {props.nextPage == "None" ? <Link to="/"> <button className="button-popup-rightghuess">Go to Home page</button> </Link> : <Link to={`/${props.nextPage}`}> <button className="button-popup-rightghuess">Guess the {props.nextPage}</button></Link>}
         </section >
     )
 }
