@@ -196,7 +196,7 @@ const Ability = () => {
                 <div className='ability-image-container'>
                     {allAgents.length >= 1 && <img style={imageBlur <= 0 || userGuessedAbilityCorrectly ? { transform: "rotate(0deg)" } : imageDifficulty} src={allAgents[agentIndex].agentAbilities[abilityIndex].displayIcon} alt="" draggable="false" />}
                 </div>
-                <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedAbilityCorrectly ? "Ability revealed." : `Ability reveal after ${imageBlur} tries.`}</p>
+                <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedAbilityCorrectly ? "Ability revealed." : `Full ability reveal after ${imageBlur} tries.`}</p>
                 <form onSubmit={(event) => handleSubmitAbility(event)}>
                     <div className='ability-input-container'>
                         <input className='ability-input-text' type="text" onChange={(event) => { saveUserGuess(event) }} />

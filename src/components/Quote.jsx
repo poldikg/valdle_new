@@ -12,7 +12,8 @@ const Quote = () => {
     const [userGuessQuote, setUserGuessQuote] = useState("");
     const [allUserGuessesQuote, setAllUserGuessesQuote] = useState([]);
     const [userGuessedCorrectlyQuote, setUserGuessedCorrectlyQuote] = useState(false);
-    console.log(allQuotes)
+    const [agentSuggestions, setAgentSuggestions] = useState([]);
+    console.log(allQuotes[agentIndex])
     const filterQuotes = AgentData.map(agent => {
         return {
             agentName: agent.agentName,
@@ -21,13 +22,14 @@ const Quote = () => {
         }
     });
 
-    const rightStyleGuess = { backgroundColor: "#16AC25" }
-    const wrongStyleGuess = { backgroundColor: "#D2404D" }
+    const rightStyleGuess = { backgroundColor: "#16AC25" };
+    const wrongStyleGuess = { backgroundColor: "#D2404D" };
+
     useEffect(() => {
         const getAgentIndex = localStorage.getItem("QuoteAgentIndex") ? localStorage.getItem("QuoteAgentIndex") : undefined;
         const getQuoteIndex = localStorage.getItem("QuoteQuoteIndex") ? localStorage.getItem("QuoteQuoteIndex") : undefined;
         const getAllUserGuessesQuote = localStorage.getItem("allUserQuoteGuesses") ? JSON.parse(localStorage.getItem("allUserQuoteGuesses")) : [];
-        const getUserRightGuess = localStorage.getItem("userGussesdQuoteCorrectly") ? JSON.parse(localStorage.getItem("userGussesdQuoteCorrectly")) : false;
+        const getUserRightGuess = localStorage.getItem("userGuessedQuoteCorrectly") ? JSON.parse(localStorage.getItem("userGuessedQuoteCorrectly")) : false;
 
         setAllQuotes(filterQuotes);
         if (getAgentIndex === undefined || getQuoteIndex === undefined) {
@@ -47,7 +49,7 @@ const Quote = () => {
                 const getInputButton = document.querySelector(".quote-input-button");
                 getInputText.setAttribute("disabled", true);
                 getInputButton.setAttribute("disabled", true);
-                getInputText.setAttribute("placehodler", "TRY AGAIN TOMORROW");
+                getInputText.setAttribute("placeholder", "TRY AGAIN TOMORROW");
                 setUserGuessedCorrectlyQuote(getUserRightGuess);
             }
 
@@ -64,6 +66,20 @@ const Quote = () => {
             getRightGuessPopup.scrollIntoView("")
         }
     }, [userGuessedCorrectlyQuote])
+
+    useEffect(() => {
+        if (userGuessQuote.length >= 1) {
+            const renderSuggestions = allQuotes.filter(agent => agent.agentName.slice(0, userGuessQuote.length) === userGuessQuote).map(agent => {
+                return {
+                    agentName: agent.agentName,
+                    agentIcon: agent.agentIcon
+                }
+            })
+            setAgentSuggestions(renderSuggestions)
+        } else if (userGuessQuote === "") {
+            setAgentSuggestions([]);
+        }
+    }, [userGuessQuote])
 
 
     const handleSubmitQuote = (event) => {
@@ -102,16 +118,18 @@ const Quote = () => {
             setUserGuessedCorrectlyQuote(true);
             event.target[0].disabled = true;
             event.target[1].disabled = true;
-            event.target[0].placeholder = "TRY AGAIN TOMORROW"
-            localStorage.setItem("userGussesdQuoteCorrectly", true)
+            event.target[0].placeholder = "TRY AGAIN TOMORROW";
+            localStorage.setItem("userGuessedQuoteCorrectly", true);
         }
+
+        setUserGuessQuote("");
 
     }
 
     const saveUserGuessQuote = (event) => {
         const userInput = event.target.value;
         const upperCaseFirstLetter = userInput.charAt(0).toUpperCase() + userInput.slice(1);
-        setUserGuessQuote(upperCaseFirstLetter)
+        setUserGuessQuote(upperCaseFirstLetter);
     }
 
     const renderUserQuoteGuesses = allUserGuessesQuote.map(guess => {
@@ -125,6 +143,15 @@ const Quote = () => {
     }
     )
 
+    const sendAgentToInput = (agentName) => {
+        setUserGuessQuote(agentName)
+    }
+
+    const renderAgentSuggestions = agentSuggestions.map(suggestion => <button onClick={() => sendAgentToInput(suggestion.agentName)}>
+        <img src={suggestion.agentIcon} alt="" srcset="" />
+        <p>{suggestion.agentName}</p>
+    </button>)
+
 
     return (
         <div className='quote-page'>
@@ -137,9 +164,12 @@ const Quote = () => {
                 </div>
                 <form onSubmit={(event) => handleSubmitQuote(event)}>
                     <div className='quote-input-container'>
-                        <input className='quote-input-text' type="text" placeholder='Type a guess ' onChange={(event) => saveUserGuessQuote(event)} />
+                        <input className='quote-input-text' type="text" placeholder='Type a guess' onChange={(event) => saveUserGuessQuote(event)} />
                         <button className='quote-input-button'> {">"} </button>
                     </div>
+                    {agentSuggestions.length >= 1 && <div className='quote-agent-suggestions'>
+                        {renderAgentSuggestions}
+                    </div>}
                 </form>
             </section>
             <section className='quote-lower-section'>
