@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: var(--font-jost);
 }
 
 .quote-upper-section {
@@ -140,4 +141,29 @@
 .quote-agent-suggestions>button>img {
     width: 50px;
     height: auto;
+}
+
+.quote-play-audio {
+    width: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    padding: 1em;
+    border: 2px solid #D2404D;
+    background-color: #2B3B52;
+    cursor: pointer;
+    margin-top: -2em;
+}
+
+.quote-play-audio>img {
+    width: 30px;
+    height: auto;
+    margin-left: 0.4em;
+}
+
+.quote-audio-hint-text {
+    margin-top: -1.8em;
 }

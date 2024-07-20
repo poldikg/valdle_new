@@ -10,13 +10,13 @@ const AgentData = [
          "We got my four friends, then five of us, that's nine! Man, we're stacked!"],
       agentVoicelinesAudio: [{
          voiceline: "Wachale güey, my crew is coming through.",
-         audio: "./agentVoicelines/Gekko/Gekko-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aggrobot_vo/464327068.mp3"
       }, {
          voiceline: "So, game plan? What y'all feeling? I'm down for whatever.",
-         audio: "./agentVoicelines/Gekko/Gekko-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aggrobot_vo/78305953.mp3"
       }, {
          voiceline: "We got my four friends, then five of us, that's nine! Man, we're stacked!",
-         audio: "./agentVoicelines/Gekko/Gekko-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aggrobot_vo/142278062.mp3"
       }]
    },
    {
@@ -31,13 +31,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Everyone is afraid of something.",
-         audio: "./agentVoicelines/Fade/Fade-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_bountyhunter_vo/963067082.mp3"
       }, {
          voiceline: "Don't worry everyone, I won't tell them what scares you. Promise.",
-         audio: "./agentVoicelines/Fade/Fade-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_bountyhunter_vo/1000945065.mp3"
       }, {
          voiceline: "I paid a heavy price to commune with Nightmare. Don't waste it.",
-         audio: "./agentVoicelines/Fade/Fade-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_bountyhunter_vo/401263238.mp3"
       }]
    },
    {
@@ -52,13 +52,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Stand in my way, I dare you.",
-         audio: "./agentVoicelines/Breach/Breach-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_breach_vo/802792402.mp3"
       }, {
          voiceline: "These cowards aren't ready for me. No one ever is.",
-         audio: "./agentVoicelines/Breach/Breach-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_breach_vo/1063220625.mp3"
       }, {
          voiceline: "Guns in my face? Just another tuesday.",
-         audio: "./agentVoicelines/Breach/Breach-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_breach_vo/232234798.mp3"
       }]
    },
    {
@@ -71,13 +71,13 @@ const AgentData = [
       agentVoicelines: ["Death is not an option.", "Trust me, we can get this job done.", "Here again, we face our death. And again we will defy it."],
       agentVoicelinesAudio: [{
          voiceline: "Death is not an option.",
-         audio: "./agentVoicelines/Deadlock/Deadlock-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_cable_vo/727149664.mp3"
       }, {
          voiceline: "Trust me, we can get this job done.",
-         audio: "./agentVoicelines/Deadlock/Deadlock-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_cable_vo/102755977.mp3"
       }, {
          voiceline: "Here again, we face our death. And again we will defy it.",
-         audio: "./agentVoicelines/Deadlock/Deadlock-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_cable_vo/800299781.mp3"
       }]
    },
    {
@@ -92,13 +92,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Yes! I'm pumped!",
-         audio: "./agentVoicelines/Raze/Raze-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_clay_vo/632864455.mp3"
       }, {
          voiceline: "You can take the girl out of Salvador but you'll never take the girl out of Salvador. Wait...",
-         audio: "./agentVoicelines/Raze/Raze-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_clay_vo/190614808.mp3"
       }, {
          voiceline: "Finally, back out in the field. Let's go, there's so many new toys to try out.",
-         audio: "./agentVoicelines/Raze/Raze-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_clay_vo/33881060.mp3"
       }]
    },
    {
@@ -112,13 +112,13 @@ const AgentData = [
          "Do not worry, with me this will be easy. C'est simple comme bonjour."],
       agentVoicelinesAudio: [{
          voiceline: "You have good taste my friend.",
-         audio: "./agentVoicelines/Chamber/Chamber-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_deadeye_vo/765052468.mp3"
       }, {
          voiceline: "This killing is terrible business, but I always say: if I must do something, be the best.",
-         audio: "./agentVoicelines/Chamber/Chamber-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_deadeye_vo/1009439464.mp3"
       }, {
          voiceline: "Do not worry, with me this will be easy. C'est simple comme bonjour.",
-         audio: "./agentVoicelines/Chamber/Chamber-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_deadeye_vo/28106470.mp3"
       }]
 
    },
@@ -132,13 +132,13 @@ const AgentData = [
       agentVoicelines: ["Let's do this.", "What's the plan? Send the robot in first? Smart choice.", "I'm about to go full killer robot. You've been warned."],
       agentVoicelinesAudio: [{
          voiceline: "Let's do this.",
-         audio: "./agentVoicelines/KAYO/KAYO-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_grenadier_vo/170847866.mp3"
       }, {
          voiceline: "What's the plan? Send the robot in first? Smart choice.",
-         audio: "./agentVoicelines/KAYO/KAYO-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_grenadier_vo/36120699.mp3"
       }, {
          voiceline: "I'm about to go full killer robot. You've been warned.",
-         audio: "./agentVoicelines/KAYO/KAYO-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_grenadier_vo/375394948.mp3"
       }]
    },
    {
@@ -153,13 +153,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Alright, where's the fight?",
-         audio: "./agentVoicelines/Skye/Skye-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_guide_vo/452875258.mp3"
       }, {
          voiceline: "Remember everyone, if we survive, woodworking class tonight in the mess hall. Nimble hands, nimble minds.",
-         audio: "./agentVoicelines/Skye/Skye-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_guide_vo/161340342.mp3"
       }, {
          voiceline: "Okay, let's get going. This work won't take care of itself.",
-         audio: "./agentVoicelines/Skye/Skye-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_guide_vo/17270332.mp3"
       }]
    },
    {
@@ -172,13 +172,13 @@ const AgentData = [
       agentVoicelines: ["Nothing stays hidden from me, nothing.", "They're scared. I don't need cameras to see that.", "Nobody escapes me. But they'll try."],
       agentVoicelinesAudio: [{
          voiceline: "Nothing stays hidden from me, nothing.",
-         audio: "./agentVoicelines/Cypher/Cypher-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aamir_vo/246514732.mp3"
       }, {
          voiceline: "They're scared. I don't need cameras to see that.",
-         audio: "./agentVoicelines/Cypher/Cypher-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aamir_vo/156208267.mp3"
       }, {
          voiceline: "Nobody escapes me. But they'll try.",
-         audio: "./agentVoicelines/Cypher/Cypher-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_aamir_vo/162593302.mp3"
       }]
    },
    {
@@ -193,13 +193,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Wherever they run, I will find them.",
-         audio: "./agentVoicelines/Sova/Sova-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_hunter_vo/130865070.mp3"
       }, {
          voiceline: "Another day, another battle. So be it. I do not fear blood on my hands.",
-         audio: "./agentVoicelines/Sova/Sova-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_hunter_vo/266526831.mp3"
       }, {
          voiceline: "There is no retreat, not when annihilation is at stake. This is our day.",
-         audio: "./agentVoicelines/Sova/Sova-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_hunter_vo/107556654.mp3"
       }]
    },
    {
@@ -214,13 +214,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Relax, I've already thought of everything.",
-         audio: "./agentVoicelines/Killjoy/Killjoy-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_killjoy_vo/1062625853.mp3"
       }, {
          voiceline: "I built literally everything on this battlefield. Ja! Even the things that might kill us. What?! You want me to say sorry?",
-         audio: "./agentVoicelines/Killjoy/Killjoy-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_killjoy_vo/128676700.mp3"
       }, {
          voiceline: "Okay, I've put together some data on our last 6 combat missions, did you read it? Did anyone read it? Oh god. Can anyone here read?",
-         audio: "./agentVoicelines/Killjoy/Killjoy-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_killjoy_vo/240882105.mp3"
       }]
    },
    {
@@ -235,13 +235,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Together, we'll crush them.",
-         audio: "./agentVoicelines/Harbor/Harbor-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_mage_vo/409447225.mp3"
       }, {
          voiceline: "I've done a thousand missions like this before. Today is no different.",
-         audio: "./agentVoicelines/Harbor/Harbor-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_mage_vo/506046659.mp3"
       }, {
          voiceline: "Someone showed up to fight us. They're either stupid or very stupid.",
-         audio: "./agentVoicelines/Harbor/Harbor-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_mage_vo/787917542.mp3"
       }]
    },
    {
@@ -256,13 +256,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "No one can hold their breath forever.",
-         audio: "./agentVoicelines/Viper/Viper-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_pandemic_vo/204662687.mp3"
       }, {
          voiceline: "They are not important. Let's move through them. Like smoke through lungs.",
-         audio: "./agentVoicelines/Viper/Viper-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_pandemic_vo/1070121253.mp3"
       }, {
          voiceline: "Only five of them? Pity, I brought enough poison for fifty. You can't say I'm not prepared.",
-         audio: "./agentVoicelines/Viper/Viper-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_pandemic_vo/157486051.mp3"
       }]
    },
    {
@@ -275,13 +275,13 @@ const AgentData = [
       agentVoicelines: ["Just take a seat. I got this.", "Keep a healthy distance, I burn hot.", "Don't worry guys, they say I'm a prodigy. Not my words, not my words, baby."],
       agentVoicelinesAudio: [{
          voiceline: "Just take a seat. I got this.",
-         audio: "./agentVoicelines/Phoenix/Phoenix-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_phoenix_vo/384959611.mp3"
       }, {
          voiceline: "Keep a healthy distance, I burn hot.",
-         audio: "./agentVoicelines/Phoenix/Phoenix-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_phoenix_vo/1053968159.mp3"
       }, {
          voiceline: "Don't worry guys, they say I'm a prodigy. Not my words, not my words, baby.",
-         audio: "./agentVoicelines/Phoenix/Phoenix-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_phoenix_vo/143236570.mp3"
       }]
    },
    {
@@ -315,13 +315,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "They think I'm an old dog? Heh. I'll show 'em just how many tricks I know.",
-         audio: "./agentVoicelines/Brimstone/Brimstone-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_rift_vo/594322343.mp3"
       }, {
          voiceline: "Failure is the great teacher. So let's teach 'em something.",
-         audio: "./agentVoicelines/Brimstone/Brimstone-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_rift_vo/175858568.mp3"
       }, {
          voiceline: "No one die on me, we're all going home.",
-         audio: "./agentVoicelines/Brimstone/Brimstone-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_rift_vo/197782258.mp3"
       }]
    },
    {
@@ -334,13 +334,13 @@ const AgentData = [
       agentVoicelines: ["Enough training, it's time.", "One minute. Finding a playlist. Humming Ah! Perfect.", "Less than a minute, lets plan."],
       agentVoicelinesAudio: [{
          voiceline: "Enough training, it's time.",
-         audio: "./agentVoicelines/Iso/Iso-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sequoia_vo/1043906359.mp3"
       }, {
          voiceline: "One minute. Finding a playlist. Humming Ah! Perfect.",
-         audio: "./agentVoicelines/Iso/Iso-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sequoia_vo/343123643.mp3"
       }, {
          voiceline: "Less than a minute, lets plan.",
-         audio: "./agentVoicelines/Iso/Iso-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sequoia_vo/502589289.mp3"
       }]
    },
    {
@@ -355,13 +355,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "I've got all the time in the world.",
-         audio: "./agentVoicelines/Clove/Clove-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_smonk_vo/864444586.mp3"
       }, {
          voiceline: "You know what? If one of those lookalikes came over here and pretended to be one of ya. I'm not sure I'd be able to tell the difference.",
-         audio: "./agentVoicelines/Clove/Clove-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_smonk_vo/132099877.mp3"
       }, {
          voiceline: "Who's ready to die for this mission? I am! But you know, I'm cheating.",
-         audio: "./agentVoicelines/Clove/Clove-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_smonk_vo/24631665.mp3"
       }]
    },
    {
@@ -376,13 +376,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Move or get zapped.",
-         audio: "./agentVoicelines/Neon/Neon-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sprinter_vo/5690468.mp3"
       }, {
          voiceline: "Radiant powers, deadly tech. I'm sure we won't break anything.",
-         audio: "./agentVoicelines/Neon/Neon-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sprinter_vo/287630246.mp3"
       }, {
          voiceline: ` "Sigh" "Let's go! World's not saving itself."`,
-         audio: "./agentVoicelines/Neon/Neon-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_sprinter_vo/313103138.mp3"
       }]
    },
    {
@@ -397,13 +397,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "I'll fight anybody, I'll fight everybody.",
-         audio: "./agentVoicelines/Yoru/Yoru-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_stealth_vo/107320642.mp3"
       }, {
          voiceline: "These guys caught me in a mood. Bad luck for them.",
-         audio: "./agentVoicelines/Yoru/Yoru-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_stealth_vo/1034433401.mp3"
       }, {
          voiceline: "Should I shoot them in the face or stab them in the back? I'll decide later.",
-         audio: "./agentVoicelines/Yoru/Yoru-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_stealth_vo/209468694.mp3"
       }]
    },
    {
@@ -418,13 +418,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "I am both shield and sword.",
-         audio: "./agentVoicelines/Sage/Sage-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_thorne_vo/119342169.mp3"
       }, {
          voiceline: "I will defend you all with my power and with my life.",
-         audio: "./agentVoicelines/Sage/Sage-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_thorne_vo/124771404.mp3"
       }, {
          voiceline: "I wasn't strong enough before, but now, now, I am strong enough for us all.",
-         audio: "./agentVoicelines/Sage/Sage-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_thorne_vo/230797783.mp3"
       }]
    },
    {
@@ -438,13 +438,13 @@ const AgentData = [
          "I will drain the life from our prey. That's all they're good for."],
       agentVoicelinesAudio: [{
          voiceline: "They have no idea how heartless I am.",
-         audio: "./agentVoicelines/Reyna/Reyna-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_vampire_vo/847719523.mp3"
       }, {
          voiceline: "These enemies have nothing special. Still human. Still mortal.",
-         audio: "./agentVoicelines/Reyna/Reyna-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_vampire_vo/1032179566.mp3"
       }, {
          voiceline: "I will drain the life from our prey. That's all they're good for.",
-         audio: "./agentVoicelines/Reyna/Reyna-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_vampire_vo/1049908654.mp3"
       }]
    },
    {
@@ -459,13 +459,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "I am the beginning, I am the end.",
-         audio: "./agentVoicelines/Omen/Omen-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wraith_vo/717842149.mp3"
       }, {
          voiceline: "Do they know what it means to be truly afraid? I'll show them.",
-         audio: "./agentVoicelines/Omen/Omen-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wraith_vo/1035409505.mp3"
       }, {
          voiceline: "How many must I kill before I am restored? More. Always more.",
-         audio: "./agentVoicelines/Omen/Omen-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wraith_vo/363462354.mp3"
       }]
    },
    {
@@ -480,13 +480,13 @@ const AgentData = [
       ],
       agentVoicelinesAudio: [{
          voiceline: "Cool. Let's go.",
-         audio: "./agentVoicelines/Jett/Jett-1.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wushu_vo/878055936.mp3"
       }, {
          voiceline: "Think you can keep up? Who am I kidding? You know you can't keep up.",
-         audio: "./agentVoicelines/Jett/Jett-2.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wushu_vo/105069490.mp3"
       }, {
          voiceline: "Heyyy! The gang's all here. This is great, they don't stand a chance.",
-         audio: "./agentVoicelines/Jett/Jett-3.mp3"
+         audio: "https://www.kingdomarchives.com/Assets/Audio/events_char_wushu_vo/1060942430.mp3"
       }]
    }
 ]
