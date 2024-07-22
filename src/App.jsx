@@ -6,6 +6,7 @@ import Navigation from './components/Navigation'
 import Skin from './components/Skin'
 import Ability from './components/Ability'
 import Quote from './components/Quote'
+import Testpage from './components/testpage'
 import { Routes, Route, useLocation, Link } from 'react-router-dom'
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
         <Route path="/Skin" element={<Skin />} />
         <Route path='/Ability' element={<Ability />} />
         <Route path="/Quote" element={<Quote />} />
+        <Route path='/Testpage' element={<Testpage />} />
       </Routes>
 
       {showNavigation && <Navigation navigationData={navigationData} />}

@@ -13,10 +13,16 @@
   -moz-osx-font-smoothing: grayscale;
   background: url("./assets/background-valdle.jpg");
   background-size: cover;
-  scroll-behavior: smooth;
+
 
   --font-jost: "Jost";
-  --green-gradiant: rgba(26, 147, 89, 0.5)
+  --green-gradiant: rgba(26, 147, 89, 0.5);
+}
+
+
+::-webkit-scrollbar {
+  display: none;
+
 }
 
 @font-face {

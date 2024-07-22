@@ -172,9 +172,6 @@ const Quote = () => {
         setPlayAudio(prevState => prevState + 1)
     }
 
-
-
-
     return (
         <div className='quote-page'>
             <section className='quote-upper-section'>
@@ -208,7 +205,6 @@ const Quote = () => {
                 allAbilities={[]}
                 currentPage={"Quote"}
                 nextPage={"None"}
-
             />}
         </div>
 

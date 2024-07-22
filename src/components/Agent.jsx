@@ -4,6 +4,7 @@ import AgentData from "./AgentData";
 import PopupRightGuess from "./PopupRightGuess";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 
 const Agent = () => {
@@ -21,10 +22,11 @@ const Agent = () => {
     const [suggestedAgents, setSuggestedAgents] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showHint, setShowHint] = useState({ hintQuote: false, hintAbility: false });
+    const [opacityStates, setOpacityStates] = useState(Array(allUserGuessesAgent.length).fill(false));
     console.log(agentAbilities)
 
 
-
+    const styleChangeOpacity = { opacity: "1", transition: "opacity 1s ease-in 2s" }
 
     const styleWrongGuess = {
         backgroundColor: "#D2404D",
@@ -229,7 +231,8 @@ const Agent = () => {
                             agentRole: agentData[i].agentRole,
                             agentSpecies: agentData[i].agentSpecies,
                             agentCountry: agentData[i].agentCountry,
-                            agentReleaseDate: agentData[i].agentReleaseDate
+                            agentReleaseDate: agentData[i].agentReleaseDate,
+                            agentData: [agentData[i].agentIcon, agentData[i].agentRole, agentData[i].agentSpecies, agentData[i].agentCountry, agentData[i].agentReleaseDate]
                         }, ...prevState
                         ];
                     })
@@ -239,7 +242,8 @@ const Agent = () => {
                         agentRole: agentData[i].agentRole,
                         agentSpecies: agentData[i].agentSpecies,
                         agentCountry: agentData[i].agentCountry,
-                        agentReleaseDate: agentData[i].agentReleaseDate
+                        agentReleaseDate: agentData[i].agentReleaseDate,
+                        agentData: [agentData[i].agentIcon, agentData[i].agentRole, agentData[i].agentSpecies, agentData[i].agentCountry, agentData[i].agentReleaseDate]
 
                     }, ...allUserGuessesAgent
                     ]));
@@ -260,27 +264,47 @@ const Agent = () => {
 
     }
 
-    const renderAgentGuess = allUserGuessesAgent.map(agent => {
+
+    const checkStyle = (agentInfo) => {
+        if (agentInfo === agentData[agentIndex].agentRole
+            || agentInfo === agentData[agentIndex].agentSpecies
+            || agentInfo === agentData[agentIndex].agentCountry
+            || agentInfo === agentData[agentIndex].agentReleaseDate
+        ) {
+            return styleRightGuess
+        } else {
+            return styleWrongGuess
+        }
+
+    }
+
+    const renderAgentGuess = allUserGuessesAgent.map((agent, i) => {
         return agent.agentName === agentData[agentIndex].agentName ?
-            <section className="agent-individual">
-                <div style={styleRightGuess}>
-                    <img src={agent.agentIcon} alt="" srcset="" />
-                </div>
-                <div style={styleRightGuess}> {agent.agentRole} </div>
-                <div style={styleRightGuess}> {agent.agentSpecies} </div>
-                <div style={styleRightGuess}> {agent.agentCountry} </div>
-                <div style={styleRightGuess}> {agent.agentReleaseDate} </div>
-            </section>
+            <div key={agent.agentName} className="agent-individual">
+                {agent.agentData.map((data, i) => <motion.div style={styleRightGuess}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                        duration: userGuessedAgent ? 0 : 0.8,
+                        delay: userGuessedAgent ? 0 : i - 0.5,
+                        ease: [0, 0.71, 0.2, 1.01],
+
+                    }}> {data.includes("https") ? <div className="agent-agent-detail"> <img className="agent-img" src={data}></img></div> : <div>{data}</div>} </motion.div>)}
+            </div>
             :
-            <section className="agent-individual">
-                <div style={styleWrongGuess}>
-                    <img src={agent.agentIcon} alt="" srcset="" />
-                </div>
-                <div style={agent.agentRole === agentData[agentIndex].agentRole ? styleRightGuess : styleWrongGuess}> {agent.agentRole} </div>
-                <div style={agent.agentSpecies === agentData[agentIndex].agentSpecies ? styleRightGuess : styleWrongGuess}> {agent.agentSpecies} </div>
-                <div style={agent.agentCountry === agentData[agentIndex].agentCountry ? styleRightGuess : styleWrongGuess}> {agent.agentCountry} </div>
-                <div style={agent.agentReleaseDate === agentData[agentIndex].agentReleaseDate ? styleRightGuess : styleWrongGuess}> {agent.agentReleaseDate} </div>
-            </section>
+            <div key={agent.agentName} className="agent-individual">
+                {agent.agentData.map((data, i) => <motion.div style={checkStyle(data)}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                        duration: userGuessedAgent ? 0 : 0.8,
+                        delay: userGuessedAgent ? 0 : i - 0.5,
+                        ease: [0, 0.71, 0.2, 1.01],
+
+                    }}>{data.includes("https") ? <div className="agent-agent-detail"><img className="agent-img" src={data}></img></div> : <div>{data}</div>}</motion.div>
+
+                )}
+            </div>
     });
 
     const renderAgentSuggestions = suggestedAgents.map(agent => {
@@ -300,13 +324,13 @@ const Agent = () => {
                             <div className="hint-button" style={(3 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Quote")}>
                                 <img src="../agent-abilities/double-quote-noborder-disabled.png" alt="" srcset="" />
                             </div>
-                            {(3 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show a quote clue.</p> : <p>Get a clue in {3 - nrUserGuesses} tries.</p>}
+                            {(3 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show a quote clue.</p> : <p>Quote clue in {3 - nrUserGuesses} tries.</p>}
                         </div>
                         <div className="hint" >
                             <div className="hint-button" style={(6 - nrUserGuesses) <= 0 || userGuessedAgent ? styleHintEnabled : styleHintDisabled} onClick={() => showHints("Ability")}>
                                 <img id="agent-ability-hint-image" src="../agent-abilities/brim-ult-disabled.png" alt="" srcset="" />
                             </div>
-                            {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show ability clue.</p> : <p>Get a clue in {6 - nrUserGuesses} tries.</p>}
+                            {(6 - nrUserGuesses) <= 0 || userGuessedAgent ? <p>Show ability clue.</p> : <p>Ability clue in {6 - nrUserGuesses} tries.</p>}
                         </div>
                     </div>
                     {showHint.hintAbility ? <section className="agent-hint-show"> <img src={agentAbilities[agentIndex].agentAbilities[agentAbilityIndex].displayIcon} alt="" srcset="" /> <p>{agentAbilities[agentIndex].agentAbilities[agentAbilityIndex].displayName}</p> </section>
