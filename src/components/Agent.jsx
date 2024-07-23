@@ -285,11 +285,11 @@ const Agent = () => {
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{
-                        duration: userGuessedAgent ? 0 : 0.8,
+                        duration: userGuessedAgent ? 0 : 0.7,
                         delay: userGuessedAgent ? 0 : i - 0.5,
-                        ease: [0, 0.71, 0.2, 1.01],
-
-                    }}> {data.includes("https") ? <div className="agent-agent-detail"> <img className="agent-img" src={data}></img></div> : <div>{data}</div>} </motion.div>)}
+                        ease: [0, 0.71, 0.2, 1.01]
+                    }}>
+                    {data.includes("https") ? <div className="agent-agent-detail"> <img className="agent-img" src={data}></img></div> : <div>{data}</div>} </motion.div>)}
             </div>
             :
             <div key={agent.agentName} className="agent-individual">
@@ -297,7 +297,7 @@ const Agent = () => {
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{
-                        duration: userGuessedAgent ? 0 : 0.8,
+                        duration: userGuessedAgent ? 0 : 0.7,
                         delay: userGuessedAgent ? 0 : i - 0.5,
                         ease: [0, 0.71, 0.2, 1.01],
 

@@ -20,11 +20,6 @@
 }
 
 
-::-webkit-scrollbar {
-  display: none;
-
-}
-
 @font-face {
   font-family: "NicoMoji";
   src: url("./assets/font-nico-moji/NicoMoji-Regular.ttf");

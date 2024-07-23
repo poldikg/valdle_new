@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import PopupRightGuess from './PopupRightGuess'
+import { motion } from 'framer-motion'
 import "./Skin.css"
 
 
@@ -186,14 +187,30 @@ const Skin = () => {
     }, [userMadeRightGuess])
 
     const renderUserSkinGuesses = allUserGuessesSkin.map(guess => {
-        return guess.skinName === allSkins[weaponIndex].weaponSkins[skinIndex].skinName ? <div style={styleRightGuess} className='skin-user-guess'>
+        return guess.skinName === allSkins[weaponIndex].weaponSkins[skinIndex].skinName ? <motion.div key={guess.skinName} style={styleRightGuess} className='skin-user-guess'
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userMadeRightGuess ? 0 : 0.7,
+                delay: userMadeRightGuess ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01],
+
+            }}>
             <img src={guess.skinURL} alt="" />
             <p> {guess.skinName}</p>
-        </div> :
-            <div style={styleWrongGuess} className='skin-user-guess'>
+        </motion.div> :
+            <motion.div key={guess.skinName} style={styleWrongGuess} className='skin-user-guess'
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: userMadeRightGuess ? 0 : 0.7,
+                    delay: userMadeRightGuess ? 0 : 0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+
+                }}>
                 <img src={guess.skinURL} alt="" />
                 <p> {guess.skinName}</p>
-            </div>
+            </motion.div>
     })
 
     const renderSkinSuggestions = skinSuggestions.map(suggestion => <button className='button-send-skin-suggestion' onClick={() => sendSkinSuggestion(suggestion)}> {suggestion} </button>)

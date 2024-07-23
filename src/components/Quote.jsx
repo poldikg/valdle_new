@@ -1,6 +1,7 @@
 import React from 'react'
 import "./Quote.css"
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import AgentData from './AgentData'
 import PopupRightGuess from './PopupRightGuess'
 import voiceline from "./agentsVoicelines/Gekko/Gekko-1.mp3"
@@ -140,13 +141,27 @@ const Quote = () => {
     }
 
     const renderUserQuoteGuesses = allUserGuessesQuote.map(guess => {
-        return guess.agentName === allQuotes[agentIndex].agentName ? <div style={rightStyleGuess} className='quote-guess-container'>
+        return guess.agentName === allQuotes[agentIndex].agentName ? <motion.div key={guess.agentName} style={rightStyleGuess} className='quote-guess-container'
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userGuessedCorrectlyQuote ? 0 : 0.7,
+                delay: userGuessedCorrectlyQuote ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }}>
             <img src={guess.agentIcon} alt="" srcset="" />
             <p>{guess.agentName}</p>
-        </div> : <div style={wrongStyleGuess} className='quote-guess-container'>
+        </motion.div> : <motion.div key={guess.agentName} style={wrongStyleGuess} className='quote-guess-container'
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userGuessedCorrectlyQuote ? 0 : 0.7,
+                delay: userGuessedCorrectlyQuote ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }}>
             <img src={guess.agentIcon} alt="" srcset="" />
             <p>{guess.agentName}</p>
-        </div>
+        </motion.div>
     }
     )
 
@@ -171,6 +186,7 @@ const Quote = () => {
         }
         setPlayAudio(prevState => prevState + 1)
     }
+
 
     return (
         <div className='quote-page'>

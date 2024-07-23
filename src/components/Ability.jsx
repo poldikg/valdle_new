@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import "./Ability.css"
+import { motion } from 'framer-motion'
 import PopupRightGuess from "./PopupRightGuess.jsx"
+import "./Ability.css"
+
 
 const Ability = () => {
 
@@ -159,13 +161,27 @@ const Ability = () => {
     }
 
     const renderUserAbilityGuesses = allAbilityUserGuesses.map(guess => {
-        return guess.agentName === allAgents[agentIndex].agentName ? <div style={rightAbilityGuess} className='ability-user-guess'>
+        return guess.agentName === allAgents[agentIndex].agentName ? <motion.div key={guess.agentName} style={rightAbilityGuess} className='ability-user-guess'
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userGuessedAbilityCorrectly ? 0 : 0.7,
+                delay: userGuessedAbilityCorrectly ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }}>
             <img src={guess.agentIcon} alt="Agent image" draggable="false" />
             <p>{guess.agentName}</p>
-        </div> : <div style={wrongAbilityGuess} className='ability-user-guess'>
+        </motion.div > : <motion.div key={guess.agentName} style={wrongAbilityGuess} className='ability-user-guess'
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userGuessedAbilityCorrectly ? 0 : 0.7,
+                delay: userGuessedAbilityCorrectly ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }}>
             <img src={guess.agentIcon} alt="Agent image" draggable="false" />
             <p>{guess.agentName}</p>
-        </div>
+        </motion.div>
     });
 
     const sendSuggestionToInput = (agentName) => {
