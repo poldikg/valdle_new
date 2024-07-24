@@ -26,7 +26,7 @@ const Navigation = (props) => {
             setDayPassed(true)
         }
     }
-    const navMenu = props.navigationData.map((item, index) => <Link style={removeTextDecoration} to={`/${item.name}`}> <div onClick={() => removeFromLocalStorage(item.name)} key={index} className="nav-item">
+    const navMenu = props.navigationData.map((item, index) => <Link style={removeTextDecoration} to={`/${item.name}`}> <div onClick={() => removeFromLocalStorage(item.name)} key={item.name} className="nav-item">
         <img className={`nav-img image-${item.name}`} src={`/agent-abilities/${item.img}`} alt="" />
         <div className="text-container"> <h2>{item.name}</h2> <p>{item.description}</p></div>
     </div> </Link>)

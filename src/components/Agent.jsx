@@ -338,7 +338,7 @@ const Agent = () => {
                 </section>
 
                 <form action="" onSubmit={handleFormSubmitAgent}>
-                    <div className="form-section-input">
+                    <div className="form-section-input" style={userGuessedAgent ? { display: "none" } : { display: "flex" }}>
                         <input className="agent-input" type="text" placeholder={userGuessedAgent ? "TRY AGAIN TOMORROW" : "Type your guess"} onChange={changeUserGuessAgent} />
                         <button className="agent-submit-button"> {">"}</button>
                     </div>

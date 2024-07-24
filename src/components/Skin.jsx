@@ -19,7 +19,6 @@ const Skin = () => {
 
     const styleWrongGuess = {
         backgroundColor: "#D2404D",
-        padding: "3em",
         borderRadius: "4px",
         display: "flex",
         flexDirection: "column",
@@ -29,7 +28,6 @@ const Skin = () => {
 
     const styleRightGuess = {
         backgroundColor: "#16AC25",
-        padding: "3em",
         borderRadius: "4px",
         display: "flex",
         flexDirection: "column",
@@ -223,7 +221,7 @@ const Skin = () => {
                     {allSkins.length > 0 && <img src={allSkins[weaponIndex].weaponSkins[skinIndex].skinURL} alt="Picture of a skin." />}
                 </div>
                 <form onSubmit={handleSubmitSkin}>
-                    <div className='skin-page-inputs'>
+                    <div className='skin-page-inputs' style={userMadeRightGuess ? { display: "none" } : { display: "flex" }}>
                         <input id="skin-input-text" type="text" name="" placeholder='Type your guess' onChange={() => saveUserSkinGuess(event)} autoComplete='off' />
                         <button id='skin-input-button'> {" > "}</button>
                     </div>

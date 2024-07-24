@@ -214,8 +214,8 @@ const Ability = () => {
                 </div>
                 <p className='ability-reveal-image'>{imageBlur <= 0 || userGuessedAbilityCorrectly ? "Ability revealed." : `Full ability reveal after ${imageBlur} tries.`}</p>
                 <form onSubmit={(event) => handleSubmitAbility(event)}>
-                    <div className='ability-input-container'>
-                        <input className='ability-input-text' type="text" onChange={(event) => { saveUserGuess(event) }} />
+                    <div className='ability-input-container' style={userGuessedAbilityCorrectly ? { display: "none" } : { display: "flex" }}>
+                        <input className='ability-input-text' type="text" placeholder="Type your guess" onChange={(event) => { saveUserGuess(event) }} />
                         <button className='ability-input-button'>{">"}</button>
                     </div>
                     {abilityAgentSuggestions.length >= 1 && <div className='ability-agent-suggestions-container'>

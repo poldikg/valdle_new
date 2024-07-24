@@ -187,6 +187,29 @@ const Quote = () => {
         setPlayAudio(prevState => prevState + 1)
     }
 
+    // const testDateYear = new Date().getFullYear()
+    // const testDateMonth = new Date().getMonth();
+    // const testDateDate = new Date().getDate() + 1;
+    // const testDateHour = new Date().getHours();
+    // const testDateMinutes = new Date().getMinutes();
+    // const testDateSeconds = new Date().getSeconds();
+    // const testDate = new Date(testDateYear, testDateMonth, testDateDate, testDateHour, testDateMinutes, testDateSeconds);
+    // const getExistingDate = new Date(localStorage.getItem("QuoteTaskCreated"))
+
+    // const secondsDifference = Math.floor((testDate - (getExistingDate)) / 1000);
+    // const minutesDifference = Math.floor(secondsDifference / 60);
+    // const hoursDifference = Math.floor(minutesDifference / 60);
+    // const daysDifference = Math.floor(hoursDifference / 24);
+
+
+
+    // const newHoursDifference = hoursDifference - (daysDifference * 24);
+    // const newMinutesDifference = minutesDifference - (daysDifference * 24 * 60) - (hoursDifference * 60);
+    // const newSecondsDifference = secondsDifference - (daysDifference * 24 * 60 * 60) - (hoursDifference * 60 * 60) - (minutesDifference * 60);
+
+    // console.log(newHoursDifference, newMinutesDifference, newSecondsDifference)
+    // console.log(testDate, getExistingDate)
+
 
     return (
         <div className='quote-page'>
@@ -197,11 +220,11 @@ const Quote = () => {
                         "{allQuotes.length >= 1 && allQuotes[agentIndex].agentQuotes[quoteIndex].voiceline}"
                     </p>
                 </div>
-                <p className='quote-audio-hint-text'>{3 - audioHint > 0 ? `Audio hint in ${3 - audioHint} tries.` : "Click to play the audio."}</p>
-                {3 - audioHint <= 0 && <div onClick={() => playVoiceline()} className='quote-play-audio'> <img src="agent-abilities/play-button.png" alt="" srcset="" /></div>}
+                <p className='quote-audio-hint-text'>{3 - audioHint <= 0 || userGuessedCorrectlyQuote ? "Click to play the audio." : `Audio hint in ${3 - audioHint} tries.`}</p>
+                {3 - audioHint <= 0 || userGuessedCorrectlyQuote && <div onClick={() => playVoiceline()} className='quote-play-audio'> <img src="agent-abilities/play-button.png" alt="" srcset="" /></div>}
                 <form onSubmit={(event) => handleSubmitQuote(event)}>
-                    <div className='quote-input-container'>
-                        <input className='quote-input-text' type="text" placeholder='Type a guess' onChange={(event) => saveUserGuessQuote(event)} />
+                    <div className='quote-input-container' style={userGuessedCorrectlyQuote ? { display: "none" } : { display: "flex" }}>
+                        <input className='quote-input-text' type="text" placeholder='Type your guess' onChange={(event) => saveUserGuessQuote(event)} />
                         <button className='quote-input-button'> {">"} </button>
                     </div>
 
