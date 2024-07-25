@@ -23,6 +23,13 @@ const Navigation = (props) => {
             localStorage.removeItem(`userMade${name}Guess`)
             localStorage.removeItem(`${name}QuoteIndex`)
             localStorage.removeItem(`${name}AbilityIndex`)
+            localStorage.removeItem(`${name}Suggestions`)
+            localStorage.removeItem(`${name}WeaponIndex`)
+            localStorage.removeItem(`${name}SkinIndex`)
+            localStorage.removeItem(`${name}RandomAngle`)
+            localStorage.removeItem(`${name}ImageBlur`)
+            localStorage.removeItem(`${name}AgentIndex`)
+            localStorage.removeItem(`${name}AudioHint`)
             setDayPassed(true)
         }
     }

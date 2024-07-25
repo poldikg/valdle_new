@@ -213,7 +213,7 @@ const Map = () => {
             if (userGuess.toLowerCase() === copyAllMaps[i].toLowerCase() && !userGuessTrue) {
                 const indexMap = copyAllMaps.indexOf(copyAllMaps[i]);
                 let filteredMaps = copyAllMaps.splice(indexMap, 1);
-                localStorage.setItem("mapSuggestions", JSON.stringify([...copyAllMaps]));
+                localStorage.setItem("MapSuggestions", JSON.stringify([...copyAllMaps]));
                 setUserGuess(undefined);
             }
         }
