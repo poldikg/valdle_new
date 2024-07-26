@@ -1,29 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import "./Map.css"
+import mapData from "./MapData";
 import PopupRightGuess from "./PopupRightGuess";
 import { Link, json } from "react-router-dom";
 
 const Map = () => {
     const [allMaps, setAllMaps] = useState([]);
     const [copyAllMaps, setCopyAllMaps] = useState([]);
-    const [isMounted, setIsMounted] = useState(false);
     const [userGuess, setUserGuess] = useState(undefined);
     const [allUserGuesses, setAllUserGuesses] = useState([]);
     const [randomIndexMap, setRandomIndexMap] = useState();
-    const date = new Date();
-    const [dateState, setDateState] = useState(date);
-    const getPreviousTime = localStorage.getItem("MapTaskCreated");
-    // const [userMadeGuess, setUserMadeGuess] = useState(false);
+    const [mapLocationIndex, setMapLocationIndex] = useState();
     const [allUserGuessesLocalStorage, setAllUserGuessesLocalStorage] = useState([]);
     const userMadeGuessLocalStorage = JSON.parse(localStorage.getItem("userMadeMapGuess"));
     const userGuessMapCorrectlyLocalStorage = JSON.parse(localStorage.getItem("userGuessedMapCorrectly"));
     const [userGuessedMapCorrectly, setUserGussedMapCorrectly] = useState(false);
-    const [dayPassed, setDayPassed] = useState(false);
     const [mapsSuggestions, setMapsSuggestions] = useState([]);
     const [mapSuggestionHappened, setMapSuggestionHappend] = useState(false);
     const suggestionRef = useRef();
     console.log(copyAllMaps)
-    console.log(allMaps)
 
     const hideRightGuessPopupStyle = {
         opacity: "0",
@@ -68,22 +63,24 @@ const Map = () => {
     }}> {map} </button>)
 
     useEffect(() => {
-        setMapsSuggestions([]);
+
 
         if (userGuess !== undefined) {
             for (let i = 0; i < copyAllMaps.length; i++) {
-                if (userGuess.charAt(0).toUpperCase() === copyAllMaps[i][0]) {
-                    const finalSuggestions = copyAllMaps.filter(map => map.slice(0, userGuess.length).toLowerCase() === userGuess.toLowerCase());
+                if (userGuess.charAt(0) === copyAllMaps[i][0]) {
+                    const finalSuggestions = copyAllMaps.filter(map => map.slice(0, userGuess.length) === userGuess);
                     setMapsSuggestions(finalSuggestions);
                     setMapSuggestionHappend(true);
                 }
             }
             if (userGuess === "") {
                 setMapSuggestionHappend(false);
+                setMapsSuggestions([]);
             }
         }
         else if (userGuess === undefined) {
             setMapSuggestionHappend(false);
+            setMapsSuggestions([]);
         }
 
 
@@ -91,46 +88,50 @@ const Map = () => {
     }, [userGuess])
 
     useEffect(() => {
-        const getMapIndex = localStorage.getItem("MapIndex");
+        const getMapIndex = localStorage.getItem("MapIndex") ? localStorage.getItem("MapIndex") : undefined;
+        const getMapLocationIndex = localStorage.getItem("MapLocationIndex") ? localStorage.getItem("MapLocationIndex") : undefined;
         const userGuessedCorrectly = localStorage.getItem("userGuessedMapCorrectly");
         const userMapGuessesLocalStorage = JSON.parse(localStorage.getItem("allUserMapGuesses") || null);
         const getUserMapGuesses = JSON.parse(localStorage.getItem("allUserMapGuesses")) ? JSON.parse(localStorage.getItem("allUserMapGuesses")) : [];
-        const mapSuggestionsLocalStorage = JSON.parse(localStorage.getItem("mapSuggestions"));
-        console.log(userMapGuessesLocalStorage)
+        const mapSuggestionsLocalStorage = localStorage.getItem("MapSuggestions") ? JSON.parse(localStorage.getItem("MapSuggestions")) : [];
+        console.log(mapSuggestionsLocalStorage)
 
 
-        fetch("https://valorant-api.com/v1/maps")
-            .then(res => res.json())
-            .then(allDataObj => {
-                const allMaps = allDataObj.data.map(map => map.displayName);
-                setAllMaps(allMaps);
-                setCopyAllMaps([...allMaps]);
+        setAllMaps(mapData);
+        const onlyMapNames = mapData.map(map => map.mapName);
+        setCopyAllMaps(onlyMapNames);
 
-                if (getMapIndex) {
-                    setRandomIndexMap(parseInt(getMapIndex))
-                    if (userMadeGuessLocalStorage) {
-                        setCopyAllMaps(mapSuggestionsLocalStorage)
-                        setAllUserGuessesLocalStorage(getUserMapGuesses)
-                        setAllUserGuesses(getUserMapGuesses)
+        if (getMapIndex) {
+            setRandomIndexMap(parseInt(getMapIndex))
+            setMapLocationIndex(parseInt(getMapLocationIndex));
 
-                    }
-                    if (userGuessedCorrectly) {
-                        setUserGussedMapCorrectly(JSON.parse(userGuessedCorrectly))
-                        console.log("yo")
-                        const userInputBox = document.querySelector(".userMapInput")
-                        const submitBtn = document.getElementById("submitBtn")
-                        submitBtn.setAttribute("disabled", true)
-                        userInputBox.setAttribute("disabled", true)
-                    }
-                }
-                else {
-                    const randomIndex = Math.floor(Math.random() * allMaps.length)
-                    localStorage.setItem("MapIndex", randomIndex);
-                    setRandomIndexMap(randomIndex)
-                    localStorage.setItem("MapTaskCreated", new Date())
+            if (userMadeGuessLocalStorage) {
+                setCopyAllMaps(mapSuggestionsLocalStorage)
+                setAllUserGuessesLocalStorage(getUserMapGuesses)
+                setAllUserGuesses(getUserMapGuesses)
 
-                }
-            })
+            }
+            if (userGuessedCorrectly) {
+                setUserGussedMapCorrectly(JSON.parse(userGuessedCorrectly))
+                console.log("yo")
+                const userInputBox = document.querySelector(".userMapInput")
+                const submitBtn = document.getElementById("submitBtn")
+                submitBtn.setAttribute("disabled", true)
+                userInputBox.setAttribute("disabled", true)
+            }
+        }
+        else {
+            const randomIndex = Math.floor(Math.random() * mapData.length)
+            console.log(allMaps.length);
+            const randomMapLocationIndex = Math.floor(Math.random() * mapData[randomIndex].locations.length);
+            localStorage.setItem("MapLocationIndex", randomMapLocationIndex)
+            localStorage.setItem("MapIndex", randomIndex);
+            setMapLocationIndex(randomMapLocationIndex);
+            setRandomIndexMap(randomIndex)
+            localStorage.setItem("MapTaskCreated", new Date())
+
+        }
+
         console.log("mounted map")
     }, [])
 
@@ -172,8 +173,9 @@ const Map = () => {
         event.preventDefault();
         event.target[0].value = "";
 
+        const mapNames = allMaps.map(map => map.mapName);
 
-        if (!allMaps.includes(userGuess.charAt(0).toUpperCase() + userGuess.slice(1))) {
+        if (!mapNames.includes(userGuess)) {
             setUserGuess(undefined);
             return false;
         }
@@ -187,7 +189,7 @@ const Map = () => {
         if (userGuess === "") {
             event.target[0].required = true;
         }
-        const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].toLowerCase();
+        const userGuessTrue = userGuess.toLowerCase() === allMaps[randomIndexMap].mapName.toLowerCase();
 
         if (allUserGuesses) {
             const userMadeGuess = true;
@@ -204,13 +206,14 @@ const Map = () => {
             event.target[1].disabled = true;
         }
 
-        setAllUserGuesses(prevState => {
-            localStorage.setItem("allUserMapGuesses", JSON.stringify([userGuess, ...allUserGuesses]))
-            return [userGuess, ...prevState];
-        })
+        if (mapNames.includes(userGuess))
+            setAllUserGuesses(prevState => {
+                localStorage.setItem("allUserMapGuesses", JSON.stringify([userGuess, ...allUserGuesses]))
+                return [userGuess, ...prevState];
+            })
 
-        for (let i = 0; i <= copyAllMaps.length; i++) {
-            if (userGuess.toLowerCase() === copyAllMaps[i].toLowerCase() && !userGuessTrue) {
+        for (let i = 0; i <= copyAllMaps.length; i++) { //FIX
+            if ((userGuess === copyAllMaps[i]) && !userGuessTrue) {
                 const indexMap = copyAllMaps.indexOf(copyAllMaps[i]);
                 let filteredMaps = copyAllMaps.splice(indexMap, 1);
                 localStorage.setItem("MapSuggestions", JSON.stringify([...copyAllMaps]));
@@ -222,8 +225,8 @@ const Map = () => {
     }
 
     const saveUserGuess = (event) => {
-        console.log(event)
-        setUserGuess(event.target.value)
+        const userGuessUpperCased = event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1)
+        setUserGuess(userGuessUpperCased)
     }
 
     useEffect(() => {
@@ -232,12 +235,12 @@ const Map = () => {
 
 
     const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {
-        return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <div className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </div>
+        return guess === allMaps[randomIndexMap].mapName ? <div className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </div>
             : <div className="user-guess"> <h1 style={wrongGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1></div>
     })
 
     const renderUserGuess = allUserGuesses.map(guess => {
-        return guess.toLowerCase() === allMaps[randomIndexMap].toLowerCase() ? <h1 style={{ color: "green" }}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
+        return guess === allMaps[randomIndexMap].mapName ? <h1 style={{ color: "green" }}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
             : <h1 style={{ color: "red" }}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1>
     })
     //Map ima return zashtoto kato otvorq {} zapochva callback funkciq vmesto da dobavq neshta v nov array moga da izpozlvam () i sled tova {} = ({}) vmesto return
@@ -257,12 +260,15 @@ const Map = () => {
                         {renderMapSuggestions}
                     </div>}
                 </section>
+                <div className="image-holder">
+                    {allMaps.length >= 1 && <img src={allMaps[randomIndexMap].locations[mapLocationIndex]} alt="" draggable="false" style={{ zoom: "50%" }} />}
+                </div>
 
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}
                     {userGuessedMapCorrectly && <PopupRightGuess
-                        image={""}
-                        name={allMaps[randomIndexMap]}
+                        image={allMaps[randomIndexMap].locations[mapLocationIndex]}
+                        name={allMaps[randomIndexMap].mapName}
                         nrTries={allUserGuesses.length}
                         rightAbility=""
                         allAbilities={[]}

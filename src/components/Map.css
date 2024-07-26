@@ -119,3 +119,14 @@
     flex-direction: column;
     margin-bottom: 1em;
 }
+
+.image-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.image-holder img {}
