@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Map.css"
 import mapData from "./MapData";
 import PopupRightGuess from "./PopupRightGuess";
+import { motion } from "framer-motion";
 import { Link, json } from "react-router-dom";
 
 const Map = () => {
@@ -135,23 +136,6 @@ const Map = () => {
         console.log("mounted map")
     }, [])
 
-    // useEffect(() => {
-    //     // const timeNow = new Date();
-    //     // console.log(timeNow)
-    //     // const mapPreviosulyCreated = new Date(getPreviousTime);
-    //     // const milisecondsPerHour = 60 * 60 * 1000;
-    //     // const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
-    //     // console.log(hourDifference)
-    //     // if(hourDifference >= 0.010){
-    //     //     localStorage.removeItem("MapIndex")
-    //     //     localStorage.removeItem("MapTaskCreated")
-    //     //     localStorage.removeItem("userGuessedMapCorrectly")
-    //     //     localStorage.removeItem("allUserMapGuesses")
-    //     //     localStorage.removeItem("userMadeMapGuess")
-    //     //     setDayPassed(true)
-    //     // }
-    // }, [allMaps])
-
     useEffect(() => {
         setAllUserGuessesLocalStorage(allUserGuesses)
     }, [allUserGuesses])
@@ -235,8 +219,22 @@ const Map = () => {
 
 
     const renderUserGuessLocalStorage = allUserGuessesLocalStorage.map(guess => {
-        return guess === allMaps[randomIndexMap].mapName ? <div className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </div>
-            : <div className="user-guess"> <h1 style={wrongGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1></div>
+        return guess === allMaps[randomIndexMap].mapName ? <motion.div key={guess}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+                duration: userGuessedMapCorrectly ? 0 : 0.7,
+                delay: userGuessedMapCorrectly ? 0 : 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }} className="user-guess"><h1 style={rightGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1> </motion.div>
+            : <motion.div key={guess}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: userGuessedMapCorrectly ? 0 : 0.7,
+                    delay: userGuessedMapCorrectly ? 0 : 0.5,
+                    ease: [0, 0.71, 0.2, 1.01]
+                }} className="user-guess"> <h1 style={wrongGuessStyle}> {guess.charAt(0).toUpperCase() + guess.slice(1)} </h1></motion.div >
     })
 
     const renderUserGuess = allUserGuesses.map(guess => {
@@ -250,19 +248,21 @@ const Map = () => {
         <div className="map-section">
             <form className="map-form" onSubmit={handleSubmit}>
                 <section className="guess-section">
-                    <div className="input-container">
-                        <input type="text" name="userMapInput" className="userMapInput" placeholder="Type your guess" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace}
-                        />
-                        <button id="submitBtn"> {">"}</button>
+                    <h2> GUESS THE MAP </h2>
+                    <div className="image-holder">
+                        {allMaps.length >= 1 && <img src={allMaps[randomIndexMap].locations[mapLocationIndex]} alt="" draggable="false" style={{ zoom: "50%" }} />}
                     </div>
-
-                    {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
-                        {renderMapSuggestions}
-                    </div>}
+                    <div className="map-input">
+                        <div className="input-container" style={userGuessedMapCorrectly ? { display: "none" } : { display: "flex" }}>
+                            <input type="text" name="userMapInput" className="userMapInput" placeholder="Type your guess" autoComplete="off" onChange={saveUserGuess} onKeyDown={detectSpace}
+                            />
+                            <button id="submitBtn"> {">"}</button>
+                        </div>
+                        {mapsSuggestions.length >= 1 && <div className="map-suggestions-container">
+                            {renderMapSuggestions}
+                        </div>}
+                    </div>
                 </section>
-                <div className="image-holder">
-                    {allMaps.length >= 1 && <img src={allMaps[randomIndexMap].locations[mapLocationIndex]} alt="" draggable="false" style={{ zoom: "50%" }} />}
-                </div>
 
                 <div className="map-form-lower">
                     {userMadeGuessLocalStorage ? renderUserGuessLocalStorage : renderUserGuess}

@@ -3,16 +3,15 @@
 }
 
 .userMapInput {
-    font-family: var(--font-jost);
-    padding: 1.15em 1em 1.25em 1em;
-    outline: none;
+    padding: 0.8em 1em 0.8em 1em;
     border: none;
+    border-radius: 8px;
     background-color: #2B3B52;
-    border-radius: 2px 0px 0px 2px;
-    font-size: 1rem;
+    font-family: var(--font-jost);
+    font-size: 14px;
+    width: 90%;
+    outline: none;
     font-weight: 500;
-    height: 26px;
-    width: 275px;
 }
 
 .userMapInput::placeholder {
@@ -26,12 +25,12 @@
 }
 
 #submitBtn {
-    padding: 1.4em 1.2em 2.6em 1.2em;
     background-color: #FEFEFE;
     color: #2B3B52;
     border: none;
+    padding: 1em;
+    width: 20%;
     font-weight: 600;
-    height: 50px;
     font-size: 1rem;
 }
 
@@ -44,9 +43,11 @@
 }
 
 .input-container {
-    border: 2px solid #FEFEFE;
+    border: 1px solid #FEFEFE;
+    width: 100%;
     border-radius: 4px;
-    margin-bottom: 2em;
+    display: flex;
+    justify-content: space-between;
 }
 
 .map-form {
@@ -87,16 +88,16 @@
 }
 
 .map-suggestions-container {
-    width: 275px;
+    width: 208px;
     height: auto;
     background-color: #2B3B52;
     border: 1px solid #FEFEFE;
+    border-top: none;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1em;
-    margin-top: -2em;
+    padding: 0.5em;
 }
 
 .button-map-name {
@@ -117,7 +118,14 @@
 .guess-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 1em;
     margin-bottom: 1em;
+    padding: 2em;
+    background-color: #2B3B52;
+    width: 450px;
+    height: auto;
+    border-radius: 4px;
 }
 
 .image-holder {
@@ -127,6 +135,20 @@
     max-width: 300px;
     max-height: 300px;
     overflow: hidden;
+    border-radius: 4px;
 }
 
-.image-holder img {}
+.guess-section>h2 {
+    margin: auto;
+    font-family: var(--font-jost);
+    font-size: 2.3rem;
+    font-weight: 500;
+    color: #D2404D;
+}
+
+.map-input {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
