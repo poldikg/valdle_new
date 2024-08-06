@@ -23,7 +23,7 @@ function App() {
   });
   const [allAgentsAbilities, setAllAgentsAbilities] = useState(null);
   const agentIcons = allAgentsAbilities === null ? "" : allAgentsAbilities[0]["agentRole"]["displayIcon"];
-  const [navigationData, setNavigationData] = useState([{ img: "location-pin-removebg.png", name: "Map", description: "Guess the map" }, { img: "displayicon.png", name: "Agent", description: "Guess the agent" }, { img: "killstreamicon.png", name: "Skin", description: "Guess the skin" },
+  const [navigationData, setNavigationData] = useState([{ img: "displayicon.png", name: "Agent", description: "Guess the agent" }, { img: "location-pin-removebg.png", name: "Map", description: "Guess the map" }, { img: "killstreamicon.png", name: "Skin", description: "Guess the skin" },
   { img: "brim-ult.png", name: "Ability", description: "Guess the ability" }, { img: "double-quote.png", name: "Quote", description: "Guess the quote" }])
   const [allAgentsData, setAllAgentsData] = useState([]);
 

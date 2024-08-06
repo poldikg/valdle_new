@@ -10,11 +10,9 @@ const Navigation = (props) => {
     const removeFromLocalStorage = (name) => {
         const getPreviousTime = localStorage.getItem(`${name}TaskCreated`);
         const timeNow = new Date();
-        console.log(timeNow)
         const mapPreviosulyCreated = new Date(getPreviousTime);
         const milisecondsPerHour = 60 * 60 * 1000;
         const hourDifference = (timeNow - mapPreviosulyCreated) / milisecondsPerHour;
-        console.log(hourDifference)
         if (hourDifference >= 24) {
             localStorage.removeItem(`${name}Index`)
             localStorage.removeItem(`${name}TaskCreated`)
